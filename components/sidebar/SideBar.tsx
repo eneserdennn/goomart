@@ -1,12 +1,12 @@
 'use client'
 
-import Image from 'next/image';
+import {FaAngleDown, FaTimes} from 'react-icons/fa'
 import React, { useId, useState } from 'react'
-import {GiHamburgerMenu} from 'react-icons/gi'
-import {FaTimes,FaAngleDown} from 'react-icons/fa'
-import { Disclosure } from '@headlessui/react'
-import dynamic from 'next/dynamic';
 
+import { Disclosure } from '@headlessui/react'
+import {GiHamburgerMenu} from 'react-icons/gi'
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 const SideBar = ({data}) => {
   const [toggleSideBar,setToggleSideBar]=useState<boolean>(false);
@@ -22,7 +22,7 @@ const SideBar = ({data}) => {
       }` }>
         <div className="flex items-center justify-between p-4 border-b bg-primary shadow-xl" >
             <div className={'opacity-0 pointer-events-none'}>
-                 <GiHamburgerMenu size={30} />
+                 <GiHamburgerMenu  size={30} />
             </div>        
             <Image
              src='/goomart.svg'

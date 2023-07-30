@@ -1,9 +1,7 @@
+import Image from 'next/image'
+import {IoMdNotifications} from 'react-icons/io'
 import Link from 'next/link'
 import React from 'react'
-
-import {IoMdNotificationsOutline} from 'react-icons/io'
-
-import Image from 'next/image'
 import SideBar from '../sidebar/SideBar'
 import dynamic from 'next/dynamic'
 
@@ -25,9 +23,7 @@ const NavBar = () => {
   return (
     <nav className='w-full bg-primary'>
         <div className="flex items-center justify-between p-4">
-              
                    <SideBar data={data}/>
-         
                 <div className=""><Link className='text-secondary' href='/'>
                     <Image
                         src='/goomart.svg'
@@ -38,7 +34,7 @@ const NavBar = () => {
                     </Link></div>
                 <div className="">
                         <Link href='/'>
-                            <IoMdNotificationsOutline size={30}/>
+                            <IoMdNotifications className='text-secondary' size={30}/>
                         </Link>
 
                 </div>
