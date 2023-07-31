@@ -13,17 +13,17 @@ const SideBar = ({data}) => {
   const handleTogglingSideBar=()=>{
     setToggleSideBar(prev=> !prev);
   }
-  
+
   return (
     <>
-    <GiHamburgerMenu size={30} onClick={handleTogglingSideBar} />
+    <GiHamburgerMenu color="white" size={30} onClick={handleTogglingSideBar} />
      <div className={`bg-white fixed left-0 top-0 bottom-0 w-full md:w-1/6 h-screen z-50 transition-transform duration-300 ${
         toggleSideBar ? 'translate-x-0' : '-translate-x-full'
       }` }>
         <div className="flex items-center justify-between p-4 border-b bg-primary shadow-xl" >
             <div className={'opacity-0 pointer-events-none'}>
                  <GiHamburgerMenu  size={30} />
-            </div>        
+            </div>
             <Image
              src='/goomart.svg'
              alt='goomart'
@@ -33,7 +33,6 @@ const SideBar = ({data}) => {
             <FaTimes size={20} className='text-deepgray' onClick={handleTogglingSideBar}/>
         </div>
           <div className="mt-4 px-4">
-             
                 {data.map((d)=>{
                 return(
                   <Disclosure as='div' id={d.name} key={d.name} className={'w-full'} >
@@ -54,21 +53,16 @@ const SideBar = ({data}) => {
                             height={64}
                             />
                             <p className='text-nunito text-xs my-2'>{a.name}</p>
-                            
+
                             </div>
                           )
                         })}
-                      
-                      
                       </Disclosure.Panel>)
                     }
-                    
-                     
-                 
                   </Disclosure>
                 )
               })}
-            
+
           </div>
 
      </div>

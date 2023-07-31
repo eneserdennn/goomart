@@ -19,7 +19,7 @@ module.exports = {
         deepgray: "#414141",
       },
       fontFamily: {
-        nunito: ["Nunito", "sans-serif"],
+        sans: ["Nunito", "sans-serif"],
       },
     },
   },

@@ -24,11 +24,12 @@ const SocialButtons: React.FC<Buttons> = ({ text, buttons, showText }) => {
   return (
     <>
       {showText && (
-        <div className="w-full my-2 flex items-center">
-          <div className="flex-1 h-px bg-gray-300"></div>
-          <p className="px-4 font-bold text-gray-600 mb-3">{text}</p>
-          <div className="flex-1 h-px bg-gray-300"></div>
-        </div>
+          <div className="w-full my-2 flex items-center justify-center mb-5">
+            <div className="flex-1 h-px bg-primary"></div>
+            <p className="px-4 font-bold text-gray-600">{text}</p>
+            <div className="flex-1 h-px bg-primary"></div>
+          </div>
+
       )}
       <div className="w-full flex justify-center">
         {buttons.map((button, index) => (

@@ -1,7 +1,5 @@
 'use client'
 
-import { logIn, logOut } from '@/app/redux/features/auth-slice';
-
 import { AppDispatch } from '@/app/redux/store';
 import { BiLogoApple } from 'react-icons/bi';
 import Container from '../../components/ui/container';
@@ -19,7 +17,7 @@ const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const onClickLogin = () => {
-    
+
   }
   const buttons = [
     {
@@ -39,7 +37,7 @@ const Login = () => {
   return (
     <Container className="flex items-center flex-col m-1">
       <LoginForm />
-      <div className="w-full my-4">
+      <div className="w-full my-4 ">
         <SocialButtons showText={true} text="veya hesabınla giriş yap" buttons={buttons} />
       </div>
       <span className="text-black font-bold my-2">

@@ -21,9 +21,11 @@ export const productsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getProducts: builder.query<Product[], void>({
             query: () => 'product',
+            providesTags: ['Product']
         }),
     }),
     overrideExisting: false,
 })
 
 export const { useGetProductsQuery } = productsApi;
+

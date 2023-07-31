@@ -3,12 +3,13 @@
 import { Disclosure, Transition } from '@headlessui/react';
 
 import { BsChevronDown } from 'react-icons/bs';
-import Container from '../ui/container';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useRouter} from "next/navigation";
 
 export default function Delivery() {
   const [showContent, setShowContent] = useState<boolean>(false);
+  const router = useRouter();
 
   return (
     <div className='bottom-0 left-0 right-0 z-50 bg-white shadow-md rounded-t-3xl px-4 py-3'>
@@ -17,7 +18,7 @@ export default function Delivery() {
           <>
             <Disclosure.Button
               className=" bg-white w-full flex items-center justify-between"
-              onClick={() => setShowContent(true)}
+              onClick={() => router.push('/delivery-address')}
             >
               <div className="flex items-center gap-4">
                 <Image src='./home.svg' alt='goomart' width={20} height={20} />
@@ -49,7 +50,7 @@ export default function Delivery() {
                       layout="fill"
                       objectFit="contain"
                       objectPosition="center"
-                      
+
                     />
                   </div>
                   <button onClick={() => close()}>Vazgeç</button>

@@ -1,104 +1,193 @@
 'use client'
-import { Formik } from 'formik'
-import * as Yup from "yup";
-import Link from 'next/link'
-import React from 'react'
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import * as Yup from 'yup';
+import {Formik} from 'formik';
+import Link from 'next/link';
+import Button from '@/components/button';
+import { BsEyeSlash, BsEye } from 'react-icons/bs';
+import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 
-import Button from '@/components/button'
-import Grid from '../../ui/grid';
 
-const SignupForm = () => {
-    const initialValues={
-    name:'',
-    sirname:'',
-    email:'',
-    password:'',
-    confirmPassword:'',
-    acceptedTerms:false,
-  }
-  const handleSubmit= async(values:object)=>{
-    console.log(values)
-  }
-  return (
-    <div className='w-full flex flex-col items-center'>
-    <Formik onSubmit={handleSubmit} initialValues={initialValues} validationSchema={Yup.object().shape({
-      name:Yup.string().min(2,'isim alanı minimum 2 karakter olmalıdır').max(255).required('İsim alanı boş bırakılamaz.'),
-      sirname:Yup.string().min(2,'Soyad alanı minimum 2 karakter olmalıdır').max(255).required('İsim alanı boş bırakılamaz.'),
-      email:Yup.string().email('please enter valid mail').required('mail is required'),
-      password:Yup.string().required('şifre alanı boş bırakılamaz').min(3, 'Şifre en az 3 karakterden oluşmalıdır.'),
-      confirmPassword:Yup.string()
-      .oneOf([Yup.ref('password'),], 'Şifreler uyuşmuyor.')
-      .required('Şifre doğrulama alanı boş bırakılamaz.'),
-      acceptedTerms: Yup.boolean().notRequired()
-  
-    })}>
-        {({values,handleChange, handleSubmit,errors,touched})=>(
-          <>
-          <form className='w-full' noValidate onSubmit={handleSubmit}>
+const SignUpForm = () => {
+    const [username, setUsername] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-          <Grid cols={2} gap={4}>
-          <div>
-            <input name='name'className={`shadow w-full appearance-none border rounded p-2 my-2 font-bold text-deepgray placeholder:font-semibold  ${errors.name && touched.name ? 'border-pink-500':null}` }  onChange={handleChange} value={values.name} id='name' placeholder='Ad' type='text'/>
-                {errors && errors.name && (
-                  <p className='text-red-500 text-xs font-200'>{errors.name}</p>
-                 )}
-          </div>
-          <div>
-          <input name='sirname' className={`shadow w-full appearance-none border rounded p-2 my-2 font-bold text-deepgray placeholder:font-semibold  ${errors.sirname && touched.sirname ? 'border-pink-500':null}` }  onChange={handleChange} value={values.sirname} id='sirname' placeholder='Soyadı' type='text'/>
-            {errors && errors.name && (
-              <p className='text-red-500 text-xs font-200'>{errors.sirname}</p>
-              )}
-          </div>
-          </Grid>
-          <Grid cols={1} gap={2}>
-          <div>
-            <input name='email'className={`shadow w-full appearance-none border rounded p-2 my-2 font-bold text-deepgray placeholder:font-semibold  ${errors.email && touched.email ? 'border-pink-500':null}` }  onChange={handleChange} value={values.email} id='email' placeholder='Email' type='text'/>
-                {errors && errors.email && (
-                  <p className='text-red-500 text-xs font-200'>{errors.email}</p>
-                 )}
-          </div>
-          <div>
-          <input name='password' className={`shadow w-full appearance-none border rounded p-2 my-2 font-bold text-deepgray placeholder:font-semibold  ${errors.confirmPassword || errors.password && touched.password ? 'focus:outline-red-500 border-red-500' :'focus:outline-none'}` }  autoComplete='off' onChange={handleChange} value={values.password} id='password' placeholder='Password' type='password'/>
-            {errors && errors.password && (
-              <p className='text-red-500 text-xs font-200'>{errors.password}</p>
-              )}
-          </div>
-          <div>
-          <input name='confirmPassword' className={`shadow w-full appearance-none border rounded p-2 my-2 font-bold text-deepgray placeholder:font-semibold  ${errors.confirmPassword || errors.password && touched.password ? 'focus:outline-red-500 border-red-500' :'focus:outline-none'}` }  autoComplete='off' onChange={handleChange} value={values.confirmPassword} id='confırmPassword' placeholder='Confirm Password' type='password'/>
-            {errors && errors.confirmPassword && (
-              <p className='text-red-500 text-xs font-200'>{errors.confirmPassword}</p>
-              )}
-          </div>
-          </Grid>
-          <div className="flex items-center my-4">
-              <input name='acceptedTerms' type="checkbox" className='appearance-none mr-2 p-2 w-4 h-4 border border-deepgray rounded-sm bg-white checked:bg-primary relative peer checked:border-0 '/>
-              <svg
-    className="
-      absolute 
-      w-4 h-4 mt-1
-      hidden peer-checked:block
-      pointer-events-none"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="white"
-    strokeWidth="4"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <span className='font-bold text-xs'>Bana özel kampanya, tanıtım ve fırsatlardan haberdar olmak istiyorum.</span>
-          </div>
-          <span className='font-bold text-xs'>Üye olmakla <Link href='/' className='font-bold text-xs text-primary'>Kullanım Koşullarını</Link> ve hükümlerini kabul etmektesiniz.</span>
-          <Button className='my-4'>Üye Ol</Button>
-          </form>
-          </>
-        )}
 
-    </Formik>
-  </div>
-  )
-}
+    const dispatch = useDispatch();
 
-export default SignupForm
+    const initialValues = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        subscribe: false, // New field for checkbox
+    };
+
+    const handleSubmit = async (values) => {
+        console.log(values);
+        // Here you can dispatch an action to handle the sign-up process.
+        // For example:
+        // dispatch(signUp(values));
+    };
+
+    return (
+        <div className="w-full flex flex-col items-center">
+            <Formik
+                onSubmit={handleSubmit}
+                initialValues={initialValues}
+                validationSchema={Yup.object().shape({
+                    firstName: Yup.string().required('Ad alanı zorunlu').max(50, 'Ad alanı çok uzun'),
+                    lastName: Yup.string().required('Soyad alanı zorunlu').max(50, 'Soyad alanı çok uzun'),
+                    email: Yup.string().email('Lütfen geçerli bir e-posta girin').required('E-posta adresi zorunlu'),
+                    password: Yup.string().required('Şifre alanı boş bırakılamaz').min(3, 'Şifre en az 3 karakterden oluşmalıdır.'),
+                    confirmPassword: Yup.string()
+                        .oneOf([Yup.ref('password'), null], 'Şifreler eşleşmiyor')
+                        .required('Şifre tekrarı zorunlu'),
+                    subscribe: Yup.boolean().notRequired(),
+                })}
+            >
+                {({values, handleChange, handleSubmit, errors, touched}) => (
+                    <>
+                        <form className="w-full" noValidate onSubmit={handleSubmit}>
+                            <div className="flex items-start justify-center">
+                                <div className="flex w-full flex-col mr-4">
+                                    <input
+                                        name="firstName"
+                                        className={`shadow w-full appearance-none border rounded p-4 my-2 font-semibold text-deepgray placeholder:font-semibold ${
+                                            errors.firstName && touched.firstName ? 'focus:border-red-500' : null
+                                        }`}
+                                        onChange={handleChange}
+                                        value={values.firstName}
+                                        id="firstName"
+                                        placeholder="Ad"
+                                        type="text"
+                                    />
+                                    {errors.firstName && touched.firstName && (
+                                        <p className="text-red-500 text-xs font-200">{errors.firstName}</p>
+                                    )}
+                                </div>
+                                <div className="flex w-full flex-col">
+                                    <input
+                                        name="lastName"
+                                        className={`shadow w-full appearance-none border rounded p-4 my-2 font-semibold text-deepgray placeholder:font-semibold ${
+                                            errors.lastName && touched.lastName ? 'invalid:border-pink-500' : null
+                                        }`}
+                                        onChange={handleChange}
+                                        value={values.lastName}
+                                        id="lastName"
+                                        placeholder="Soyad"
+                                        type="text"
+                                    />
+                                    {errors.lastName && touched.lastName && (
+                                        <p className="text-red-500 text-xs font-200">{errors.lastName}</p>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex items-start justify-center flex-col">
+                                <input
+                                    name="email"
+                                    className={`shadow w-full appearance-none border rounded p-4 my-2 font-semibold text-deepgray placeholder:font-semibold ${
+                                        errors.email && touched.email ? 'invalid:border-pink-500' : null
+                                    }`}
+                                    onChange={handleChange}
+                                    value={values.email}
+                                    id="email"
+                                    placeholder="E-posta adresi"
+                                    type="email"
+                                />
+                                {errors.email && touched.email && (
+                                    <p className="text-red-500 text-xs font-200">{errors.email}</p>
+                                )}
+                            </div>
+                            <div className="flex items-start justify-center flex-col relative">
+                                <input
+                                    name="password"
+                                    className={`shadow w-full appearance-none border rounded p-4 my-2 font-semibold text-deepgray placeholder:font-semibold ${
+                                        errors.password && touched.password ? 'invalid:border-pink-500' : null
+                                    }`}
+                                    onChange={handleChange}
+                                    value={values.password}
+                                    id="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="Şifre"
+                                />
+                                <div
+                                    className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <BsEyeSlash size={20} /> : <BsEye size={20} />}
+                                </div>
+                                {errors.password && touched.password && (
+                                    <p className="text-red-500 text-xs font-200">{errors.password}</p>
+                                )}
+                            </div>
+
+                            <div className="flex items-start justify-center flex-col relative">
+                                <input
+                                    name="confirmPassword"
+                                    className={`shadow w-full appearance-none border rounded p-4 my-2 font-semibold text-deepgray placeholder:font-semibold ${
+                                        errors.confirmPassword && touched.confirmPassword ? 'invalid:border-pink-500' : null
+                                    }`}
+                                    onChange={handleChange}
+                                    value={values.confirmPassword}
+                                    id="confirmPassword"
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    placeholder="Şifreyi Onayla"
+                                />
+                                <div
+                                    className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                >
+                                    {showConfirmPassword ? <BsEyeSlash size={20} /> : <BsEye size={20} />}
+                                </div>
+                                {errors.confirmPassword && touched.confirmPassword && (
+                                    <p className="text-red-500 text-xs font-200">{errors.confirmPassword}</p>
+                                )}
+                            </div>
+
+
+                            <div className="flex items-start">
+                                {/* Checkbox for subscription */}
+                                <label className="flex items-center mt-2">
+                                    {/* Conditionally render the icons based on the 'subscribe' value */}
+                                    {values.subscribe ? (
+                                        <MdCheckBox className="text-primary h-8 w-8"/>
+                                    ) : (
+                                        <MdCheckBoxOutlineBlank className="text-gray-400 h-8 w-8"/>
+                                    )}
+                                    <input
+                                        type="checkbox"
+                                        className="form-checkbox sr-only" // Add sr-only to hide the default checkbox
+                                        name="subscribe"
+                                        onChange={handleChange}
+                                        checked={values.subscribe}
+                                    />
+                                    <span className="m-4 text-sm font-nunito">
+                                        Bana özel kampanya, tanıtım ve fırsatlardan haberdar olmak istiyorum.
+                                      </span>
+                                </label>
+
+                                {errors.subscribe && touched.subscribe && (
+                                    <p className="text-red-500 text-xs font-200">{errors.subscribe}</p>
+                                )}
+                            </div>
+                            <span className="text-sm mb-2">
+                                Üye olmakla,
+                                <span className="text-primary mx-1">
+                                Kullanım Koşulları
+                            </span>
+                                hükümlerini kabul etmektesiniz.
+                            </span>
+                            <Button className="my-6" style={{fontSize: '1.1rem'}}>Kayıt Ol</Button>
+                        </form>
+                    </>
+                )}
+            </Formik>
+        </div>
+    );
+};
+
+export default SignUpForm;
