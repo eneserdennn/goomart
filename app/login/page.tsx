@@ -1,8 +1,8 @@
 'use client'
 
-import { logIn, logOut } from '@/redux/features/auth-slice';
+import { logIn, logOut } from '@/app/redux/features/auth-slice';
 
-import { AppDispatch } from '@/redux/store';
+import { AppDispatch } from '@/app/redux/store';
 import { BiLogoApple } from 'react-icons/bi';
 import Container from '../../components/ui/container';
 import { FcGoogle } from 'react-icons/fc';

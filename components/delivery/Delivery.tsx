@@ -21,7 +21,7 @@ export default function Delivery() {
             >
               <div className="flex items-center gap-4">
                 <Image src='./home.svg' alt='goomart' width={20} height={20} />
-                <p className='font-semibold text-md'>Teslimat Adresinizi Belirleyin</p>
+                <p className=' text-sm'>Teslimat Adresinizi Belirleyin</p>
               </div>
               <div className="">
                 <BsChevronDown className='rotate-180-deg text-primary' size={15} />

@@ -2,9 +2,9 @@
 
 import * as Yup from 'yup';
 
-import { logIn, logOut } from '@/redux/features/auth-slice';
+import { logIn, logOut } from '@/app/redux/features/auth-slice';
 
-import { AppDispatch } from '@/redux/store';
+import { AppDispatch } from '@/app/redux/store';
 import Button from '@/components/button';
 import { Formik } from 'formik';
 import Link from 'next/link';
