@@ -5,8 +5,7 @@ import Footer from '@/components/footer/Footer';
 import type {Metadata} from 'next';
 import NavBar from '@/components/navbar/NavBar';
 import SideBar from '@/components/sidebar/SideBar';
-import {Providers} from "@/app/redux/provider";
-
+import {Providers} from "@/redux/provider";
 
 
 export const metadata = {
@@ -32,4 +31,3 @@ export default function RootLayout({
         </html>
     );
 };
-

@@ -7,15 +7,14 @@ import Link from 'next/link';
 import Button from '@/components/button';
 import { BsEyeSlash, BsEye } from 'react-icons/bs';
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
+import { useRegisterMutation } from "@/redux/api/authSlice";
 
 
 const SignUpForm = () => {
-    const [username, setUsername] = useState('');
+    const [register, { isLoading, error }] = useRegisterMutation();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-
-    const dispatch = useDispatch();
 
     const initialValues = {
         firstName: '',
@@ -28,9 +27,22 @@ const SignUpForm = () => {
 
     const handleSubmit = async (values) => {
         console.log(values);
-        // Here you can dispatch an action to handle the sign-up process.
-        // For example:
-        // dispatch(signUp(values));
+        const newUser = {
+            email: values.email,
+            password: values.password,
+            name: values.firstName,
+            surname: values.lastName,
+            campaignConsent: values.subscribe
+        }
+
+        try {
+            const result = await register(newUser).unwrap();
+            console.log(result.message)
+
+        }
+        catch (err) {
+            console.error(err)
+        }
     };
 
     return (
@@ -42,7 +54,7 @@ const SignUpForm = () => {
                     firstName: Yup.string().required('Ad alanı zorunlu').max(50, 'Ad alanı çok uzun'),
                     lastName: Yup.string().required('Soyad alanı zorunlu').max(50, 'Soyad alanı çok uzun'),
                     email: Yup.string().email('Lütfen geçerli bir e-posta girin').required('E-posta adresi zorunlu'),
-                    password: Yup.string().required('Şifre alanı boş bırakılamaz').min(3, 'Şifre en az 3 karakterden oluşmalıdır.'),
+                    password: Yup.string().required('Şifre alanı boş bırakılamaz').min(8, 'Şifre en az 8 karakterden oluşmalıdır.'),
                     confirmPassword: Yup.string()
                         .oneOf([Yup.ref('password'), null], 'Şifreler eşleşmiyor')
                         .required('Şifre tekrarı zorunlu'),
@@ -147,8 +159,6 @@ const SignUpForm = () => {
                                     <p className="text-red-500 text-xs font-200">{errors.confirmPassword}</p>
                                 )}
                             </div>
-
-
                             <div className="flex items-start">
                                 {/* Checkbox for subscription */}
                                 <label className="flex items-center mt-2">

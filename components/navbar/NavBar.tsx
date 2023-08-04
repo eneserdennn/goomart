@@ -7,6 +7,7 @@ import SideBar from '../sidebar/SideBar'
 import dynamic from 'next/dynamic'
 import {usePathname} from 'next/navigation';
 import {IoChevronBack} from 'react-icons/io5';
+import {useRouter} from 'next/navigation';
 
 const NavBar = () => {
     const data = [
@@ -61,10 +62,15 @@ const NavBar = () => {
             name: 'Teslimat Adresi',
             href: '/delivery-address',
         },
+        {
+            name: 'Şifremi Unuttum',
+            href: '/forgot-password',
+        }
     ]
 
     const path = usePathname()
     const currentPage = pages.find(page => page.href === path);
+    const router = useRouter()
 
     return (
         <nav className='w-full bg-primary'>
@@ -72,9 +78,9 @@ const NavBar = () => {
                 {
                     currentPage?.name === 'Home' ? <SideBar data={data}/> :
                         <div className="flex items-center">
-                            <Link href='/'>
-                                <IoChevronBack className='text-white' size={30}/>
-                            </Link>
+                            <div onClick={() => router.back()} className="mr-4">
+                                <IoChevronBack className='text-white' size={30} onc/>
+                            </div>
                         </div>
                 }
                 <div className="text-white font-bold text-xl">
@@ -89,9 +95,12 @@ const NavBar = () => {
                     </Link></div> : currentPage?.name}
                 </div>
                 <div className="">
-                    <Link href='/'>
-                        <IoMdNotifications className='text-secondary' size={30}/>
-                    </Link>
+                    {currentPage?.name === 'Home' ? <div className="flex items-center">
+                            <IoMdNotifications className='text-white' size={30}/>
+                        </div> :
+                        <div className="flex items-center mr-6">
+                        </div>
+                    }
                 </div>
             </div>
         </nav>

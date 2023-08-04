@@ -1,24 +1,29 @@
 'use client'
 
-import { AppDispatch } from '@/app/redux/store';
+import { AppDispatch } from '@/redux/store';
 import { BiLogoApple } from 'react-icons/bi';
-import Container from '../../components/ui/container';
+import Container from '../../../components/ui/container';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
-import LoginForm from '../../components/auth/login/LoginForm';
-import React from 'react';
-import SocialButtons from '../../components/ui/socialButtons';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import LoginForm from '../../../components/auth/login/LoginForm';
+import React, {useState} from 'react';
+import SocialButtons from '../../../components/ui/socialButtons';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
-  const [username, setUsername] = useState("")
+  const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
 
-  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setToken(token);
+    if (token) {
+      router.push('/');
+    }
+    }, []);
 
-  const onClickLogin = () => {
-
-  }
   const buttons = [
     {
       buttonClassName:
@@ -43,11 +48,12 @@ const Login = () => {
       <span className="text-black font-bold my-2">
         Hesabınız yok mu?&nbsp; &nbsp;
         <Link href="/signup" className="text-primary font-bold">
-          Üye Ol
+        Üye Ol
         </Link>
-      </span>
+        </span>
     </Container>
   );
 };
 
 export default Login;
+

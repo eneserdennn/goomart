@@ -1,10 +1,11 @@
 import React from 'react';
-import Image from 'next/image';
+
 import CategoryCard from '../ui/CategoryCard';
-import {useGetCategoriesQuery} from "@/app/redux/services/categoriesApi";
+import { useGetCategoriesQuery } from "@/redux/features/categorySlice";
+
 
 const Categories = () => {
-    const {data: categories, error: categoriesError, isLoading: categoriesLoading} = useGetCategoriesQuery();
+    const { data: categories, isLoading: categoriesLoading, error: categoriesError } = useGetCategoriesQuery();
 
     if (categoriesLoading) {
         // Show loading skeleton while categories are being fetched
@@ -36,7 +37,7 @@ const Categories = () => {
         <div className="flex flex-wrap justify-around p-4 mb-16">
             {limitedCategories.map((category) => (
                 <div className="w-1/3 p-1" key={category.id}>
-                    <CategoryCard title={category.name} imageUrl={category.image}/>
+                    <CategoryCard title={category?.name} imageUrl={category?.image}/>
                 </div>
             ))}
         </div>

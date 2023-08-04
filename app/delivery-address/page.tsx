@@ -57,7 +57,7 @@ const DeliveryAddress: React.FC = () => {
     const CustomRadio: React.FC<Props> = ({address, selectedAddress, onSelectAddress}) => {
         return (
             <div
-                className={`flex items-center justify-between w-full border rounded py-10 px-4`}
+                className={`flex items-center justify-between w-full border rounded h-24 px-4`}
                 onClick={() => onSelectAddress(address)}
             >
                 <div className="flex items-center">
@@ -116,7 +116,7 @@ const DeliveryAddress: React.FC = () => {
             <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300">
                 <div className="flex justify-center py-2">
                     <button
-                        className="p-3 m-2 w-full bg-primary hover:bg-green-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
+                        className="h-12 m-2 w-full bg-primary hover:bg-green-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
                         onClick={() => console.log('Adres Ekle butonuna tıklandı')}
                     >
                         Adres Ekle
