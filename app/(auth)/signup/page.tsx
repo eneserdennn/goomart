@@ -7,7 +7,7 @@ import {BiLogoApple} from 'react-icons/bi'
 import {FcGoogle} from 'react-icons/fc'
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
-const Signup = () => {
+const Signup:React.FC = () => {
 
     const router = useRouter()
 

@@ -1,21 +1,26 @@
-import * as Yup from 'yup';
-import {Formik} from 'formik';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import Link from "next/link";
 
+import * as Yup from 'yup';
+
+import {useLoginMutation} from "@/redux/api/authSlice";
+import {useRouter} from "next/navigation";
+
+import {Formik} from 'formik';
 import {BsEye, BsEyeSlash} from 'react-icons/bs';
 import Button from '@/components/button';
-import { useLoginMutation } from "@/redux/api/authSlice";
-import { useDispatch } from 'react-redux';
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-// import { login } from "@/redux/api/apiSlice";
+
+interface ILoginForm {
+    email: string;
+    password: string;
+}
 
 
-const LoginForm = () => {
+const LoginForm:React.FC = () => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-    const [loginMutation, { isLoading, error, data }] = useLoginMutation();
-    const [ errorMessage, setErrorMessage ] = React.useState(null);
+    const [loginMutation, {isLoading, error, data}] = useLoginMutation();
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const router = useRouter()
 
@@ -24,15 +29,14 @@ const LoginForm = () => {
         password: '',
     };
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (values: ILoginForm) => {
         try {
-            const result = await loginMutation({ username: values.email, password: values.password }).unwrap();
+            const result = await loginMutation({username: values.email, password: values.password}).unwrap();
             if (result.access_token) {
-
                 localStorage.setItem('token', result.access_token);
                 setIsAuthenticated(true);
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
             if (err.data.message === "User not found") {
                 setErrorMessage("E-posta adresi ile iliskili kayitli hesap bulunamadi. ");
@@ -43,13 +47,11 @@ const LoginForm = () => {
         }
     };
 
-
-    useEffect(() =>{
+    useEffect(() => {
         if (isAuthenticated) {
             router.push('/')
         }
-    },[isAuthenticated])
-
+    }, [isAuthenticated])
 
     return (
         <div className="w-full flex flex-col items-center">

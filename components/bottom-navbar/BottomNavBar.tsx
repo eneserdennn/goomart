@@ -1,14 +1,12 @@
 'use client'
 
-import { FaHome, FaSearch, FaShoppingBag, FaTags, FaUser } from 'react-icons/fa';
 import React, {useEffect, useState} from 'react';
-
+import { FaShoppingBag } from 'react-icons/fa';
 import { BiSearchAlt } from 'react-icons/bi';
 import { BsFillGiftFill } from 'react-icons/bs';
 import { GoHomeFill } from 'react-icons/go';
 import {useRouter} from "next/navigation";
 import {IoPersonSharp} from "react-icons/io5";
-import {useSelector} from "react-redux";
 
 
 const BottomNavBar: React.FC = () => {
@@ -25,13 +23,10 @@ const BottomNavBar: React.FC = () => {
 
     }, [])
 
-
-
   return (
     <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300">
       <div className="flex justify-around py-2">
-        <button className="flex flex-col items-center justify-center space-x-1">
-          {/* <FaHome size={20} color="#888" /> */}
+        <button className="flex flex-col items-center justify-center space-x-1" onClick={() => router.push('/')}>
             <GoHomeFill size={25} color="#888" />
           <span className="text-xs text-gray-600">Ana Sayfa</span>
         </button>
@@ -51,7 +46,7 @@ const BottomNavBar: React.FC = () => {
         <button className="flex flex-col items-center justify-center space-x-1" onClick={
             () => {
                 if(isLogin){
-                    router.push('/')
+                    router.push('/profile')
                 }else{
                     router.push('/login')
                 }

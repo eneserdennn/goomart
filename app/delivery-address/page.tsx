@@ -74,14 +74,14 @@ const DeliveryAddress: React.FC = () => {
                 <div className="flex items-center space-x-2">
                     <FiEdit
                         className="cursor-pointer text-primary h-5 w-5 mr-2"
-                        onClick={(e) => {
+                        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                             e.stopPropagation();
                             handleEditAddress(address);
                         }}
                     />
                     <FaTrashAlt
                         className="cursor-pointer text-primary h-5 w-5"
-                        onClick={(e) => {
+                        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                             e.stopPropagation();
                             handleDeleteAddress(address);
                         }}

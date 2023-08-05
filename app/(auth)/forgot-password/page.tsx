@@ -1,7 +1,7 @@
 'use client';
 import React, {useEffect, useState} from 'react';
 import * as Yup from 'yup';
-import {Field, Form, Formik} from 'formik';
+import {Form, Formik} from 'formik';
 import Button from '@/components/button';
 import ForgotPassword from '../../../public/assets/images/forgot-password.svg';
 import Verification from '../../../public/assets/images/verification.svg';
@@ -19,6 +19,13 @@ import {RootState} from "@/redux/store";
 import {BsEyeSlash, BsEye} from 'react-icons/bs';
 import {useRouter} from 'next/navigation';
 
+interface IEmailFormValues {
+    email: string
+}
+
+interface INewPasswordValues {
+    newPassword: string;
+}
 
 const ForgotPasswordForm = () => {
     const dispatch = useDispatch();
@@ -26,7 +33,7 @@ const ForgotPasswordForm = () => {
 
     const [emailSent, setEmailSent] = useState(false);
     const [otp, setOtp] = useState('');
-    const [errorMessage, setErrorMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState<string | null >(null);
     const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -43,7 +50,7 @@ const ForgotPasswordForm = () => {
         email: '',
     };
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (values: IEmailFormValues) => {
         try {
             const result = await forgotPassword({
                 email: values.email
@@ -51,11 +58,12 @@ const ForgotPasswordForm = () => {
 
             dispatch(setEmail(values.email));
             setEmailSent(true);
-            setErrorMessage(null); // Başarı durumunda hata mesajını temizle
-        } catch (err) {
-            console.log(err.data)
-            if (err.data.message === "User not found") { // Sunucudan dönen hata mesajına göre kontrol et
-                setErrorMessage("E-posta adresi ile iliskili kayitli hesap bulunamadi. "); // Kullanıcıya gösterilecek hata mesajı
+            setErrorMessage(null);
+        } catch (err: any) {
+            console.log(err);
+
+            if (err?.response?.data?.message === "User not found") {
+                setErrorMessage("E-posta adresi ile ilişkili kayıtlı hesap bulunamadı.");
             } else {
                 console.error(err);
             }
@@ -162,7 +170,6 @@ const ForgotPasswordForm = () => {
                         <div className="ml-1 font-semibold text-primary" onClick={() => {
                             setResendCodeTimer(60);
                             handleSubmit({email: forgotPasswordState.email})
-                            // console.log("resend", forgotPasswordState.email)
                         }
                         }>
                             Tekrar Gönder
@@ -178,12 +185,14 @@ const ForgotPasswordForm = () => {
             newPassword: Yup.string()
                 .required('Password is required')
                 .min(8, 'Password must be longer than or equal to 8 characters')
-                .max(20, 'Password must be shorter than or equal to 20 characters'),
+                .max(20, 'Password must be shorter than or equal to 20 characters')
+                .nullable(), // Handle nullable field
             newPasswordConfirm: Yup.string()
-                .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
+                .oneOf([Yup.ref('newPassword')], 'Passwords must match')
+                .nullable(), // Handle nullable field
         });
 
-        const handleSubmitNew = (values) => {
+        const handleSubmitNew = (values: INewPasswordValues) => {
             handleChangePassword(values.newPassword);
         };
 
@@ -251,7 +260,7 @@ const ForgotPasswordForm = () => {
                                     </div>
                                 </div>
                                 <div className="flex items-start justify-center flex-row w-full mt-3">
-                                    <Button className="w-full" onClick={handleSubmitNew}> Şifreyi Onayla </Button>
+                                    <Button className="w-full" onClick={() => handleSubmitNew(values)}>Şifreyi Onayla</Button>
                                 </div>
                             </Form>
                         )}
