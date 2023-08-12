@@ -24,7 +24,7 @@ const LoggedOut:React.FC = () => {
             </div>
             <div className="mb-4">
                 <IconButton icon={<Image src={ICONS.address} alt="address-icon"/>} onClick={() =>
-                    router.push('/profile/address')
+                    router.push('/profile/addresses')
                 }>
                     Adreslerim
                 </IconButton>

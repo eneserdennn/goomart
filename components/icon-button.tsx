@@ -12,6 +12,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     loading?: boolean;
     active?: boolean;
     icon?: ReactNode;
+    svgIcon?: ReactNode;
     iconSize?: number; // Yeni prop: ikon boyutu
     rightIcon?: boolean;
     rightString?: string;
@@ -25,7 +26,8 @@ const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
         loading = false,
         disabled = false,
         icon,
-        iconSize = 24,
+        svgIcon: svg,
+        iconSize = 27,
         rightIcon = true,
         rightString,
 
@@ -33,7 +35,7 @@ const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     } = props;
 
     const RootClasses = cn(
-        'w-full py-4 mt-3 font-semibold rounded-lg flex items-center justify-center transition duration-300 ease-in-out',
+        'w-full py-4 mt-1 font-semibold rounded-md flex items-center justify-center transition duration-300 ease-in-out',
         'bg-white hover:bg-primary-[0.8] focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:outline-none hover:shadow-lg',
         {'opacity-50 cursor-not-allowed': disabled},
         className
@@ -54,8 +56,13 @@ const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
                             className="flex items-center justify-center mr-4"
                             style={{width: iconSize}}>
                             {icon && (
-                                <div className="text-primary" style={{fontSize: iconSize}}>
+                                <div className="text-primary">
                                     {icon}
+                                </div>
+                            )}
+                            {svg && (
+                                <div className="text-primary">
+                                    {svg}
                                 </div>
                             )}
                             {loading && (
@@ -72,7 +79,8 @@ const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
                     </div>
                 </div>
                 <div className="flex items-center">
-                    {rightIcon && <Image src={ICONS.rightArrow} className="h-4 w-4" alt="sozlesmeler-icon"/>}
+                    {rightIcon && !svg &&  <Image src={ICONS.rightArrow} className="h-4 w-4" alt="sozlesmeler-icon"/>}
+                    {svg && <Image src={svg} className="h-[7px] w-[9px]" alt="sozlesmeler-icon"/>}
                     {rightString && <span className="ml-2">{rightString}</span>}
                 </div>
             </div>

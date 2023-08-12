@@ -1,26 +1,46 @@
-import React, {useEffect, useState} from 'react';
-import Link from "next/link";
-
 import * as Yup from 'yup';
 
-import {useLoginMutation} from "@/redux/api/authSlice";
-import {useRouter} from "next/navigation";
-
-import {Formik} from 'formik';
 import {BsEye, BsEyeSlash} from 'react-icons/bs';
+import React, {useEffect, useState} from 'react';
+
 import Button from '@/components/button';
+import {Formik} from 'formik';
+import Link from "next/link";
+import { setCredentials } from "@/redux/features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { useLoginMutation } from "@/redux/features/auth/authApiSlice";
+import {useRouter} from "next/navigation";
 
 interface ILoginForm {
     email: string;
     password: string;
 }
 
+interface ISession {
+    session: {
+        user: {
+            email: string;
+            name: string;
+            surname: string;
+            phone: string | null;
+            token: string;
+        },
+        expires: string;
+    }
+}
+
 
 const LoginForm:React.FC = () => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-    const [loginMutation, {isLoading, error, data}] = useLoginMutation();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    const [user, setUser] = useState<string>('');
+    const [pwd, setPwd] = useState<string>('');
+    const [errMsg, setErrMsg] = useState<string>('');
+
+    const [login, { isLoading }] = useLoginMutation();
+    const dispatch = useDispatch();
 
     const router = useRouter()
 
@@ -29,21 +49,23 @@ const LoginForm:React.FC = () => {
         password: '',
     };
 
+
     const handleSubmit = async (values: ILoginForm) => {
         try {
-            const result = await loginMutation({username: values.email, password: values.password}).unwrap();
-            if (result.access_token) {
-                localStorage.setItem('token', result.access_token);
-                setIsAuthenticated(true);
+            const userData = await login({ username: values.email, password: values.password}).unwrap();
+            const { access_token } = userData;
+            localStorage.setItem('token', access_token)
+            dispatch(setCredentials({...userData}))
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg('No server response');
+            } else if ( err.response?.status === 400) {
+                setErrMsg('Invalid credentials');
+            } else if ( err.response?.status === 401) {
+                setErrMsg('Unauthorized');
+            } else {
+                setErrMsg('Something went wrong');
             }
-        } catch (err: any) {
-            console.error(err);
-            if (err.data.message === "User not found") {
-                setErrorMessage("E-posta adresi ile iliskili kayitli hesap bulunamadi. ");
-            } else if (err.data.statusCode === 401) {
-                setErrorMessage("Şifre hatalı. Lütfen tekrar deneyin.");
-            }
-            console.log(errorMessage)
         }
     };
 

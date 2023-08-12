@@ -1,24 +1,20 @@
 'use client'
+import React, {useEffect} from 'react';
 
-import Link from 'next/link';
 import {BiLogoApple} from 'react-icons/bi';
-import {FcGoogle} from 'react-icons/fc';
 import Container from "@/components/ui/container";
+import {FcGoogle} from 'react-icons/fc';
+import Link from 'next/link';
 import LoginForm from '@/components/auth/login/LoginForm';
 import SocialButtons from '@/components/ui/socialButtons';
-
-import React, {useEffect} from 'react';
 import {useRouter} from 'next/navigation';
+import {useSelector} from "react-redux";
+import {selectCurrentToken} from "@/redux/features/auth/authSlice";
 
 const Login: React.FC = () => {
-    const router = useRouter();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            router.push('/');
-        }
-    }, []);
+    const token = useSelector(selectCurrentToken);
+    const router = useRouter();
 
     const buttons = [
         {
@@ -35,20 +31,27 @@ const Login: React.FC = () => {
         },
     ];
 
-    return (
-        <Container className="flex items-center flex-col m-1">
+    let content;
+
+    if (token) {
+        router.push('/')
+
+    } else {
+        content = <Container className="flex items-center flex-col m-1">
             <LoginForm/>
             <div className="w-full my-4 ">
                 <SocialButtons showText={true} text="veya hesabınla giriş yap" buttons={buttons}/>
             </div>
             <span className="text-black font-bold my-2">
-        Hesabınız yok mu?&nbsp; &nbsp;
+                    Hesabınız yok mu?&nbsp; &nbsp;
                 <Link href="/signup" className="text-primary font-bold">
-        Üye Ol
-        </Link>
-        </span>
+                        Üye Ol
+                </Link>
+            </span>
         </Container>
-    );
+    }
+
+    return content
 };
 
 export default Login;

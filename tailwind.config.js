@@ -10,18 +10,20 @@ module.exports = {
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "setting_back_image": "url('../public/goomart.svg')" ,
       },
       colors: {
-        primary: "#138700",
+        primary: "#148C00",
         secondary: "#E7C31E",
-        deepgray: "#414141",
+        deepgray: "#6D6D6D",
       },
       fontFamily: {
         sans: ["Nunito", "sans-serif"],
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@headlessui/tailwindcss'),
+  ],
 };

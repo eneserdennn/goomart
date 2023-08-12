@@ -6,6 +6,7 @@ import { BsChevronDown } from 'react-icons/bs';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter} from "next/navigation";
+import { ICONS} from "@/constants/iconConstants";
 
 export default function Delivery() {
   const [showContent, setShowContent] = useState<boolean>(false);
@@ -18,10 +19,10 @@ export default function Delivery() {
           <>
             <Disclosure.Button
               className=" bg-white w-full flex items-center justify-between"
-              onClick={() => router.push('/delivery-address')}
+              onClick={() => router.push('/addresses')}
             >
               <div className="flex items-center gap-4">
-                <Image src='./home.svg' alt='goomart' width={20} height={20} />
+                <Image src={ICONS.address} alt='goomart' width={20} height={20} />
                 <p className=' text-sm'>Teslimat Adresinizi Belirleyin</p>
               </div>
               <div className="">

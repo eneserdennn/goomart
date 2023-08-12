@@ -1,18 +1,18 @@
 'use client'
-import React from "react";
+
+import { useEffect, useState } from "react";
+
+import { ICONS } from "@/constants/iconConstants";
 import Image from 'next/image';
+import { IoMdNotifications } from 'react-icons/io';
 import Link from 'next/link';
+import Loading from "@/app/loading";
+import React from "react";
+import SideBar from '../sidebar/SideBar';
+import { setCredentials } from "@/redux/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { IoMdNotifications } from 'react-icons/io';
-
-import { useGetProfileQuery } from "@/redux/api/authSlice";
-import { setUser } from "@/redux/features/userSlice";
-import { ICONS } from "@/constants/iconConstants";
-import SideBar from '../sidebar/SideBar';
-import Loading from "@/app/loading";
 
 interface IMenuItem {
     name: string;
@@ -27,8 +27,10 @@ interface IPage {
     href: string;
 }
 
+
 const NavBar: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     const path = usePathname();
@@ -36,27 +38,12 @@ const NavBar: React.FC = () => {
     const router = useRouter();
 
     useEffect(() => {
-        const token: string | null = localStorage.getItem('token');
-        setToken(token);
+        const token = localStorage.getItem('token');
+        if (token) {
+            dispatch(setCredentials({ access_token: token }));
+        }
     }, []);
 
-    // @ts-ignore
-    const { data: profile, isLoading } = useGetProfileQuery(token);
-
-
-    useEffect(() => {
-        dispatch(
-            setUser({
-                name: profile?.name ?? '',
-                surname: profile?.surname ?? '',
-                email: profile?.email ?? '',
-            })
-        );
-    }, [profile]);
-
-    if (isLoading) {
-        return <Loading />;
-    }
 
     const data: IMenuItem[] = [
         {
@@ -93,6 +80,8 @@ const NavBar: React.FC = () => {
         {name: 'Menu Item 5'}
     ]
 
+    let dynmaicPath = path.split('/').pop();
+
     const pages: IPage[] = [
         {
             name: 'Home',
@@ -107,8 +96,12 @@ const NavBar: React.FC = () => {
             href: '/signup',
         },
         {
-            name: 'Teslimat Adresi',
-            href: '/delivery-address',
+            name: 'Adreslerim',
+            href: '/addresses',
+        },
+        {
+            name: 'Adres Ekle',
+            href: '/addresses/add-address',
         },
         {
             name: 'Şifremi Unuttum',
@@ -119,12 +112,16 @@ const NavBar: React.FC = () => {
             href: '/profile',
         },
         {
-            name: 'Hesap Ayarları',
+            name: 'Ayarlar',
             href: '/profile/account-settings',
+        },
+        {
+            name: 'Adres Düzenle',
+            href: `/addresses/edit-address/${dynmaicPath}`,
         }
     ]
 
-    const currentPage = pages.find(page => page.href === path);
+    let currentPage = pages.find(page => page.href === path);
 
     return (
         <nav className='w-full bg-primary'>

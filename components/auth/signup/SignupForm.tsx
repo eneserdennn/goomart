@@ -1,19 +1,22 @@
 'use client'
-import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+
 import * as Yup from 'yup';
+
+import { BsEye, BsEyeSlash } from 'react-icons/bs';
+import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
+import React, {useState} from 'react';
+
+import Button from '@/components/button';
 import {Formik} from 'formik';
 import Link from 'next/link';
-import Button from '@/components/button';
-import { BsEyeSlash, BsEye } from 'react-icons/bs';
-import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
-import { useRegisterMutation } from "@/redux/api/authSlice";
-
+import {useDispatch} from 'react-redux';
+import { useRegisterMutation} from "@/redux/features/auth/authApiSlice";
 
 const SignUpForm = () => {
     const [register, { isLoading, error }] = useRegisterMutation();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [errMessage, setErrMessage] = useState('')
 
 
     const initialValues = {
@@ -42,6 +45,7 @@ const SignUpForm = () => {
         }
         catch (err) {
             console.error(err)
+            setErrMessage(err.data.message)
         }
     };
 
@@ -192,6 +196,7 @@ const SignUpForm = () => {
                                 hükümlerini kabul etmektesiniz.
                             </span>
                             <Button className="my-6" style={{fontSize: '1.1rem'}}>Kayıt Ol</Button>
+                            <span className="text-red-600">{errMessage && errMessage}</span>
                         </form>
                     </>
                 )}

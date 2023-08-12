@@ -1,22 +1,21 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+
 import * as Yup from 'yup';
+
+import {BsEye, BsEyeSlash} from 'react-icons/bs';
 import {Form, Formik} from 'formik';
+import React, {useEffect, useState} from 'react';
+import {setEmail, setVerificationCode} from "@/redux/features/auth/forgotPasswordSlice";
+import {useChangeForgetPasswordMutation, useForgotPasswordMutation, useVerifyForgottenPasswordCodeMutation} from "@/redux/features/auth/authApiSlice";
+import {useDispatch, useSelector} from 'react-redux';
+
 import Button from '@/components/button';
-import ForgotPassword from '../../../public/assets/images/forgot-password.svg';
-import Verification from '../../../public/assets/images/verification.svg';
+import ForgotPassword from '@/assets/images/forgot-password.svg';
 import Image from "next/image";
 import Link from "next/link";
 import OtpInput from 'react-otp-input';
-import {
-    useForgotPasswordMutation,
-    useVerifyForgottenPasswordCodeMutation,
-    useChangeForgetPasswordMutation
-} from "@/redux/api/authSlice";
-import {useDispatch, useSelector} from 'react-redux';
-import {setEmail, setVerificationCode} from "@/redux/features/forgotPasswordSlice";
 import {RootState} from "@/redux/store";
-import {BsEyeSlash, BsEye} from 'react-icons/bs';
+import Verification from '@/assets/images/verification.svg';
 import {useRouter} from 'next/navigation';
 
 interface IEmailFormValues {
@@ -44,6 +43,7 @@ const ForgotPasswordForm = () => {
     const [changeForgetPassword] = useChangeForgetPasswordMutation();
     const [forgotPassword] = useForgotPasswordMutation();
 
+    // @ts-ignore
     const forgotPasswordState = useSelector((state: RootState) => state.forgotPassword);
 
     const initialValues = {
@@ -60,8 +60,6 @@ const ForgotPasswordForm = () => {
             setEmailSent(true);
             setErrorMessage(null);
         } catch (err: any) {
-            console.log(err);
-
             if (err?.response?.data?.message === "User not found") {
                 setErrorMessage("E-posta adresi ile ilişkili kayıtlı hesap bulunamadı.");
             } else {
@@ -159,12 +157,9 @@ const ForgotPasswordForm = () => {
                     </Button>
                 </div>
                 <div className="flex items-start justify-center flex-row w-full mt-3">
-                    <span className="font-semibold text-gray-500">
-                        Kodu almadınız mı?
-                    </span>
                     {resendCodeTimer > 0 ? (
                         <div className="ml-1 font-semibold text-gray-700">
-                            {resendCodeTimer} saniye sonra tekrar göndermeyi deneyin.
+                            Kodu tekrar gönder <span className="text-primary">00:{resendCodeTimer}</span>
                         </div>
                     ) : (
                         <div className="ml-1 font-semibold text-primary" onClick={() => {

@@ -1,16 +1,33 @@
-import React from 'react';
-
 import CategoryCard from '../ui/CategoryCard';
-import { useGetCategoriesQuery } from "@/redux/features/categorySlice";
+import React from 'react';
+import { useGetCategoriesQuery } from '@/redux/features/categories/categoriesApiSlice';
 
+interface Category {
+    id: number;
+    name: string;
+    image: string;
+    SubCategory: {
+        id: number;
+        name: string;
+        image: string;
+    }[];
+}
 
 const Categories = () => {
-    const { data: categories, isLoading: categoriesLoading, error: categoriesError } = useGetCategoriesQuery();
+    const {
+        data: categories,
+        isLoading,
+        isSuccess,
+        isError,
+        error,
+    } = useGetCategoriesQuery();
 
-    if (categoriesLoading) {
-        // Show loading skeleton while categories are being fetched
-        return (
-            <div className="flex flex-wrap justify-around p-4">
+
+    let content;
+
+    if (isLoading) {
+        content = (
+            <div className="flex flex-wrap justify-around">
                 {[...Array(9)].map((_, index) => (
                     <div className="w-1/3 p-1" key={index}>
                         <div
@@ -23,25 +40,31 @@ const Categories = () => {
                 ))}
             </div>
         );
+
+    } else if (isSuccess) {
+        content = (
+            <div className="flex flex-wrap justify-center mb-16"> {/* justify-center sınıfını ekledik */}
+                {categories.map((category: Category) => (
+                    <div className="w-1/3 flex justify-around" key={category.id}> {/* Buraya flex justify-center ekledik */}
+                        <CategoryCard title={category?.name} imageUrl={category?.image} />
+                    </div>
+                ))}
+            </div>
+        );
+
+    } else if (isError) {
+        content = (
+            <div className="flex flex-wrap justify-around p-4 mb-16">
+                {error.status === 'FETCH_ERROR' && <div>
+                    <h1 className="text-center text-2xl font-semibold mb-4">Bir hata oluştu</h1>
+                    <p className="text-center text-lg font-semibold mb-4">Lütfen daha sonra tekrar deneyiniz</p>
+                </div>}
+            </div>
+        );
     }
 
-    if (categoriesError) {
-        // Optional: Handle error state and display an error message.
-        return <p>Error loading categories.</p>;
-    }
 
-    // Show only the first 9 categories
-    const limitedCategories = categories.slice(0, 90);
-
-    return (
-        <div className="flex flex-wrap justify-around p-4 mb-16">
-            {limitedCategories.map((category) => (
-                <div className="w-1/3 p-1" key={category.id}>
-                    <CategoryCard title={category?.name} imageUrl={category?.image}/>
-                </div>
-            ))}
-        </div>
-    );
+    return content;
 }
 
 export default Categories;
