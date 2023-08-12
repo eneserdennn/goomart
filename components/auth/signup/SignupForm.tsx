@@ -2,24 +2,31 @@
 
 import * as Yup from 'yup';
 
-import { BsEye, BsEyeSlash } from 'react-icons/bs';
-import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
+import {BsEye, BsEyeSlash} from 'react-icons/bs';
+import {MdCheckBox, MdCheckBoxOutlineBlank} from 'react-icons/md';
 import React, {useState} from 'react';
 
 import Button from '@/components/button';
-import {Formik} from 'formik';
-import Link from 'next/link';
-import {useDispatch} from 'react-redux';
-import { useRegisterMutation} from "@/redux/features/auth/authApiSlice";
+import {Formik, FormikHelpers} from 'formik';
+import {useRegisterMutation} from "@/redux/features/auth/authApiSlice";
 
-const SignUpForm = () => {
-    const [register, { isLoading, error }] = useRegisterMutation();
+interface ISignUpFormValues {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    subscribe: boolean;
+}
+
+const SignUpForm: React.FC = () => {
+    const [register, {isLoading, error}] = useRegisterMutation();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [errMessage, setErrMessage] = useState('')
+    const [errMessage, setErrMessage] = useState<string>('');
 
 
-    const initialValues = {
+    const initialValues: ISignUpFormValues = {
         firstName: '',
         lastName: '',
         email: '',
@@ -28,7 +35,7 @@ const SignUpForm = () => {
         subscribe: false, // New field for checkbox
     };
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (values: ISignUpFormValues, setSubmitting: FormikHelpers<ISignUpFormValues>) => {
         console.log(values);
         const newUser = {
             email: values.email,
@@ -37,14 +44,13 @@ const SignUpForm = () => {
             surname: values.lastName,
             campaignConsent: values.subscribe
         }
-
         try {
             const result = await register(newUser).unwrap();
             console.log(result.message)
 
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err)
+            // @ts-ignore
             setErrMessage(err.data.message)
         }
     };
@@ -60,7 +66,7 @@ const SignUpForm = () => {
                     email: Yup.string().email('Lütfen geçerli bir e-posta girin').required('E-posta adresi zorunlu'),
                     password: Yup.string().required('Şifre alanı boş bırakılamaz').min(8, 'Şifre en az 8 karakterden oluşmalıdır.'),
                     confirmPassword: Yup.string()
-                        .oneOf([Yup.ref('password'), null], 'Şifreler eşleşmiyor')
+                        .oneOf([Yup.ref('password')], 'Şifreler eşleşmiyor')
                         .required('Şifre tekrarı zorunlu'),
                     subscribe: Yup.boolean().notRequired(),
                 })}
@@ -134,7 +140,7 @@ const SignUpForm = () => {
                                     className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
                                     onClick={() => setShowPassword(!showPassword)}
                                 >
-                                    {showPassword ? <BsEyeSlash size={20} /> : <BsEye size={20} />}
+                                    {showPassword ? <BsEyeSlash size={20}/> : <BsEye size={20}/>}
                                 </div>
                                 {errors.password && touched.password && (
                                     <p className="text-red-500 text-xs font-200">{errors.password}</p>
@@ -157,7 +163,7 @@ const SignUpForm = () => {
                                     className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 >
-                                    {showConfirmPassword ? <BsEyeSlash size={20} /> : <BsEye size={20} />}
+                                    {showConfirmPassword ? <BsEyeSlash size={20}/> : <BsEye size={20}/>}
                                 </div>
                                 {errors.confirmPassword && touched.confirmPassword && (
                                     <p className="text-red-500 text-xs font-200">{errors.confirmPassword}</p>

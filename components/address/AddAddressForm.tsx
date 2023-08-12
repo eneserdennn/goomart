@@ -37,6 +37,7 @@ const validationSchema = Yup.object().shape({
     phoneNumber: Yup.string().required('Telefon Numarası zorunludur'),
 });
 
+
 function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -172,6 +173,7 @@ const AddressForm: React.FC = () => {
     if ( isFetchingAddress) return <Loading />;
 
 
+    // @ts-ignore
     return (
         <>
             {selectCountry ? (<CountrySelect selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} setSelectCountry={setSelectCountry} />) :

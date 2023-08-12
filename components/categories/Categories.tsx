@@ -1,27 +1,23 @@
 import CategoryCard from '../ui/CategoryCard';
 import React from 'react';
-import { useGetCategoriesQuery } from '@/redux/features/categories/categoriesApiSlice';
+import {useGetCategoriesQuery} from '@/redux/features/categories/categoriesApiSlice';
+
+interface SubCategory {
+    id: number;
+    name: string;
+    image: string;
+}
 
 interface Category {
     id: number;
     name: string;
     image: string;
-    SubCategory: {
-        id: number;
-        name: string;
-        image: string;
-    }[];
+    SubCategory: SubCategory[];
 }
 
-const Categories = () => {
-    const {
-        data: categories,
-        isLoading,
-        isSuccess,
-        isError,
-        error,
-    } = useGetCategoriesQuery();
-
+const Categories: React.FC = () => {
+    // @ts-ignore
+    const {data: categories, isLoading, isSuccess, isError, error,} = useGetCategoriesQuery();
 
     let content;
 
@@ -45,8 +41,9 @@ const Categories = () => {
         content = (
             <div className="flex flex-wrap justify-center mb-16"> {/* justify-center sınıfını ekledik */}
                 {categories.map((category: Category) => (
-                    <div className="w-1/3 flex justify-around" key={category.id}> {/* Buraya flex justify-center ekledik */}
-                        <CategoryCard title={category?.name} imageUrl={category?.image} />
+                    <div className="w-1/3 flex justify-around"
+                         key={category.id}> {/* Buraya flex justify-center ekledik */}
+                        <CategoryCard title={category?.name} imageUrl={category?.image}/>
                     </div>
                 ))}
             </div>

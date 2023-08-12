@@ -1,7 +1,13 @@
-import React from "react";
-import PhoneInput from "react-phone-input-2";
+import React from 'react';
+import PhoneInput from 'react-phone-input-2';
 
-const PhoneInputComponent = ({values}) => {
+interface PhoneInputComponentProps {
+    values: {
+        phoneNumber: string;
+    };
+}
+
+const PhoneInputComponent: React.FC<PhoneInputComponentProps> = ({ values }) => {
     return (
         <div
             className={`shadow w-full appearance-none border rounded mt-2 bg-white font-semibold text-deepgray`}

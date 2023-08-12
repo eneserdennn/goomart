@@ -79,7 +79,8 @@ const LanguageSelector: React.FC<{
     setSelectedCountry: (country: Language) => void;
     setSelectCountry: (selectCountry: boolean) => void;
 }> = ({selectedCountry, setSelectedCountry, setSelectCountry}) => {
-    const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
+    const [selectedLanguage, setSelectedLanguage] = useState<Language>({code: 'tr', label: 'Türkçe', flag: '🇹🇷'});
+    // @ts-ignore
     const { data, error, isLoading } = useGetCountriesQuery();
 
     const handleLanguageChange = (code: string) => {
@@ -96,10 +97,7 @@ const LanguageSelector: React.FC<{
     if (isLoading) {
         content = <Loading />;
     } else if (data) {
-        const filteredCountries = countries.filter(country => data.countries.some(apiCountry => apiCountry.code === country.code));
-
-
-        console.log(data.countries[0].code)
+        const filteredCountries = countries.filter(country => data.countries.some((apiCountry: Country) => apiCountry.code === country.code));
 
         content = (
             <div className="">

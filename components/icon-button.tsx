@@ -12,8 +12,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     loading?: boolean;
     active?: boolean;
     icon?: ReactNode;
-    svgIcon?: ReactNode;
-    iconSize?: number; // Yeni prop: ikon boyutu
+    svgIcon?: string;
+    iconSize?: number;
     rightIcon?: boolean;
     rightString?: string;
 }
@@ -40,7 +40,6 @@ const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
         {'opacity-50 cursor-not-allowed': disabled},
         className
     );
-
     return (
         <button
             aria-pressed={active}
