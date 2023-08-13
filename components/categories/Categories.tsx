@@ -1,6 +1,7 @@
 import CategoryCard from '../ui/CategoryCard';
 import React from 'react';
 import {useGetCategoriesQuery} from '@/redux/features/categories/categoriesApiSlice';
+import Link from "next/link";
 
 interface SubCategory {
     id: number;
@@ -37,13 +38,22 @@ const Categories: React.FC = () => {
             </div>
         );
 
-    } else if (isSuccess) {
+    } else if (categories) {
+
+
         content = (
             <div className="flex flex-wrap justify-center mb-16"> {/* justify-center sınıfını ekledik */}
                 {categories.map((category: Category) => (
                     <div className="w-1/3 flex justify-around"
-                         key={category.id}> {/* Buraya flex justify-center ekledik */}
-                        <CategoryCard title={category?.name} imageUrl={category?.image}/>
+                         key={category.id}
+                            onClick={() => console.log('[...products].id', category.id)}
+                    >
+                        <Link href={{
+                            pathname: `/products/${category.id}`
+                        }} key={category.id}>
+
+                            <CategoryCard title={category?.name} imageUrl={category?.image}/>
+                        </Link>
                     </div>
                 ))}
             </div>

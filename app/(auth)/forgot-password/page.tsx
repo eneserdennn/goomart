@@ -60,6 +60,8 @@ const ForgotPasswordForm = () => {
             setEmailSent(true);
             setErrorMessage(null);
         } catch (err: any) {
+            console.log(err);
+
             if (err?.response?.data?.message === "User not found") {
                 setErrorMessage("E-posta adresi ile ilişkili kayıtlı hesap bulunamadı.");
             } else {
@@ -204,10 +206,10 @@ const ForgotPasswordForm = () => {
                                 </span>
                         </div>
                         <div className="flex items-start justify-center flex-row w-full mt-3">
-                            <Button className="w-full" onClick={() => {
-                                router.push("/login")
-                            }}>
-                                Giriş Yap
+                            <Button className="w-full">
+                                <Link href={"/login"}>
+                                    Giriş Yap
+                                </Link>
                             </Button>
                         </div>
                     </div>

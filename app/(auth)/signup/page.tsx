@@ -16,7 +16,6 @@ import Loading from "@/app/loading";
 const Signup:React.FC = () => {
     const token = useSelector(selectCurrentToken);
 
-
     const router = useRouter()
 
     const { data: profile, isLoading, isSuccess, isError, error } = useGetProfileQuery(token);

@@ -80,7 +80,7 @@ const NavBar: React.FC = () => {
         {name: 'Menu Item 5'}
     ]
 
-    let dynmaicPath = path.split('/').pop();
+    const idPaths = path.split('/').pop();
 
     const pages: IPage[] = [
         {
@@ -117,14 +117,24 @@ const NavBar: React.FC = () => {
         },
         {
             name: 'Adres Düzenle',
-            href: `/addresses/edit-address/${dynmaicPath}`,
-        }
+            href: `/addresses/edit-address/${idPaths}`,
+        },
+        {
+            name: 'Ürünler',
+            href: `/products/${idPaths}`,
+        },
+
     ]
 
     let currentPage = pages.find(page => page.href === path);
 
     return (
         <nav className='w-full bg-primary'>
+            {/*{currentPage}*/}
+            {/*<head>*/}
+            {/*    <title>{`Goomart | ${currentPage?.name}`}</title>*/}
+            {/*</head>*/}
+
             {isLoading ? <Loading/> :  <div className="flex items-center justify-between p-4">
                 <div className="">
                     {currentPage?.name === 'Home' ? (

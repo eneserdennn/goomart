@@ -3,18 +3,19 @@ import IconButton from "@/components/icon-button";
 import Image from "next/image";
 import Loading from "@/app/loading";
 import React from "react";
-import { selectCurrentToken } from '@/redux/features/auth/authSlice';
-import { useGetProfileQuery } from '@/redux/features/auth/userProfileApiSlice';
+import {selectCurrentToken} from '@/redux/features/auth/authSlice';
+import {useGetProfileQuery} from '@/redux/features/auth/userProfileApiSlice';
 import {useRouter} from "next/navigation";
-import { useSelector } from 'react-redux';
-import { useDispatch} from "react-redux";
-import { logOut} from "@/redux/features/auth/authSlice";
+import {useSelector} from 'react-redux';
+import {useDispatch} from "react-redux";
+import {logOut} from "@/redux/features/auth/authSlice";
+import Link from "next/link";
 
-const LoggedIn:React.FC = () => {
+const LoggedIn: React.FC = () => {
     const router = useRouter();
     const dispatch = useDispatch()
     const token = useSelector(selectCurrentToken);
-    const { data: profile, isLoading, isSuccess, isError, error } = useGetProfileQuery(token);
+    const {data: profile, isLoading, isSuccess, isError, error} = useGetProfileQuery(token);
 
     const handleLogOut = () => {
         console.log('asdas')
@@ -34,19 +35,23 @@ const LoggedIn:React.FC = () => {
                         <div className="flex flex-row justify-between ">
                             <div className="flex items-center justify-between p-6">
                                 <div className="flex items-center">
-                                    <div className="rounded-full border h-14 w-14 flex items-center justify-center text-2xl font-bold text-primary">
+                                    <div
+                                        className="rounded-full border h-14 w-14 flex items-center justify-center text-2xl font-bold text-primary">
                                         {userNameInitials}
                                     </div>
                                     <div className="flex flex-col px-4">
-                                        <span className="font-bold text-primary my-1">{profile?.name} {profile?.surname}</span>
+                                        <span
+                                            className="font-bold text-primary my-1">{profile?.name} {profile?.surname}</span>
                                         <span className="text-gray-500 text-sm">{profile?.email}</span>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <div className="border p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
-                                     onClick={() => {router.push('/profile/account-settings')}}>
-                                    <Image src={ICONS.settings} alt={"settings-icon"} color="#f00" className="h-6 w-6"/>
+                                <div className="border p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
+                                    <Link href={'/profile/account-settings'}>
+                                        <Image src={ICONS.settings} alt={"settings-icon"} color="#f00"
+                                               className="h-6 w-6"/>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -58,14 +63,11 @@ const LoggedIn:React.FC = () => {
                                     <span className="text-sm px-1">Siparişlerim</span>
                                 </div>
                                 <div className="w-0.5 h-14 mx-2 bg-gray-200"/>
-                                <div
-                                    className="flex flex-col px-4 items-center w-1/5 md:w-auto hover:bg-gray-100 cursor-pointer rounded-lg"
-                                    onClick={() => {
-                                        router.push('/addresses')
-                                    }}>
+                                <Link href={'/addresses'}
+                                      className="flex flex-col px-4 items-center w-1/5 md:w-auto hover:bg-gray-100 cursor-pointer rounded-lg">
                                     <Image src={ICONS.address} alt={"person-icon"} className="h-8 w-8 mb-1"/>
                                     <span className=" text-sm px-1">Adreslerim</span>
-                                </div>
+                                </Link>
                                 <div className="w-0.5 h-14 mx-2 bg-gray-200"/>
                                 <div
                                     className="flex flex-col px-4 items-center w-1/5 md:w-auto hover:bg-gray-100 cursor-pointer rounded-lg">

@@ -24,7 +24,7 @@ const Profile: React.FC = () => {
             <BottomNavBar/>
     </div>
     } else if (isError) {
-        content = <div className="flex flex-col p-4">
+        content = <div className="flex flex-col p-4 mb-10">
             <LoggedOut/>
             <BottomNavBar/>
         </div>

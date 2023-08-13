@@ -10,6 +10,7 @@ import {useGetMyAddressesQuery, useSetDefaultAddressMutation, useArchiveAnAddres
 import Loading from "@/app/loading";
 import ConfirmModal from "@/components/modal/Modal";
 import {customSuccess} from "@/components/CustomToast";
+import Link from "next/link";
 
 
 interface Props {
@@ -19,8 +20,6 @@ interface Props {
 }
 
 const DeliveryAddress: React.FC = () => {
-    const router = useRouter()
-
     const [deliveryAddress, setDeliveryAddress] = useState<string[] | null>(null);
     const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
@@ -41,21 +40,9 @@ const DeliveryAddress: React.FC = () => {
             if (defaultAddressID) {
                 setSelectedAddress(defaultAddressID);
             }
-
-            console.log(deliveryAddress?.length);
         }
 
     }, [addresses]);
-
-    const handleAddAddress = () => {
-        router.push('/addresses/add-address');
-    };
-
-
-    const handleEditAddress = (address: string) => {
-        router.push(`/addresses/edit-address/${address.id}`);
-
-    };
 
     const handleDeleteAddress = (address: string) => {
         setAddressToDelete(address.id);
@@ -96,15 +83,16 @@ const DeliveryAddress: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-end w-1/5"> {/* Icon section takes 1/5 of the width */}
                     {/* Edit and delete icons */}
-                    <Image
-                        src={ICONS.edit}
-                        alt={"edit-address"}
-                        className="cursor-pointer text-primary h-5 w-5 mr-2"
-                        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-                            e.stopPropagation();
-                            handleEditAddress(address);
-                        }}
-                    />
+                    <Link href={`/addresses/edit-address/${address.id}`}>
+                        <Image
+                            src={ICONS.edit}
+                            alt={"edit-address"}
+                            className="cursor-pointer text-primary h-5 w-5 mr-2"
+                            onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                                e.stopPropagation();
+                            }}
+                        />
+                    </Link>
                     <Image
                         src={ICONS.trash}
                         alt={"delete-address"}
@@ -149,9 +137,11 @@ const DeliveryAddress: React.FC = () => {
                 <div className="flex justify-center py-2">
                     <button
                         className="h-12 m-2 w-full bg-primary hover:bg-green-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
-                        onClick={() => handleAddAddress()}
+
                     >
-                        Adres Ekle
+                        <Link href="/addresses/add-address">
+                            Adres Ekle
+                        </Link>
                     </button>
                 </div>
             </div>

@@ -13,7 +13,7 @@ export default function Delivery() {
   const router = useRouter();
 
   return (
-    <div className='bottom-0 left-0 right-0 z-50 bg-white shadow-md rounded-t-3xl px-4 py-3'>
+    <div className='bottom-0 left-0 right-0 z-50 bg-white shadow-md rounded-t-3xl px-4 h-[50px] flex items-center'>
       <Disclosure>
         {({ open, close }) => (
           <>

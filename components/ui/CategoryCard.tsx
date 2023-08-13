@@ -12,7 +12,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ imageUrl, title }) => {
       <div className="flex items-center justify-center mx-[5px] my-[7px] h-[83px] bg-blue-100 rounded">
         <Image src={imageUrl} alt={title} width={110} height={83} objectFit="cover" className="p-2" />
       </div>
-        <div className="flex items-center justify-center text-center font-bold text-[13px]">
+        <div className="flex items-center justify-center text-center text-[#363636] font-bold text-[13px]">
             Nudeln & Rise Bulgur
       </div>
     </div>
