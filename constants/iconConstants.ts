@@ -25,6 +25,9 @@ import discount from '@/assets/icons/discount.svg'
 import search from '@/assets/icons/search.svg'
 import mic from '@/assets/icons/mic.svg'
 import scan from '@/assets/icons/scan.svg'
+import close from '@/assets/icons/close.svg'
+import filter from '@/assets/icons/filter.svg'
+import percent from '@/assets/icons/percent.svg'
 
 import es from '@/assets/icons/flags/es.svg'
 import tr from '@/assets/icons/flags/tr.svg'
@@ -47,6 +50,9 @@ import lu from '@/assets/icons/flags/lu.svg'
 
 
 export const ICONS = {
+    percent,
+    filter,
+    close,
     mic,
     scan,
     search,

@@ -13,6 +13,7 @@ import { setCredentials } from "@/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import {AiFillFilter} from "react-icons/ai";
 
 interface IMenuItem {
     name: string;
@@ -134,15 +135,10 @@ const NavBar: React.FC = () => {
 
     return (
         <nav className='w-full bg-primary'>
-            {/*{currentPage}*/}
-            {/*<head>*/}
-            {/*    <title>{`Goomart | ${currentPage?.name}`}</title>*/}
-            {/*</head>*/}
-
             {isLoading ? <Loading/> :  <div className="flex items-center justify-between p-4">
                 <div className="">
                     {currentPage?.name === 'Home' ? (
-                        <SideBar data={data} />
+                        <div></div>
                     ) : (
                         <div className="flex items-center">
                             <Image src={ICONS.leftArrow} alt='goomart' className="h-5 w-5" onClick={() => router.back()} />
@@ -167,7 +163,11 @@ const NavBar: React.FC = () => {
                 </div>
                 {currentPage?.name === 'Home' ? <div className="flex items-center">
                     <IoMdNotifications className='text-white' size={30} />
+                </div> : currentPage?.name === 'Ürünler' ? <div className="flex justify-between items-center">
+
+                    <SideBar data={data}/>
                 </div> : <div className="flex items-center"></div>}
+
             </div>
             }
         </nav>

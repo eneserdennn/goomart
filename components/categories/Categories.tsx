@@ -51,7 +51,6 @@ const Categories: React.FC = () => {
                         <Link href={{
                             pathname: `/products/${category.id}`
                         }} key={category.id}>
-
                             <CategoryCard title={category?.name} imageUrl={category?.image}/>
                         </Link>
                     </div>

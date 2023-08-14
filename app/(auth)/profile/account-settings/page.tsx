@@ -341,7 +341,6 @@ const AccountSettings: React.FC = () => {
                                         </div>
                                     </div>
                                     {isLoading && <Loading/>}
-
                                     {wrongOldPassword &&
                                         <Modal
                                             show={wrongOldPassword}

@@ -42,6 +42,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                     <Button
                         className="px-4 py-2 text-white bg-primary hover:bg-green-800 font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
                         onClick={onConfirm}
+                        isSmall={true}
                     >
                         {buttonText}
                     </Button>

@@ -8,6 +8,7 @@ import { FaShoppingBag } from 'react-icons/fa';
 import { GoHomeFill } from 'react-icons/go';
 import {IoPersonSharp} from "react-icons/io5";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 const BottomNavBar: React.FC = () => {
   // State variable to hold the cart item count
@@ -28,9 +29,13 @@ const BottomNavBar: React.FC = () => {
               <button className="flex flex-col items-center justify-center space-x-1" onClick={() => router.push('/')}>
                   <GoHomeFill size={30} color="green" />
               </button>
+
               <button className="flex flex-col items-center justify-center space-x-1">
+                  <Link href={'search'}>
                   <BiSearchAlt size={30} color="#888" />
+                  </Link>
               </button>
+
               <button className="flex flex-col items-center justify-center space-x-1">
                   <FaShoppingBag size={30} color="#888" />
               </button>
@@ -43,14 +48,11 @@ const BottomNavBar: React.FC = () => {
               }}>
                   <BsFillGiftFill size={30} color="#888" />
               </button>
-              <button className="flex flex-col items-center justify-center space-x-1" onClick={() => {
-                  if (isLogin) {
-                      router.push('/profile');
-                  } else {
-                      router.push('/profile');
-                  }
-              }}>
-                  <IoPersonSharp size={30} color="#888" />
+              <button className="flex flex-col items-center justify-center space-x-1">
+                  <Link href={'/profile'}>
+                        <IoPersonSharp size={30} color="#888" />
+                    </Link>
+
               </button>
       </div>
 

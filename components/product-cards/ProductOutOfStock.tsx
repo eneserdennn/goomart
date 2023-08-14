@@ -75,13 +75,12 @@ interface ICategory {
 }
 
 const ProductCardOutOfStock = ({product}: { product: IProduct }) => {
-    console.log(product);
     const [quantity, setQuantity] = useState(1);
     return (
         <div className="flex relative my-2 w-[110px]">
             <div className="flex flex-col">
                 <div className="flex relative flex-wrap flex-col h-[110px] w-[110px] border rounded-lg border-gray-300">
-                    {product.image && <Image src={product.image} alt={ICONS.warning} width={110} height={110}/>}
+                    {product.image && <Image src={'https://grapes.fra1.digitaloceanspaces.com/1920px-Amazon_Web_Services_Logo.svg.png-1690391588245'} alt={ICONS.warning} width={110} height={110}/>}
                     {!product.image && <Image src={ICONS.warning} alt={ICONS.warning} width={110} height={110} className="opacity-40"/>}
                     <div className="flex justify-center items-center absolute bottom-0 bg-gray-300 w-full text-center h-[26px] text-[13px] text-[#363636] text-opacity-50 rounded-b-lg mb-[-1px]">
                         <span>Stok Tükendi</span>

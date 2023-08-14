@@ -14,3 +14,7 @@
     scrollbar-width: none;  /* Firefox */
 }
 
+
+.custom-bg-green {
+    background-color: rgba(18, 135, 0, 0.50);
+}

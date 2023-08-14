@@ -1,9 +1,9 @@
 'use client'
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
-import React, { useEffect, useRef } from "react";
+import {RootState} from "@/redux/store";
+import {useSelector} from "react-redux";
+import React, {useEffect, useRef} from "react";
 
-import { useGetProductsAdvancedQueryQuery } from "@/redux/features/products/productApiSlice";
+import {useGetProductsAdvancedQueryQuery} from "@/redux/features/products/productApiSlice";
 import ProductCard from "@/components/product-cards/ProductCard";
 import Loading from "@/app/loading";
 import ProductCardDiscount from "@/components/product-cards/ProductCardDiscount";
@@ -14,20 +14,26 @@ interface ProductContainerProps {
 }
 
 const ProductContainer = () => {
-    const { selectedProductType, selectedSubCategory } = useSelector(
+    const {selectedProductType, selectedSubCategory} = useSelector(
         (state: RootState) => state.category
     );
 
-    const { data, error, isLoading } = useGetProductsAdvancedQueryQuery({
+    const {data, error, isLoading} = useGetProductsAdvancedQueryQuery({
         'filter-brand': 'my brand',
         'filter-product-type': 1,
         'sort-by': 'max-price',
         lang: 'en',
     });
 
+    const isFirstRender = useRef(true);
     const productTypeRef = useRef(null);
 
     useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
         if (productTypeRef.current) {
             const stickyHeaderHeight = 74;
             const elementPosition = productTypeRef.current.offsetTop;
@@ -43,7 +49,7 @@ const ProductContainer = () => {
 
     let content;
     if (isLoading) {
-        content = <Loading />;
+        content = <Loading/>;
     } else if (error) {
         content = <div>Somethin went wrong</div>;
     } else if (data) {
@@ -58,9 +64,13 @@ const ProductContainer = () => {
                         <div className="p-2 mt-12 my-1 font-bold text-[15px]">
                             {productType.name}
                         </div>
-                        <div className="flex flex-wrap justify-around p-2 bg-white shadow-md">
-                            {data2?.map((product) => (
-                                <ProductCard key={product.id} product={product} />
+                        <div className="flex flex-wrap justify-around bg-white shadow-md">
+                            {data?.map((product) => (
+                                <>
+                                    <ProductCard key={product.id} product={product}/>
+                                    <ProductCardDiscount product={product}/>
+                                    <ProductCardOutOfStock product={product}/>
+                                </>
                             ))}
                         </div>
                     </div>

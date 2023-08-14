@@ -77,7 +77,7 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
 
         }
         return (
-            <div className="sticky top-0 z-50 bg-white">
+            <div className="sticky top-0 z-10 bg-white">
                 <div
                     className="flex overflow-x-auto h-[37px] items-center bg-[#25AC10] font-bold text-[14px] text-white whitespace-nowrap hide-scrollbar shadow relative">
                     <div className="flex items-center">

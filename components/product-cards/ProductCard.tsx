@@ -80,8 +80,8 @@ const ProductCard = ({product}: { product: IProduct }) => {
         <div className="flex relative my-2 w-[110px]">
             <div className="flex flex-col">
                 <div className="flex flex-wrap flex-col h-[110px] w-[110px] border rounded-lg border-primary">
-                    {product.image && <Image src={product.image} alt={ICONS.warning} width={110} height={110}/>}
-                    {!product.image && <Image src={ICONS.warning} alt={ICONS.warning} width={110} height={110}/>}
+                    {!product.image && <Image src={'https://grapes.fra1.digitaloceanspaces.com/1920px-Amazon_Web_Services_Logo.svg.png-1690391588245'} alt={'product-image'} width={110} height={110}/>}
+                    {product.image && <Image src={ICONS.warning} alt={ICONS.warning} width={110} height={110}/>}
                 </div>
                 <div className="text-primary font-bold text-[14px] mt-2 mb-1">
                     {product.mainProductUnitPrice.toString().slice(0, -1)} €
