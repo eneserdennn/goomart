@@ -17,7 +17,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { className, children, active, loading = false, disabled = false, ...rest } = props;
 
   const RootClasses = cn(
-    'w-full py-4 text-white font-semibold rounded-lg flex items-center justify-center',
+    'w-full h-[45px] w-[135px] text-white font-semibold rounded-lg flex items-center justify-center',
     'bg-primary hover:bg-primary/[0.8] focus:ring focus:ring-primary focus:outline-none',
     { 'opacity-50 cursor-not-allowed': disabled },
     className

@@ -15,9 +15,16 @@ import personAdd from '@/assets/icons/personAdd.svg'
 import rightArrow from '@/assets/icons/rightArrow.svg'
 import settings from '@/assets/icons/settings.svg'
 import trash from '@/assets/icons/trash.svg'
+import trashGray from '@/assets/icons/trashGray.svg'
 import edit from '@/assets/icons/edit.svg'
 import warning from '@/assets/icons/warning.svg'
 import success from '@/assets/icons/success.svg'
+import plus from '@/assets/icons/plus.svg'
+import minus from '@/assets/icons/minus.svg'
+import discount from '@/assets/icons/discount.svg'
+import search from '@/assets/icons/search.svg'
+import mic from '@/assets/icons/mic.svg'
+import scan from '@/assets/icons/scan.svg'
 
 import es from '@/assets/icons/flags/es.svg'
 import tr from '@/assets/icons/flags/tr.svg'
@@ -40,6 +47,9 @@ import lu from '@/assets/icons/flags/lu.svg'
 
 
 export const ICONS = {
+    mic,
+    scan,
+    search,
     person,
     personAdd,
     address,
@@ -57,9 +67,13 @@ export const ICONS = {
     logout,
     downArrow,
     trash,
+    trashGray,
     edit,
     warning,
     success,
+    plus,
+    minus,
+    discount,
     tr,
     es,
     fr,

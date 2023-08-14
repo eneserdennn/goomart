@@ -2,11 +2,12 @@
 
 import {useGetCategoriesByIdQuery} from "@/redux/features/categories/categoriesApiSlice";
 import Loading from "@/app/loading";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import { setProductType, setSelectedProductType, setSelectedSubCategory } from "@/redux/features/categories/categorySlice";
 import {RootState} from "@/redux/store";
 import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
+
 
 
 interface ISubCategory {
@@ -76,7 +77,7 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
 
         }
         return (
-            <div className="flex flex-col">
+            <div className="sticky top-0 z-50 bg-white">
                 <div
                     className="flex overflow-x-auto h-[37px] items-center bg-[#25AC10] font-bold text-[14px] text-white whitespace-nowrap hide-scrollbar shadow relative">
                     <div className="flex items-center">
@@ -88,7 +89,6 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
                                     dispatch(setProductType(subCategory.ProductType));
                                     if (selectedSubCategory.id !== subCategory.id && subCategory.ProductType.length > 0) {
                                         dispatch(setSelectedProductType(subCategory.ProductType[0]));
-                                        console.log('subCategory.ProductType[0]', subCategory.ProductType[0].id)
                                     }
                                 }}
                                 key={subCategory.id}>
@@ -125,7 +125,6 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
                                     className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full ${selectedProductType.id === productType.id ? 'bg-[#25AC10] text-white' : 'bg-white text-[#444444]'}`}
                                     onClick={() => {
                                         dispatch(setSelectedProductType(productType));
-                                        console.log('productType.name', productType)
                                     }}
                                     key={productType.id}>{productType.id ? productType.name : 'Ürün Tipi'}</div>
                             ))}

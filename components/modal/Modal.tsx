@@ -35,7 +35,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 <p className="text-center">{message}</p>
                 <div className="flex justify-center mt-6 space-x-4 w-full">
                     {hasCancelButton && (
-                        <button className="px-4 py-2 text-primary w-full" onClick={onClose}>
+                        <button className="h-[45px] w-[135px] text-primary w-full" onClick={onClose}>
                             Vazgeç
                         </button>
                     )}

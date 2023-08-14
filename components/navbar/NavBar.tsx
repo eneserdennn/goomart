@@ -123,6 +123,10 @@ const NavBar: React.FC = () => {
             name: 'Ürünler',
             href: `/products/${idPaths}`,
         },
+        {
+            name: 'Arama',
+            href: `/search`,
+        }
 
     ]
 
