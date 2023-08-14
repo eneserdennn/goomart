@@ -18,7 +18,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { className, children, active, loading = false, disabled = false, isSmall = false, ...rest } = props;
 
   const RootClasses = cn(
-    ' text-white font-semibold rounded-lg flex items-center justify-center',
+    'h-[45px] text-white font-semibold rounded-lg flex items-center justify-center',
     'bg-primary hover:bg-primary/[0.8] focus:ring focus:ring-primary focus:outline-none',
     { 'opacity-50 cursor-not-allowed': disabled },
       { 'h-[45px] w-[135px]': isSmall, 'w-full': !isSmall },

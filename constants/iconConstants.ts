@@ -28,6 +28,7 @@ import scan from '@/assets/icons/scan.svg'
 import close from '@/assets/icons/close.svg'
 import filter from '@/assets/icons/filter.svg'
 import percent from '@/assets/icons/percent.svg'
+import goomart from '@/assets/icons/goomart.svg'
 
 import es from '@/assets/icons/flags/es.svg'
 import tr from '@/assets/icons/flags/tr.svg'
@@ -50,6 +51,7 @@ import lu from '@/assets/icons/flags/lu.svg'
 
 
 export const ICONS = {
+    goomart,
     percent,
     filter,
     close,

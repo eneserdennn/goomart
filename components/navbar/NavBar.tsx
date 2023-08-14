@@ -150,10 +150,10 @@ const NavBar: React.FC = () => {
                         <div className="">
                             <Link href='/'>
                                 <Image
-                                    src='/goomart.svg'
+                                    src={ICONS.goomart}
                                     alt='goomart'
                                     width={100}
-                                    height={80}
+
                                 />
                             </Link>
                         </div>
