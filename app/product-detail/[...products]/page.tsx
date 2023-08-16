@@ -2,6 +2,7 @@
 
 import { BiUpArrow } from 'react-icons/bi';
 import { Disclosure } from '@headlessui/react'
+import { ICONS } from '@/constants/iconConstants';
 import Image from "next/image";
 import Loading from "@/app/loading";
 import { useEffect } from "react";
@@ -9,10 +10,8 @@ import { useGetProductsByProductIdQuery } from "@/redux/features/products/produc
 
 const ProductDetail = ({params}) => {
     const productId = params.products[0]
-    console.log(productId)
-
-
     const { data, isLoading, isSuccess, isError } = useGetProductsByProductIdQuery(productId)
+    
 
    let content;
 
@@ -22,8 +21,6 @@ const ProductDetail = ({params}) => {
     content = <div>Something went wrong!</div>
    } else if (isSuccess ) {
     console.log(data)
-
-
     content = (
         <div className="flex flex-col">
             <div className="flex flex-col justify-center items-center p-[15px]">
@@ -33,39 +30,17 @@ const ProductDetail = ({params}) => {
             </span>
             </div>
             <div className="flex flex-col justify-center items-center p-[10px]">
-            <div className="w-full px-4 pt-16">
-            <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
+            <div className="h-[60px] w-[360px] ">
+            <div className=" w-full rounded border bg-white">
                 <Disclosure>
                 {({ open }) => (
                     <>
-                    <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                        <span>What is your refund policy?</span>
-                        <BiUpArrow
-                        className={`${
-                            open ? 'rotate-180 transform' : ''
-                        } h-5 w-5 text-purple-500`}
-                        />
+                    <Disclosure.Button className="flex w-full h-[60px] pl-[20px] border-b pr-[15px] items-center justify-between rounded py-2 text-left text-[14px] font-bold ">
+                        <span>Ürün Açıklaması</span>
+                        <Image src={open ? ICONS.upArrowThin : ICONS.downArrowThin} alt={'image'} width={12} height={7}/>
                     </Disclosure.Button>
                     <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                        If you're unhappy with your purchase for any reason, email us
-                        within 90 days and we'll refund you in full, no questions asked.
-                    </Disclosure.Panel>
-                    </>
-                )}
-                </Disclosure>
-                <Disclosure as="div" className="mt-2">
-                {({ open }) => (
-                    <>
-                    <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                        <span>Do you offer technical support?</span>
-                        <BiUpArrow
-                        className={`${
-                            open ? 'rotate-180 transform' : ''
-                        } h-5 w-5 text-purple-500`}
-                        />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                        No.
+                        {data.description}
                     </Disclosure.Panel>
                     </>
                 )}
@@ -73,6 +48,16 @@ const ProductDetail = ({params}) => {
             </div>
             </div>
             </div>
+            <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300">
+                    <div className="flex justify-center py-2">
+                        <button
+                            className="h-12 m-2 w-full bg-primary hover:bg-green-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
+                            type="submit"
+                        >
+                           Sepete Ekle
+                        </button>
+                    </div>
+                </div>
         </div>
     );
    }

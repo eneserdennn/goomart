@@ -90,7 +90,6 @@ const ConvertProductName = (name: string) => {
 
 const ProductCard = ({product}: { product: IProduct }) => {
     const [quantity, setQuantity] = useState(1);
-    console.log(product);
     return (
         <div className="flex relative my-2 w-[110px]">
             <Link href={`/product-detail/${product.id}/${ConvertProductName(product.name)}`}>
