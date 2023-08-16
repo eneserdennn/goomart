@@ -22,14 +22,21 @@ const ProductDetail = ({params}) => {
    } else if (isSuccess ) {
     console.log(data)
     content = (
-        <div className="flex flex-col">
-            <div className="flex flex-col justify-center items-center p-[15px]">
+        <div className="flex flex-col ">
+            <div className="flex flex-col relative justify-center items-center pt-[15px] pb-[41px] bg-white">
+            <div className='flex absolute top-[15px] left-0 w-full justify-start items-center'>
+    <Image src={ICONS.tags} alt={'image'} width={136} height={42}/>
+</div>
+
             <Image src={data.image ? data.image : "/placeholder.png"} alt={'image'} width={250} height={230}/>
-            <span className="text-[16px] font-bold pt-[15px] pb-[15px]">
+            <span className="text-[16px] font-bold pt-[15px]">
                 {data.name}
             </span>
+            <span className="text-[16px] font-bold text-primary">
+                €{data.mainProductUnitPrice}
+            </span>
             </div>
-            <div className="flex flex-col justify-center items-center p-[10px]">
+            <div className="flex flex-col pt-[10px] justify-center items-center">
             <div className="h-[60px] w-[360px] ">
             <div className=" w-full rounded border bg-white">
                 <Disclosure>

@@ -20,6 +20,7 @@ import filter from '@/assets/icons/filter.svg'
 import fr from '@/assets/icons/flags/fr.svg'
 import gb from '@/assets/icons/flags/gb.svg'
 import goomart from '@/assets/icons/goomart.svg'
+import heart from '@/assets/icons/heart.svg'
 import ie from '@/assets/icons/flags/ie.svg'
 import it from '@/assets/icons/flags/it.svg'
 import leftArrow from '@/assets/icons/leftArrow.svg'
@@ -43,6 +44,7 @@ import se from '@/assets/icons/flags/se.svg'
 import search from '@/assets/icons/search.svg'
 import settings from '@/assets/icons/settings.svg'
 import success from '@/assets/icons/success.svg'
+import tags from '@/assets/icons/tags.svg'
 import tr from '@/assets/icons/flags/tr.svg'
 import trash from '@/assets/icons/trash.svg'
 import trashGray from '@/assets/icons/trashGray.svg'
@@ -50,6 +52,8 @@ import upArrowThin from '@/assets/icons/upArrowThin.svg'
 import warning from '@/assets/icons/warning.svg'
 
 export const ICONS = {
+    heart,
+    tags,
     upArrowThin,
     downArrowThin,
     goomart,
