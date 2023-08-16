@@ -1,14 +1,13 @@
 'use client'
 
-import {useGetCategoriesByIdQuery} from "@/redux/features/categories/categoriesApiSlice";
-import Loading from "@/app/loading";
-import {useEffect} from "react";
 import { setProductType, setSelectedProductType, setSelectedSubCategory } from "@/redux/features/categories/categorySlice";
-import {RootState} from "@/redux/store";
-import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
 
-
+import Link from "next/link";
+import Loading from "@/app/loading";
+import {RootState} from "@/redux/store";
+import {useEffect} from "react";
+import {useGetCategoriesByIdQuery} from "@/redux/features/categories/categoriesApiSlice";
 
 interface ISubCategory {
     id: string;
@@ -61,6 +60,7 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
     }
 
     if (isError) {
+    console.log(error);
         return (
             <div>
                 <h1>Something went wrong!</h1>

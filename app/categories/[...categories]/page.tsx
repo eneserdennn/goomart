@@ -1,10 +1,11 @@
+import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import CategoryBar from '@/components/CategoryBar';
 import ProductCard from '@/components/product-cards/ProductCard';
 import ProductContainer from '@/containers/ProductContainer';
-import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 
-const Products = ({ params }) => {
-    const categoryId = parseInt(params.products[1]);
+const CategoriesPage = ({ params }) => {
+    const categoryId = parseInt(params.categories[0])
+    console.log
 
     if (isNaN(categoryId)) {
         const defaultCategoryID = 0;
@@ -24,4 +25,4 @@ const Products = ({ params }) => {
     );
 };
 
-export default Products;
+export default CategoriesPage;

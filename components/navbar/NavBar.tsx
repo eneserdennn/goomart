@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import {AiFillFilter} from "react-icons/ai";
 import { ICONS } from "@/constants/iconConstants";
 import Image from 'next/image';
 import { IoMdNotifications } from 'react-icons/io';
@@ -13,7 +14,6 @@ import { setCredentials } from "@/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import {AiFillFilter} from "react-icons/ai";
 
 interface IMenuItem {
     name: string;
@@ -81,7 +81,7 @@ const NavBar: React.FC = () => {
         {name: 'Menu Item 5'}
     ]
 
-    const idPaths = path.split('/').pop();
+    const idPaths = path.split('/').splice(2).join('/');
 
     const pages: IPage[] = [
         {
@@ -122,12 +122,17 @@ const NavBar: React.FC = () => {
         },
         {
             name: 'Ürünler',
-            href: `/products/${idPaths}`,
+            href: `/categories/${idPaths}`,
+        },
+        {
+            name: 'Ürün Detay',
+            href: `/product-detail/${idPaths}`,
         },
         {
             name: 'Arama',
             href: `/search`,
-        }
+        },
+
 
     ]
 

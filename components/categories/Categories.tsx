@@ -1,7 +1,7 @@
 import CategoryCard from '../ui/CategoryCard';
+import Link from "next/link";
 import React from 'react';
 import {useGetCategoriesQuery} from '@/redux/features/categories/categoriesApiSlice';
-import Link from "next/link";
 
 interface SubCategory {
     id: number;
@@ -16,9 +16,20 @@ interface Category {
     SubCategory: SubCategory[];
 }
 
+const ConvertCategoryName = (name: string) => {
+    name = name.toLocaleLowerCase().replace(/ /g, '-');
+    name = name.replace(/ı/g, 'i');
+    name = name.replace(/ö/g, 'o');
+    name = name.replace(/ü/g, 'u');
+    name = name.replace(/ş/g, 's');
+    name = name.replace(/ç/g, 'c');
+    name = name.replace(/ğ/g, 'g');
+    return name;
+}
+
 const Categories: React.FC = () => {
     // @ts-ignore
-    const {data: categories, isLoading, isSuccess, isError, error,} = useGetCategoriesQuery();
+    const {data: categories, isLoading, isSuccess, isError, error,} = useGetCategoriesQuery(); 
 
     let content;
 
@@ -39,8 +50,8 @@ const Categories: React.FC = () => {
         );
 
     } else if (categories) {
-
-
+        // category name'i kucult ve bosluklari '-' ile degistir ayrica ingilizce olmayan harfleri ingilizceye cevir
+        
         content = (
             <div className="flex flex-wrap justify-center mb-16"> {/* justify-center sınıfını ekledik */}
                 {categories.map((category: Category) => (
@@ -49,7 +60,7 @@ const Categories: React.FC = () => {
                             onClick={() => console.log('[...products].id', category.id)}
                     >
                         <Link href={{
-                            pathname: `/products/${category.id}`
+                            pathname: `/categories/${category.id}/${ConvertCategoryName(category.name)}`,
                         }} key={category.id}>
                             <CategoryCard title={category?.name} imageUrl={category?.image}/>
                         </Link>

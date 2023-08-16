@@ -1,29 +1,29 @@
 'use client'
-import {RootState} from "@/redux/store";
-import {useSelector} from "react-redux";
-import React, {useEffect, useRef} from "react";
 
-import {useGetProductsAdvancedQueryQuery} from "@/redux/features/products/productApiSlice";
-import ProductCard from "@/components/product-cards/ProductCard";
+import React, {useEffect, useRef} from "react";
+import { useGetProductsByProductIdQuery, useGetProductsBySubCategoryIdQuery } from "@/redux/features/products/productApiSlice";
+
 import Loading from "@/app/loading";
+import ProductCard from "@/components/product-cards/ProductCard";
 import ProductCardDiscount from "@/components/product-cards/ProductCardDiscount";
 import ProductCardOutOfStock from "@/components/product-cards/ProductOutOfStock";
+import {RootState} from "@/redux/store";
+import {useSelector} from "react-redux";
 
 interface ProductContainerProps {
     children: React.ReactNode;
 }
 
+
 const ProductContainer = () => {
-    const {selectedProductType, selectedSubCategory} = useSelector(
+    const { selectedProductType, selectedSubCategory } = useSelector(
         (state: RootState) => state.category
     );
 
-    const {data, error, isLoading} = useGetProductsAdvancedQueryQuery({
-        'filter-brand': 'my brand',
-        'filter-product-type': 1,
-        'sort-by': 'max-price',
-        lang: 'en',
-    });
+    // const { data, isLoading, error } = useGetProductsByProductIdQuery(selectedProductType.id);
+    const { data, isLoading, error } = useGetProductsBySubCategoryIdQuery(selectedSubCategory.id);
+
+
 
     const isFirstRender = useRef(true);
     const productTypeRef = useRef(null);
@@ -49,28 +49,24 @@ const ProductContainer = () => {
 
     let content;
     if (isLoading) {
-        content = <Loading/>;
+        content = <Loading />;
     } else if (error) {
-        content = <div>Somethin went wrong</div>;
+        content = <div>Something went wrong</div>;
     } else if (data) {
-        const data2 = [...data, ...data];
+        const { ProductType } = data;
         content = (
             <div className="flex flex-col w-full justify-center">
-                {selectedSubCategory.ProductType.map((productType) => (
-                    <div
-                        key={productType.id}
-                        ref={productType.name === selectedProductType.name ? productTypeRef : null}
-                    >
-                        <div className="p-2 mt-12 my-1 font-bold text-[15px]">
-                            {productType.name}
-                        </div>
+                {ProductType.map((productType) => (
+                        <div
+                            key={productType.id}
+                            ref={productType.name === selectedProductType.name ? productTypeRef : null}
+                        >
+                             <div className="p-2 mt-12 my-1 font-bold text-[15px]">
+                                {productType.name}
+                            </div>
                         <div className="flex flex-wrap justify-around bg-white shadow-md">
-                            {data?.map((product) => (
-                                <>
-                                    <ProductCard key={product.id} product={product}/>
-                                    <ProductCardDiscount product={product}/>
-                                    <ProductCardOutOfStock product={product}/>
-                                </>
+                            {productType.Product.map((product) => (
+                                <ProductCard key={product.id} product={product}/>
                             ))}
                         </div>
                     </div>

@@ -7,6 +7,10 @@ type CategoryCardProps = {
 };
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ imageUrl, title }) => {
+
+  if (imageUrl === "") {
+    imageUrl = "/placeholder.png";
+  }
   return (
     <div className="flex flex-col m-1 shadow-sm rounded-lg overflow-hidden bg-white h-[140px] w-[120px]">
       <div className="flex items-center justify-center mx-[5px] my-[7px] h-[83px] bg-blue-100 rounded">
