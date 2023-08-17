@@ -132,8 +132,6 @@ const NavBar: React.FC = () => {
             name: 'Arama',
             href: `/search`,
         },
-
-
     ]
 
     let currentPage = pages.find(page => page.href === path);
