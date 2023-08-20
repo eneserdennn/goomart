@@ -94,7 +94,7 @@ const ProductCard = ({product}: { product: IProduct }) => {
         <div className="flex relative my-2 w-[110px]">
             <Link href={`/product-detail/${product.id}/${ConvertProductName(product.name)}`}>
             <div className="flex flex-col" onClick={() => {console.log(product.id)}}>
-                <div className="flex flex-wrap flex-col h-[110px] w-[110px] border rounded-lg border-primary">
+                <div className="flex flex-wrap flex-col justify-center h-[110px] w-[110px] border rounded-lg border-primary">
                     {!product.image && <Image src={'https://grapes.fra1.digitaloceanspaces.com/1920px-Amazon_Web_Services_Logo.svg.png-1690391588245'} alt={'product-image'} width={110} height={110}/>}
                     {product.image && <Image src={ICONS.warning} alt={ICONS.warning} width={110} height={110}/>}
                 </div>

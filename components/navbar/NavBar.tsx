@@ -14,6 +14,9 @@ import { setCredentials } from "@/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { openModal, closeModal } from "@/redux/features/cart/cartSlice";
+
+import Cookies from "js-cookie";
 
 interface IMenuItem {
     name: string;
@@ -132,6 +135,10 @@ const NavBar: React.FC = () => {
             name: 'Arama',
             href: `/search`,
         },
+        {
+            name: 'Sepet',
+            href: `/cart`,
+        }
     ]
 
     let currentPage = pages.find(page => page.href === path);
@@ -170,10 +177,11 @@ const NavBar: React.FC = () => {
                     <SideBar data={data}/>
                 </div> : currentPage?.name === 'Ürün Detay' ? <div className="flex justify-between items-center">
                     <Image src={ICONS.heart} alt='filter' width={20} height={19} />
-                </div> : <div className="flex justify-between items-center"></div>
+                </div> : currentPage?.name === 'Sepet' ? <Image src={ICONS.trashWhite} alt='filter' width={20} height={19} onClick={() => {
+                    dispatch(openModal());
+                    }} />
+                : <div className="flex justify-between items-center"></div>
                 }
-
-
             </div>
             }
         </nav>

@@ -7,8 +7,8 @@ import { BsFillGiftFill } from 'react-icons/bs';
 import { FaShoppingBag } from 'react-icons/fa';
 import { GoHomeFill } from 'react-icons/go';
 import {IoPersonSharp} from "react-icons/io5";
-import {useRouter} from "next/navigation";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 const BottomNavBar: React.FC = () => {
   // State variable to hold the cart item count
@@ -35,10 +35,13 @@ const BottomNavBar: React.FC = () => {
                   <BiSearchAlt size={30} color="#888" />
                   </Link>
               </button>
-
+              
               <button className="flex flex-col items-center justify-center space-x-1">
+              <Link href={'/cart'}>
                   <FaShoppingBag size={30} color="#888" />
+                  </Link>
               </button>
+            
               <button className="flex flex-col items-center justify-center space-x-1" onClick={() => {
                   if (isLogin) {
                       router.push('/login');

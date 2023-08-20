@@ -50,8 +50,10 @@ import trash from '@/assets/icons/trash.svg'
 import trashGray from '@/assets/icons/trashGray.svg'
 import upArrowThin from '@/assets/icons/upArrowThin.svg'
 import warning from '@/assets/icons/warning.svg'
+import trashWhite from '@/assets/icons/trashWhite.svg'
 
 export const ICONS = {
+    trashWhite,
     heart,
     tags,
     upArrowThin,

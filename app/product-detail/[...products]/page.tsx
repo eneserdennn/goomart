@@ -1,23 +1,22 @@
 'use client'
 
-import {useEffect, useState} from "react";
-
-import {BiUpArrow} from 'react-icons/bi';
 import {Disclosure} from '@headlessui/react'
 import {ICONS} from '@/constants/iconConstants';
 import Image from "next/image";
 import Loading from "@/app/loading";
+import { addToCart } from '@/redux/features/cart/cartSlice';
+import { useDispatch } from 'react-redux';
 import {useGetProductsByProductIdQuery} from "@/redux/features/products/productApiSlice";
-import { FaMinus, FaPlus } from "react-icons/fa";
-
+import {useState} from "react";
 
 const ProductDetail = ({params}) => {
+    const dispatch = useDispatch();
     const productId = params.products[0]
     const [isDiscount, setIsDiscount] = useState<boolean>(true);
-    const [isUnitPrice, setIsUnitPrice] = useState<boolean>(true);
+    const [isUnitPrice, setIsUnitPrice] = useState<boolean>(false);
     const {data, isLoading, isSuccess, isError} = useGetProductsByProductIdQuery(productId)
 
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(1);
 
 
     let content;
@@ -73,7 +72,7 @@ const ProductDetail = ({params}) => {
                     </div>
                 </div>
                 <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300">
-                    {data.mainProductUnitStock <= 0 ?
+                    {data.mainProductUnitStock > 0 ?
                         <div className="flex justify-center py-2">
                             <button
                                 className="h-12 m-2 w-full bg-[#8E8E93B2] opacity-70 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
@@ -103,6 +102,14 @@ const ProductDetail = ({params}) => {
                                 <button
                                     className="h-12 m-2 w-full bg-primary hover:bg-green-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
                                     type="submit"
+                                    onClick={() => {
+                                        dispatch(
+                                            addToCart({
+                                               ...data,
+                                                qty: count,
+                                            })
+                                        );
+                                    }}
                                 >
                                     Sepete Ekle
                                 </button>
