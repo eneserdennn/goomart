@@ -51,8 +51,16 @@ import trashGray from '@/assets/icons/trashGray.svg'
 import upArrowThin from '@/assets/icons/upArrowThin.svg'
 import warning from '@/assets/icons/warning.svg'
 import trashWhite from '@/assets/icons/trashWhite.svg'
+import euroCircle from '@/assets/icons/euroCircle.svg'
+import shippingTruck from '@/assets/icons/shippingTruck.svg'
+import done from '@/assets/icons/done.svg'
+import confetti from '@/assets/icons/confetti.svg'
 
 export const ICONS = {
+    confetti,
+    done,
+    shippingTruck,
+    euroCircle,
     trashWhite,
     heart,
     tags,

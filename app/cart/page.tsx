@@ -12,6 +12,7 @@ import Image from 'next/image';
 import Loading from '@/app/loading';
 import Modal from "@/components/modal/Modal";
 import {clearCart, closeModal} from "@/redux/features/cart/cartSlice";
+import ProgressBar from "@/components/ProgressBar";
 
 type Props = {}
 
@@ -23,6 +24,7 @@ const Cart = (props: Props) => {
     const [cart, setCart] = useState(cartItems);
     const [isLoading, setIsLoading] = useState(true); // Yeni state
     const [totalPrice, setTotalPrice] = useState<number>(0);
+    const [isFreeShipping, setIsFreeShipping] = useState<boolean>(true);
 
     const cartFromCookie = Cookies.get('cart');
 
@@ -44,6 +46,9 @@ const Cart = (props: Props) => {
         setTotalPrice(total);
 
     }, [cart])
+
+    const currentAmount = 19.11;
+    const minimumAmount = 18;
 
     return (
         <div>
@@ -85,6 +90,9 @@ const Cart = (props: Props) => {
                     dispatch(closeModal());
                 }
             } message={'Sepetinizdeki tüm ürünler silinecektir, emin misiniz?'}/>
+
+            <ProgressBar current={currentAmount} minimum={minimumAmount} isFreeShipping={isFreeShipping}/>
+
             <BottomNavBar/>
         </div>
     )
