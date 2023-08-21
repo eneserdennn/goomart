@@ -138,6 +138,10 @@ const NavBar: React.FC = () => {
         {
             name: 'Sepet',
             href: `/cart`,
+        },
+        {
+            name: 'Kuponlarım',
+            href: `/my-coupons`,
         }
     ]
 

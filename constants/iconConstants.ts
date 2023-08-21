@@ -55,8 +55,10 @@ import euroCircle from '@/assets/icons/euroCircle.svg'
 import shippingTruck from '@/assets/icons/shippingTruck.svg'
 import done from '@/assets/icons/done.svg'
 import confetti from '@/assets/icons/confetti.svg'
+import copy from '@/assets/icons/copy.svg'
 
 export const ICONS = {
+    copy,
     confetti,
     done,
     shippingTruck,

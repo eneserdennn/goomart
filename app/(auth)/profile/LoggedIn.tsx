@@ -72,7 +72,9 @@ const LoggedIn: React.FC = () => {
                                 <div
                                     className="flex flex-col px-4 items-center w-1/5 md:w-auto hover:bg-gray-100 cursor-pointer rounded-lg">
                                     <Image src={ICONS.coupons} alt={"person-icon"} className="h-8 w-8 mb-1"/>
-                                    <span className="text-sm px-1">Kuponlarım</span>
+                                    <Link href={'/my-coupons'}>
+                                        <span className="text-sm px-1">Kuponlarım</span>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
