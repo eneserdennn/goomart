@@ -4,8 +4,10 @@ import food from '@/assets/images/food.jpg'
 import forgotPasswordImage from '@/assets/images/forgot-password.svg'
 import settingsFrame from '@/assets/images/settingsFrame.svg'
 import verificationImage from '@/assets/images/verification.svg'
+import couponEmpty from '@/assets/images/couponEmpty.svg'
 
 export const IMAGES = {
+    couponEmpty,
     emptyCart,
     address,
     food,
