@@ -1,6 +1,7 @@
 'use client'
 import Toggle from "@/components/Toggle";
-import { useState } from "react";
+import React, { useState } from "react";
+import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 
 interface Pref {
     title: string;
@@ -55,6 +56,7 @@ const ContactPrefs = () => {
                     <Toggle isEnabled={pref.isEnabled} onToggle={() => handleToggle(index)}/>
                 </div>
             ))}
+            <BottomNavBar/>
         </div>
     )
 }
