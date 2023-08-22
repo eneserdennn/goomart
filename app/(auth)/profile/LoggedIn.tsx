@@ -90,16 +90,19 @@ const LoggedIn: React.FC = () => {
                         }}>
                             Ödeme Yöntemlerim
                         </IconButton>
-                        <IconButton icon={<Image className="h-8 w-8" src={ICONS.notification} alt="notification-icon"/>}
-                        >
-                            <Link href={'/contact-prefs'}>
+                        <Link href={'/contact-prefs'}>
+                            <IconButton
+                                icon={<Image className="h-8 w-8" src={ICONS.notification} alt="notification-icon"/>}
+                            >
                                 İletişim Tercihlerim
-                            </Link>
-                        </IconButton>
-                        <IconButton icon={<Image className="h-8 w-8" src={ICONS.contact} alt="contact-icon"/>}
-                                    onClick={() => console.log('Heart icon clicked')}>
-                            Bize Ulaşın
-                        </IconButton>
+                            </IconButton>
+                        </Link>
+                        <Link href={'/contact-us'}>
+                            <IconButton icon={<Image className="h-8 w-8" src={ICONS.contact} alt="contact-icon"/>}
+                            >
+                                Bize Ulaşın
+                            </IconButton>
+                        </Link>
                         <IconButton icon={<Image className="h-8 w-8" src={ICONS.SSS} alt="sozlesmeler-icon"/>}
                                     onClick={() => console.log('Heart icon clicked')}>
                             Çok Sorulan Sorular

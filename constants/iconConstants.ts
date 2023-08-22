@@ -57,8 +57,22 @@ import done from '@/assets/icons/done.svg'
 import confetti from '@/assets/icons/confetti.svg'
 import copy from '@/assets/icons/copy.svg'
 import downArrowBold from '@/assets/icons/downArrowBold.svg'
+import email from '@/assets/icons/email.svg'
+import phone from '@/assets/icons/phone.svg'
+import whatsappIcon from '@/assets/icons/whatsappIcon.svg'
+import youtube from '@/assets/icons/youtube.svg'
+import facebook from '@/assets/icons/facebook.svg'
+import instagram from '@/assets/icons/instagram.svg'
+import tiktok from '@/assets/icons/tiktok.svg'
 
 export const ICONS = {
+    tiktok,
+    instagram,
+    facebook,
+    youtube,
+    phone,
+    whatsappIcon,
+    email,
     downArrowBold,
     copy,
     confetti,
