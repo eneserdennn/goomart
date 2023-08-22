@@ -91,8 +91,10 @@ const LoggedIn: React.FC = () => {
                             Ödeme Yöntemlerim
                         </IconButton>
                         <IconButton icon={<Image className="h-8 w-8" src={ICONS.notification} alt="notification-icon"/>}
-                                    onClick={() => console.log('Heart icon clicked')}>
-                            İletişim Tercihlerim
+                        >
+                            <Link href={'/contact-prefs'}>
+                                İletişim Tercihlerim
+                            </Link>
                         </IconButton>
                         <IconButton icon={<Image className="h-8 w-8" src={ICONS.contact} alt="contact-icon"/>}
                                     onClick={() => console.log('Heart icon clicked')}>

@@ -142,6 +142,10 @@ const NavBar: React.FC = () => {
         {
             name: 'Kuponlarım',
             href: `/my-coupons`,
+        },
+        {
+            name: 'Iletisim Tercihleri',
+            href: `/contact-prefs`,
         }
     ]
 
