@@ -146,6 +146,10 @@ const NavBar: React.FC = () => {
         {
             name: 'Iletisim Tercihleri',
             href: `/contact-prefs`,
+        },
+        {
+            name: 'Cok Sorulan Sorular',
+            href: `/faq`,
         }
     ]
 

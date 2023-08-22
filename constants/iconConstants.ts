@@ -56,8 +56,10 @@ import shippingTruck from '@/assets/icons/shippingTruck.svg'
 import done from '@/assets/icons/done.svg'
 import confetti from '@/assets/icons/confetti.svg'
 import copy from '@/assets/icons/copy.svg'
+import downArrowBold from '@/assets/icons/downArrowBold.svg'
 
 export const ICONS = {
+    downArrowBold,
     copy,
     confetti,
     done,
