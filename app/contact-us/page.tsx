@@ -1,6 +1,7 @@
 'use client'
 import Image from "next/image";
 import {ICONS} from "@/constants/iconConstants";
+import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 
 const ContactUsPage = () => {
 
@@ -21,7 +22,6 @@ const ContactUsPage = () => {
             text: '08:00-00.00 saatleri arasinda bize ulasabilirsiniz.'
         }
     ]
-
 
     return (
         <div className="flex flex-col">
@@ -54,22 +54,9 @@ const ContactUsPage = () => {
                 <Image src={ICONS.tiktok} alt={"tiktok-icon"} className="h-[36px] w-[36px]"/>
                 <Image src={ICONS.youtube} alt={"youtube-icon"} className="h-[36px] w-[36px]"/>
             </div>
+            <BottomNavBar/>
         </div>
     );
 };
 
 export default ContactUsPage;
-
-// <div className="flex p-[20px] font-bold text-[15px] justify-between items-center bg-white rounded-md">
-//     <div className="flex flex-col">
-//                 <span className="text-primary mb-2">
-//                     Telefon
-//                 </span>
-//         <span className="text-deepgray">
-//                     +49 145 034 123 00
-//                 </span>
-//     </div>
-//     <div>
-//         <Image src={ICONS.phone} alt={"phone-icon"} className="h-6 w-6"/>
-//     </div>
-// </div>

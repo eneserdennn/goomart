@@ -154,6 +154,10 @@ const NavBar: React.FC = () => {
         {
             name: 'Cok Sorulan Sorular',
             href: `/faq`,
+        },
+        {
+            name: 'Sozlesmeler ve Politikalar',
+            href: `/terms`,
         }
     ]
 

@@ -107,10 +107,12 @@ const LoggedIn: React.FC = () => {
                                     onClick={() => console.log('Heart icon clicked')}>
                             Çok Sorulan Sorular
                         </IconButton>
-                        <IconButton icon={<Image className="h-8 w-8" src={ICONS.agreement} alt="sozlesmeler-icon"/>}
-                                    onClick={() => console.log('Heart icon clicked')}>
-                            Sözleşmeler ve Politikalar
-                        </IconButton>
+                        <Link href={'/terms'}>
+                            <IconButton icon={<Image className="h-8 w-8" src={ICONS.agreement} alt="sozlesmeler-icon"/>}
+                                        onClick={() => console.log('Heart icon clicked')}>
+                                Sözleşmeler ve Politikalar
+                            </IconButton>
+                        </Link>
                         <IconButton rightIcon={false}
                                     icon={<Image className="h-8 w-8" src={ICONS.logout} alt="logout-icon"/>}
                                     onClick={handleLogOut}>

@@ -24,6 +24,7 @@ const FAQData: FAQItem[] = [
 ];
 
 const FAQPage = () => {
+    // @ts-ignore
     const { data, error, isLoading } = useGetFaqQuery();
     if (isLoading) return <Loading/>;
     if (error) return <div>Something went wrong</div>;
