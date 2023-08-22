@@ -5,12 +5,24 @@ import Coupon from "@/components/Coupon";
 import Image from "next/image";
 import {IMAGES} from "@/constants/imageConstants";
 import Loading from "@/app/loading";
+import {selectCurrentToken} from "@/redux/features/auth/authSlice";
+import {useSelector} from "react-redux";
+import {useRouter} from "next/navigation";
+
 
 const MyCoupons = () => {
     const {data, error, isLoading} = useGetCouponsQuery();
+    const token = useSelector(selectCurrentToken);
+    const router = useRouter();
+
+    if (!token) {
+        router.push('/login')
+    }
 
     if (isLoading) return <Loading/>
-    if (error) return <div>{error}</div>
+    if (error) return <div>
+        <span className="text-red-500 flex p-8 text-center justify-center">Something went wrong, please make sure you are connected to the internet.</span>
+    </div>
 
     return (
         <div>
