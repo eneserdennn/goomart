@@ -1,5 +1,6 @@
 import Image from "next/image";
 import {ICONS} from "@/constants/iconConstants";
+import {customSuccess} from "@/components/CustomToast";
 
 const Coupon = ({coupon}) => {
     const {name, description, amount, minCart, endDate, code} = coupon;
@@ -57,12 +58,11 @@ const Coupon = ({coupon}) => {
                                 className="clickable-container" // Add a class for styling and interaction
                                 onClick={() => {
                                     navigator.clipboard.writeText(code);
-                                    console.log('test')
+                                    customSuccess('Kupon kodu kopyalandı')
                                 }}
                             >
                                 <button className="bg-primary text-white rounded-md w-[107px] h-[35px] text-[15px] flex justify-center items-center">
                                     Kopyala
-                                    {/*<Image className="ml-1" src={ICONS.copy} alt="copy" width={15} height={15} />*/}
                                 </button>
                             </div>
                         </div>
