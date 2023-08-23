@@ -25,7 +25,7 @@ const BottomNavBar: React.FC = () => {
     }, [])
 
   return (
-      <div className="flex justify-around fixed bottom-0 h-16 left-0 w-full bg-white border-t border-gray-300">
+      <div className="flex justify-around fixed bottom-0 h-[70px] left-0 w-full bg-white border-t border-gray-300">
               <button className="flex flex-col items-center justify-center space-x-1" onClick={() => router.push('/')}>
                   <GoHomeFill size={30} color="green" />
               </button>
@@ -35,13 +35,13 @@ const BottomNavBar: React.FC = () => {
                   <BiSearchAlt size={30} color="#888" />
                   </Link>
               </button>
-              
+
               <button className="flex flex-col items-center justify-center space-x-1">
               <Link href={'/cart'}>
                   <FaShoppingBag size={30} color="#888" />
                   </Link>
               </button>
-            
+
               <button className="flex flex-col items-center justify-center space-x-1" onClick={() => {
                   if (isLogin) {
                       router.push('/login');

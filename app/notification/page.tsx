@@ -5,6 +5,7 @@ import { Tab } from '@headlessui/react'
 import Image from "next/image";
 import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import {useGetNotificationsQuery} from "@/redux/features/notificationApiSlice";
+import MyCoupons from "@/app/my-coupons/page";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -15,7 +16,7 @@ function TabContent({ posts }) {
         <Tab.Panel
             className={classNames(
                 'bg-white',
-                'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
+                'ring-white ring-opacity-60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2'
             )}
         >
             <ul>
@@ -39,6 +40,7 @@ function TabContent({ posts }) {
         </Tab.Panel>
     )
 }
+
 
 export default function Example() {
     let [categories] = useState({
@@ -119,31 +121,14 @@ export default function Example() {
             },
         ],
         'Kuponlarım': [
-            {
-                id: 1,
-                title: 'Size özel 10€ indirim kuponu🎁',
-                content: 'Size özel bu hafta tüm ürünlerde kullanabileceğiniz 10 € indirim kuponu hediye.',
-                date: '27/12/2023',
-                commentCount: 9,
-                shareCount: 5,
-                icon: ICONS.orderComp
-            },
-            {
-                id: 2,
-                title: 'Coca Cola Ürünlerinde İndirim',
-                content: 'Bu hafta tüm Coca Cola ürünlerinde %10 indirim. Bu fırsatı kaçırmayın, hemen sipariş verin.',
-                date: '27/12/2023',
-                commentCount: 4,
-                shareCount: 3,
-                icon: ICONS.orderComp
-            },
+            //
         ],
     })
 
     const [activeTab, setActiveTab] = useState('Tümü')
 
     return (
-        <div className="w-full bg-red-600">
+        <div className="w-full ">
             <Tab.Group>
                 <Tab.List className="flex border-b bg-white">
                     {Object.keys(categories).map((category) => (
@@ -151,7 +136,7 @@ export default function Example() {
                             key={category}
                             className={({ selected }) =>
                                 classNames(
-                                    'mx-2 h-[47px] text-[16px] font-bold text-[#6D6D6D]',
+                                    'mx-3 h-[47px] text-[16px] font-bold text-[#6D6D6D]',
                                     selected ? 'pb-0 text-primary' : 'pb-1'
                                 )
                             }
@@ -166,9 +151,11 @@ export default function Example() {
                     ))}
                 </Tab.List>
                 <Tab.Panels>
+
+                    {activeTab === 'Kuponlarım' ? <MyCoupons/> :<>
                     {Object.values(categories).map((posts, idx) => (
                         <TabContent key={idx} posts={posts} />
-                    ))}
+                    ))}</>}
                 </Tab.Panels>
             </Tab.Group>
             <BottomNavBar/>
