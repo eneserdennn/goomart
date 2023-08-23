@@ -42,14 +42,10 @@ const BottomNavBar: React.FC = () => {
                   </Link>
               </button>
 
-              <button className="flex flex-col items-center justify-center space-x-1" onClick={() => {
-                  if (isLogin) {
-                      router.push('/login');
-                  } else {
-                      router.push('/login');
-                  }
-              }}>
-                  <BsFillGiftFill size={30} color="#888" />
+              <button className="flex flex-col items-center justify-center space-x-1">
+                  <Link href={'/campaigns'}>
+                      <BsFillGiftFill size={30} color="#888" />
+                    </Link>
               </button>
               <button className="flex flex-col items-center justify-center space-x-1">
                   <Link href={'/profile'}>

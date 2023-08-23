@@ -162,6 +162,10 @@ const NavBar: React.FC = () => {
         {
             name: 'Bildirimler',
             href: `/notification`,
+        },
+        {
+            name: 'Kampanyalar',
+            href: `/campaigns`,
         }
     ]
 
