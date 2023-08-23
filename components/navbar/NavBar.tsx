@@ -158,6 +158,10 @@ const NavBar: React.FC = () => {
         {
             name: 'Sozlesmeler ve Politikalar',
             href: `/terms`,
+        },
+        {
+            name: 'Bildirimler',
+            href: `/notification`,
         }
     ]
 

@@ -64,8 +64,18 @@ import youtube from '@/assets/icons/youtube.svg'
 import facebook from '@/assets/icons/facebook.svg'
 import instagram from '@/assets/icons/instagram.svg'
 import tiktok from '@/assets/icons/tiktok.svg'
+import orderComp from '@/assets/icons/orderComp.svg'
+import couponNotif from '@/assets/icons/couponNotif.svg'
+import deliveryRing from '@/assets/icons/deliveryRing.svg'
+import deliveryTruck from '@/assets/icons/deliveryTruck.svg'
+import deliveryTime from '@/assets/icons/deliveryTime.svg'
 
 export const ICONS = {
+    deliveryTime,
+    deliveryTruck,
+    deliveryRing,
+    couponNotif,
+    orderComp,
     tiktok,
     instagram,
     facebook,
