@@ -196,7 +196,9 @@ const NavBar: React.FC = () => {
                     )}
                 </div>
                 {currentPage?.name === 'Home' ? <div className="flex items-center">
-                    <IoMdNotifications className='text-white' size={30} />
+                    <Link href={`/notification`}>
+                    <IoMdNotifications className='text-white' size={30} color={'#FFD306'} />
+                    </Link>
                 </div> : currentPage?.name === 'Ürünler' ? <div className="flex justify-between items-center">
                     <SideBar data={data}/>
                 </div> : currentPage?.name === 'Ürün Detay' ? <div className="flex justify-between items-center">
