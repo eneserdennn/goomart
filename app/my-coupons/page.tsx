@@ -1,6 +1,6 @@
 'use client'
 
-import {useGetCouponsQuery} from "@/redux/features/couponApiSlice";
+import {useGetCouponsQuery} from "@/redux/features/campaigns/couponApiSlice";
 import Coupon from "@/components/Coupon";
 import Image from "next/image";
 import {IMAGES} from "@/constants/imageConstants";

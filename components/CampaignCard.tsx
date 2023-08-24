@@ -1,6 +1,16 @@
 import { FC, useState } from "react";
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    selectCampaigns,
+    setAppliedCoupon,
+    setInputValue,
+    setWrongCoupon
+} from "@/redux/features/campaigns/campaignsSlice";
+import {customError, customSuccess} from "@/components/CustomToast";
+import Modal from "@/components/modal/Modal";
+
 
 interface Campaign {
     id: number;
@@ -15,8 +25,13 @@ interface CampaignCardProps {
 }
 
 const CampaignCard: FC<CampaignCardProps> = ({ campaign, isSelectable = true }) => {
-    const [isUsing, setIsUsing] = useState(false);
-    const { id, name, description, isActive } = campaign;
+    const { id, name, description } = campaign;
+    const [alreadyApplied, setAlreadyApplied] = useState(false);
+    const [isActive, setIsActive] = useState(false);
+    const dispatch = useDispatch();
+
+    const appliedCoupon = useSelector(state => selectCampaigns(state).appliedCoupon);
+
 
     return (
         <div className="flex flex-row bg-white px-[10px] py-[25px] justify-between h-[116px] items-center rounded-md">
@@ -38,9 +53,21 @@ const CampaignCard: FC<CampaignCardProps> = ({ campaign, isSelectable = true }) 
                 {isSelectable && (
                     <div
                         className={`flex h-[34px] min-w-[77px] border rounded-md items-center justify-center text-${
-                            isActive ? 'primary' : 'white'
-                        } text-[13px] ${isActive ? 'border-primary' : 'border-white'}`}
-                        onClick={() => setIsUsing(!isUsing)}
+                            isActive ? 'primary' : 'white bg-primary'
+                        } text-[13px] ${isActive ? 'border-primary' : 'border-primary'}`}
+                        onClick={() => {
+                            if (isActive) {
+                                dispatch(setAppliedCoupon(null));
+                                customSuccess("Kupon kodu başarıyla kaldırıldı.")
+                            } else {
+                                if (appliedCoupon) {
+                                    setAlreadyApplied(true);
+                                    return;
+                                }
+                                dispatch(setAppliedCoupon(campaign));
+                                customSuccess("Kupon kodu başarıyla uygulandı.")
+                            }
+                        }}
                     >
                         {isActive ? "Kaldır" : "Uygula"}
                     </div>
@@ -51,6 +78,14 @@ const CampaignCard: FC<CampaignCardProps> = ({ campaign, isSelectable = true }) 
                     width={10}
                     height={5}
                     className="ml-2" // Add margin to separate the arrow
+                />
+                <Modal show={alreadyApplied} onClose={() => setAlreadyApplied(false)}
+                       message={"Sipariş için tek indirim kullanabilirsiniz."}
+                       hasCancelButton={false}
+                       buttonText={"Tamam"}
+                       onConfirm={() => {
+                            setAlreadyApplied(false);
+                       }}
                 />
             </div>
         </div>
