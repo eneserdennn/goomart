@@ -49,7 +49,7 @@ const ProductContainer = () => {
 
     let content;
     if (isLoading) {
-        content = <Loading />;
+        content = <div className="flex items-center justify-center"><Loading /></div>;
     } else if (error) {
         content = <div>Something went wrong</div>;
     } else if (data) {

@@ -41,7 +41,6 @@ function TabContent({ posts }) {
     )
 }
 
-
 export default function Example() {
     let [categories] = useState({
         'Tümü': [

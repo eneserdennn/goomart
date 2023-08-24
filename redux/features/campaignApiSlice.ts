@@ -23,13 +23,16 @@ interface Campaign {
 
 export const campaignApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getCampaigns: builder.query<Campaign[], void>({
-            query: () => '/campaign',
+        getCampaignsUsable: builder.query<Campaign[], void>({
+            query: () => '/campaign/usable',
         }),
         getCampaign: builder.query<Campaign, number>({
             query: (id) => `/campaign/${id}`,
         }),
+        getAllCampaigns: builder.query<Campaign[], void>({
+            query: () => '/campaign',
+        }),
     }),
 });
 
-export const { useGetCampaignsQuery, useGetCampaignQuery } = campaignApiSlice;
+export const { useGetCampaignsUsableQuery, useGetCampaignQuery, useGetAllCampaignsQuery } = campaignApiSlice;

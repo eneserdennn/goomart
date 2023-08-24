@@ -184,7 +184,7 @@ const NavBar: React.FC = () => {
                     )}
                 </div>
                 <div className="text-white font-bold text-xl">
-                    {currentPage?.name === 'Home' ? (
+                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' ? (
                         <div className="">
                             <Link href='/'>
                                 <Image
