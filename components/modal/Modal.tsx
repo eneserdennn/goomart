@@ -1,4 +1,3 @@
-// ConfirmDeleteModal.tsx
 import React from 'react';
 import {ICONS} from "@/constants/iconConstants";
 import Image from "next/image";
@@ -27,20 +26,21 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 className="fixed inset-0 bg-black opacity-50"
                 onClick={onClose}
             ></div>
-            <div className="bg-white rounded-lg w-5/6 md:max-w-md mx-auto p-4 z-10 flex flex-col items-center">
-                <div className="bg-white rounded-full p-4 -mt-14 mb-4 ">
-                    <Image src={ICONS.warning} alt={"warning"} className="h-12 w-12"/>
+            <div className="bg-white rounded-2xl w-[324px] h-[200px] z-10 flex flex-col items-center justify-between px-[21px] pb-[21px]">
+                <div className="bg-white rounded-full p-3 pb-[25px] -mt-[36px] ">
+                    <Image src={ICONS.warning} alt={"warning"} className="h-[56px] w-[56px]"/>
                 </div>
-                <div className="flex flex-col ">
                 <p className="text-center">{message}</p>
-                <div className="flex justify-center mt-[34px] w-full">
+                <div className="flex flex-col w-full">
+
+                    <div className="flex justify-between mt-[25px] w-full">
                     {hasCancelButton && (
                         <button className="text-primary w-[135px]" onClick={onClose}>
                             Vazgeç
                         </button>
                     )}
                     <Button
-                        className=" text-white w-[135px] bg-primary hover:bg-green-800 font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
+                        className={`text-white ${!hasCancelButton && 'w-full'} w-[135px]  bg-primary hover:bg-green-800 font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300`}
                         onClick={onConfirm}
                         isSmall={true}
                     >
