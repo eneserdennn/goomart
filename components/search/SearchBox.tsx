@@ -7,6 +7,8 @@ import {useGetProductsAdvancedQueryQuery} from "@/redux/features/products/produc
 import Modal from "@/components/modal/Modal";
 import SearchHistory from "@/components/search/SearchHistory";
 import SearchResults from "@/components/search/SearchResults";
+import {IMAGES} from "@/constants/imageConstants";
+import Link from "next/link";
 
 
 const SearchBox = () => {
@@ -24,6 +26,7 @@ const SearchBox = () => {
     });
 
     const [searchResults, setSearchResults] = useState([]);
+    const [searched, setSearched] = useState(false);
     const { data, error, isLoading } = useGetProductsAdvancedQueryQuery(params);
 
 
@@ -43,6 +46,7 @@ const SearchBox = () => {
 
         console.log('data', data)
         setIsSearchHistoryOpen(false);
+        setSearched(true);
     };
 
     const handleSearchTermClick = (term) => {
@@ -94,6 +98,7 @@ const SearchBox = () => {
 
     const handleClearSearchTerm = () => {
         setIsCloseIconClickable(true);
+        setSearched(false)
         setTimeout(() => {
             setSearchTerm("");
             setIsCloseIconClickable(false);
@@ -168,6 +173,22 @@ const SearchBox = () => {
                     )}
                 </div>
             )}
+            {
+              data && searched && searchResults.length === 0 && (<>
+                    <div className="flex flex-row w-full my-2.5 h-[34px] pl-[15px] pr-[20px] justify-between items-center text-[#363636] font-bold text-[14px] ">
+                        <span>Arama Sonuçları</span>
+                    </div>
+                    <Link href={'/product-recommend'}>
+                    <div className="flex flex-wrap bg-white shadow-md px-[20px] py-[30px]">
+                        <div className="flex flex-col justify-center items-center text-center border rounded-md h-[130px] w-[130px]">
+                            <Image src={IMAGES.recommendProduct} alt={'recommend-product'} width={75} height={90}/>
+                            <span className="text-[13px] text-[#363636] font-bold  ">Ürün onermek istermisin?</span>
+                        </div>
+                    </div>
+                    </Link>
+                    </>
+                )
+            }
             <Modal show={isModalOpen} onClose={() => {
                 setIsModalOpen(false)
             }} onConfirm={() => {

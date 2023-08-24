@@ -5,8 +5,10 @@ import forgotPasswordImage from '@/assets/images/forgot-password.svg'
 import settingsFrame from '@/assets/images/settingsFrame.svg'
 import verificationImage from '@/assets/images/verification.svg'
 import couponEmpty from '@/assets/images/couponEmpty.svg'
+import recommendProduct from '@/assets/images/recommendProduct.svg'
 
 export const IMAGES = {
+    recommendProduct,
     couponEmpty,
     emptyCart,
     address,

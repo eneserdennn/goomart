@@ -166,6 +166,10 @@ const NavBar: React.FC = () => {
         {
             name: 'Kampanyalar',
             href: `/campaigns`,
+        },
+        {
+            name: "Ürün Öneri",
+            href: `/product-recommend`,
         }
     ]
 
