@@ -71,8 +71,10 @@ import deliveryTruck from '@/assets/icons/deliveryTruck.svg'
 import deliveryTime from '@/assets/icons/deliveryTime.svg'
 import couponCode from '@/assets/icons/couponCode.svg'
 import couponCodeNoBg from '@/assets/icons/couponCodeNoBg.svg'
+import doneOutlined from '@/assets/icons/doneOutlined.svg'
 
 export const ICONS = {
+    doneOutlined,
     couponCodeNoBg,
     couponCode,
     deliveryTime,
