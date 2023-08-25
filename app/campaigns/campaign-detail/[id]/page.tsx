@@ -7,12 +7,15 @@ import Image from "next/image";
 import {ICONS} from "@/constants/iconConstants";
 import Loading from "@/app/loading";
 import {Disclosure} from "@headlessui/react";
+import React, {useState} from "react";
+import ProductCardPlusButton from "@/components/product-cards/ProductCardPlusButton";
 
 const CampaignDetail = ({params}) => {
     const {data: campaign, isLoading: campaignLoading, error: campaignError} = useGetCampaignQuery(params.id);
-    const {data: products, isLoading: productsLoading, error: productsError} = useGetProductsListWithCampaignQuery(params.id);
+    const {data: products, isLoading: productsLoading, error: productsError} = useGetProductsListWithCampaignQuery(campaign?.resourceId);
+
     let content;
-    console.log(products)
+    console.log(window.innerWidth)
 
     if (campaignLoading) {
         content = <Loading/>;
@@ -53,7 +56,18 @@ const CampaignDetail = ({params}) => {
                     </div>
 
                 </div>
-                {/*    CUSTOM PRODUCT LIST*/}
+                <span className="text-[14px] text-[#6D6D6D] m-[15px]">
+                    Gecerli Urunler
+                </span>
+                <div className={`flex flex-row justify-between mb-10 shadow w-full bg-white p-1 ${window.innerWidth > 360 ? 'p-4' : ''} flex-wrap`}>
+                <ProductCardPlusButton />
+                <ProductCardPlusButton />
+                <ProductCardPlusButton />
+                <ProductCardPlusButton />
+                <ProductCardPlusButton />
+                <ProductCardPlusButton />
+                {/*    THIS PART WILL BE DELETED AFTER API INTEGRATION*/}
+                </div>
             </div>
         );
 
