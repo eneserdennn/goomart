@@ -76,8 +76,24 @@ import rightArrowLong from '@/assets/icons/rightArrowLong.svg'
 import closeOutlined from '@/assets/icons/closeOutlined.svg'
 import reorder from '@/assets/icons/reorder.svg'
 import rightArrowLongDark from '@/assets/icons/rightArrowLongDark.svg'
+import callCenter from '@/assets/icons/callCenter.svg'
+import cargoTrack from '@/assets/icons/cargoTrack.svg'
+import invoice from '@/assets/icons/invoice.svg'
+import orderTaken from '@/assets/icons/orderTaken.svg'
+import orderPreparing from '@/assets/icons/orderPreparing.svg'
+import orderInCargo from '@/assets/icons/orderInCargo.svg'
+import orderDelivered from '@/assets/icons/orderDelivered.svg'
+import paypal from '@/assets/icons/paypal.svg'
 
 export const ICONS = {
+    paypal,
+    orderDelivered,
+    orderInCargo,
+    orderPreparing,
+    orderTaken,
+    invoice,
+    cargoTrack,
+    callCenter,
     rightArrowLongDark,
     reorder,
     closeOutlined,

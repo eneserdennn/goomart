@@ -7,8 +7,10 @@ import verificationImage from '@/assets/images/verification.svg'
 import couponEmpty from '@/assets/images/couponEmpty.svg'
 import recommendProduct from '@/assets/images/recommendProduct.svg'
 import notFoundOrder from '@/assets/images/notFoundOrder.svg'
+import paymentMethod from '@/assets/images/paymentMethod.svg'
 
 export const IMAGES = {
+    paymentMethod,
     notFoundOrder,
     recommendProduct,
     couponEmpty,
