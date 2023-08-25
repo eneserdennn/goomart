@@ -1,20 +1,20 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 import {AiFillFilter} from "react-icons/ai";
-import { ICONS } from "@/constants/iconConstants";
+import {ICONS} from "@/constants/iconConstants";
 import Image from 'next/image';
-import { IoMdNotifications } from 'react-icons/io';
+import {IoMdNotifications} from 'react-icons/io';
 import Link from 'next/link';
 import Loading from "@/app/loading";
 import React from "react";
 import SideBar from '../sidebar/SideBar';
-import { setCredentials } from "@/redux/features/auth/authSlice";
-import { useDispatch } from "react-redux";
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { openModal, closeModal } from "@/redux/features/cart/cartSlice";
+import {setCredentials} from "@/redux/features/auth/authSlice";
+import {useDispatch} from "react-redux";
+import {usePathname} from 'next/navigation';
+import {useRouter} from 'next/navigation';
+import {openModal, closeModal} from "@/redux/features/cart/cartSlice";
 
 import Cookies from "js-cookie";
 
@@ -44,7 +44,7 @@ const NavBar: React.FC = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            dispatch(setCredentials({ access_token: token }));
+            dispatch(setCredentials({access_token: token}));
         }
     }, []);
 
@@ -85,6 +85,7 @@ const NavBar: React.FC = () => {
     ]
 
     const idPaths = path.split('/').splice(2).join('/');
+    const idPaths2 = path.split('/').splice(3).join('/');
 
     const pages: IPage[] = [
         {
@@ -170,24 +171,34 @@ const NavBar: React.FC = () => {
         {
             name: "Ürün Öneri",
             href: `/product-recommend`,
+        },
+        {
+            name: "Kampanya Detay",
+            href: `/campaigns/campaign-detail/${idPaths2}`,
         }
     ]
 
     let currentPage = pages.find(page => page.href === path);
 
     return (
-        <nav className='w-full bg-primary'>
-            {isLoading ? <Loading/> :  <div className="flex items-center justify-between p-4">
+        <nav className='w-full bg-primary text-[16px]'>
+            {isLoading ? <Loading/> : <div className="flex items-center justify-between p-4">
                 <div className="">
-                    {currentPage?.name === 'Home' ? (
+                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' ? (
                         <div></div>
-                    ) : (
+                    ) : currentPage?.name === 'Kampanya Detay' ? (
                         <div className="flex items-center">
-                            <Image src={ICONS.leftArrow} alt='goomart' className="h-5 w-5" onClick={() => router.back()} />
+                        <Image src={ICONS.closeOutlined} alt='goomart' className="h-[12px] w-[12px]"
+                                 onClick={() => router.back()}/>
+                        </div>
+                    ): (
+                        <div className="flex items-center">
+                            <Image src={ICONS.leftArrow} alt='goomart' className="h-5 w-5"
+                                   onClick={() => router.back()}/>
                         </div>
                     )}
                 </div>
-                <div className="text-white font-bold text-xl">
+                <div className="text-white font-bold">
                     {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' ? (
                         <div className="">
                             <Link href='/'>
@@ -195,7 +206,6 @@ const NavBar: React.FC = () => {
                                     src={ICONS.goomart}
                                     alt='goomart'
                                     width={100}
-
                                 />
                             </Link>
                         </div>
@@ -205,16 +215,17 @@ const NavBar: React.FC = () => {
                 </div>
                 {currentPage?.name === 'Home' ? <div className="flex items-center">
                     <Link href={`/notification`}>
-                    <IoMdNotifications className='text-white' size={30} color={'#FFD306'} />
+                        <IoMdNotifications className='text-white' size={30} color={'#FFD306'}/>
                     </Link>
                 </div> : currentPage?.name === 'Ürünler' ? <div className="flex justify-between items-center">
                     <SideBar data={data}/>
                 </div> : currentPage?.name === 'Ürün Detay' ? <div className="flex justify-between items-center">
-                    <Image src={ICONS.heart} alt='filter' width={20} height={19} />
-                </div> : currentPage?.name === 'Sepet' ? <Image src={ICONS.trashWhite} alt='filter' width={20} height={19} onClick={() => {
-                    dispatch(openModal());
-                    }} />
-                : <div className="flex justify-between items-center"></div>
+                    <Image src={ICONS.heart} alt='filter' width={20} height={19}/>
+                </div> : currentPage?.name === 'Sepet' ?
+                    <Image src={ICONS.trashWhite} alt='filter' width={20} height={19} onClick={() => {
+                        dispatch(openModal());
+                    }}/>
+                    : <div className="flex justify-between items-center"></div>
                 }
             </div>
             }
