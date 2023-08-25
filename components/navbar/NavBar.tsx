@@ -175,6 +175,10 @@ const NavBar: React.FC = () => {
         {
             name: "Kampanya Detay",
             href: `/campaigns/campaign-detail/${idPaths2}`,
+        },
+        {
+            name: "Favori Ürünler",
+            href: `/favorites`,
         }
     ]
 

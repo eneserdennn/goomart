@@ -80,11 +80,11 @@ const LoggedIn: React.FC = () => {
                         </div>
                     </div>
                     <div className="mb-4">
-                        <IconButton icon={<Image src={ICONS.favorites} alt="payment-icon"/>} onClick={() => {
-                            router.push('/payment')
-                        }}>
+                        <Link href={'/favorites'}>
+                        <IconButton icon={<Image src={ICONS.favorites} alt="payment-icon"/>}>
                             Favori Ürünler
                         </IconButton>
+                        </Link>
                         <IconButton icon={<Image src={ICONS.payment} alt="payment-icon"/>} onClick={() => {
                             router.push('/payment')
                         }}>
