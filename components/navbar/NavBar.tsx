@@ -179,6 +179,10 @@ const NavBar: React.FC = () => {
         {
             name: "Favori Ürünler",
             href: `/favorites`,
+        },
+        {
+            name: "Siparişlerim",
+            href: `/orders`,
         }
     ]
 

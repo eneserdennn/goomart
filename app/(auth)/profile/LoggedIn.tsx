@@ -58,10 +58,13 @@ const LoggedIn: React.FC = () => {
                         <div className="flex flex-wrap justify-center p-4 mb-4">
                             <div className="flex items-center justify-around w-full md:w-3/4 lg:w-2/3 xl:w-1/2">
                                 <div
-                                    className="flex flex-col px-4 items-center w-1/5 md:w-auto hover:bg-gray-100 cursor-pointer rounded-lg">
+                                    className="flex flex-col px-4 w-1/5 md:w-auto hover:bg-gray-100 cursor-pointer rounded-lg">
+                                    <Link href={'/orders'} className="flex flex-col items-center">
                                     <Image src={ICONS.orders} alt={"person-icon"} className="h-8 w-8 mb-1"/>
                                     <span className="text-sm px-1">Siparişlerim</span>
+                                    </Link>
                                 </div>
+
                                 <div className="w-0.5 h-14 mx-2 bg-gray-200"/>
                                 <Link href={'/addresses'}
                                       className="flex flex-col px-4 items-center w-1/5 md:w-auto hover:bg-gray-100 cursor-pointer rounded-lg">
