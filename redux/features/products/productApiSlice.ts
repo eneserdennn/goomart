@@ -11,12 +11,17 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         getProductsByProductId: builder.query({
             query: (id) => `/product/${id}`
 
-        }),   
+        }),
         getProductsBySubCategoryId: builder.query({
-            query: (id) => `/sub-category/all-products/${id}` 
+            query: (id) => `/sub-category/all-products/${id}`
+        }),
+        getProductsListWithCampaign: builder.query({
+            query: (id) => ({
+                url: `/custom-product-list/${id}?lang=tr`,
+            })
         }),
     })
 });
 
-export const { useGetProductsAdvancedQueryQuery, useGetProductsByProductIdQuery ,useGetProductsBySubCategoryIdQuery } = productsApiSlice;
+export const { useGetProductsAdvancedQueryQuery, useGetProductsByProductIdQuery ,useGetProductsBySubCategoryIdQuery, useGetProductsListWithCampaignQuery } = productsApiSlice;
 
