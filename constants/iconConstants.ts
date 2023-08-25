@@ -72,8 +72,12 @@ import deliveryTime from '@/assets/icons/deliveryTime.svg'
 import couponCode from '@/assets/icons/couponCode.svg'
 import couponCodeNoBg from '@/assets/icons/couponCodeNoBg.svg'
 import doneOutlined from '@/assets/icons/doneOutlined.svg'
+import rightArrowLong from '@/assets/icons/rightArrowLong.svg'
+import closeOutlined from '@/assets/icons/closeOutlined.svg'
 
 export const ICONS = {
+    closeOutlined,
+    rightArrowLong,
     doneOutlined,
     couponCodeNoBg,
     couponCode,
