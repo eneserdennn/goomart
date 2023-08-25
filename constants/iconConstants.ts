@@ -74,8 +74,12 @@ import couponCodeNoBg from '@/assets/icons/couponCodeNoBg.svg'
 import doneOutlined from '@/assets/icons/doneOutlined.svg'
 import rightArrowLong from '@/assets/icons/rightArrowLong.svg'
 import closeOutlined from '@/assets/icons/closeOutlined.svg'
+import reorder from '@/assets/icons/reorder.svg'
+import rightArrowLongDark from '@/assets/icons/rightArrowLongDark.svg'
 
 export const ICONS = {
+    rightArrowLongDark,
+    reorder,
     closeOutlined,
     rightArrowLong,
     doneOutlined,
