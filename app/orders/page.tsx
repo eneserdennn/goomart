@@ -27,7 +27,7 @@ export default function OrdersPage() {
                         <span className="my-[50px] text-center text-[16px] font-semibold">Son 1 Ay icerisinde vermis oldugunuz siparis bulunmuyor</span>
                     </div>
                 ) : (
-                    <div>
+                    <div className="flex flex-col px-[15px] w-full">
                         <OrderCard orderStatus={"Teslim Edildi"}/>
                         <OrderCard orderStatus={"Kargoya Verildi"}/>
                         <OrderCard orderStatus={"Siparis Hazirlaniyor"}/>

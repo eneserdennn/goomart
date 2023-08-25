@@ -16,7 +16,7 @@ const SortByDate = () => {
     const [selected, setSelected] = useState(people[0])
 
     return (
-        <div className="w-[360px] h-[45px] mb-[20px]">
+        <div className="w-full px-[15px] h-[45px] mb-[20px]">
             <Listbox value={selected} onChange={setSelected}>
                 <div className=" items-center">
                     <Listbox.Button
