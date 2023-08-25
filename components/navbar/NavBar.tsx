@@ -183,6 +183,10 @@ const NavBar: React.FC = () => {
         {
             name: "Siparişlerim",
             href: `/orders`,
+        },
+        {
+            name: "Sipariş Detayları",
+            href: `/orders/order-detail/${idPaths2}`,
         }
     ]
 

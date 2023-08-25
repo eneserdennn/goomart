@@ -7,6 +7,7 @@
 import {useState} from "react";
 import Image from "next/image";
 import {ICONS} from "@/constants/iconConstants";
+import Link from "next/link";
 
 const OrderCard = ({orderStatus}) => {
     // const [orderStatus, setOrderStatus] = useState<string>("Teslim Edildi")
@@ -42,7 +43,9 @@ const OrderCard = ({orderStatus}) => {
                         {orderStatus}
                     </span>
                 <div className="flex justify-end cursor-pointer">
+                    <Link href={`/orders/order-detail/${orderId}`}>
                     <Image src={ICONS.rightArrowLongDark} alt={"right-arrow"} width={20} height={20}/>
+                    </Link>
                 </div>
             </div>
         </div>
