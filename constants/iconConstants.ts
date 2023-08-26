@@ -84,8 +84,23 @@ import orderPreparing from '@/assets/icons/orderPreparing.svg'
 import orderInCargo from '@/assets/icons/orderInCargo.svg'
 import orderDelivered from '@/assets/icons/orderDelivered.svg'
 import paypal from '@/assets/icons/paypal.svg'
-
+import visa from '@/assets/icons/visa.svg'
+import mastercard from '@/assets/icons/mastercard.svg'
+import americanexp from '@/assets/icons/americanexp.svg'
+import discover from '@/assets/icons/discover.svg'
+import paypalfill from '@/assets/icons/paypalfill.svg'
+import klarna from '@/assets/icons/klarna.svg'
+import sepa from '@/assets/icons/sepa.svg'
+import campaignCheckout from '@/assets/icons/campaignCheckout.svg'
 export const ICONS = {
+    campaignCheckout,
+    sepa,
+    klarna,
+    paypalfill,
+    discover,
+    americanexp,
+    mastercard,
+    visa,
     paypal,
     orderDelivered,
     orderInCargo,
