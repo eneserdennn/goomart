@@ -5,7 +5,6 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         getOrders: builder.query({
             query: () => '/order',
         }),
-        // post method with check your cart
         checkCart: builder.mutation({
             query: (data) => ({
                 url: '/order/check-your-cart',
@@ -20,7 +19,6 @@ export const orderApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
-        //coupon-attempt
         couponAttempt: builder.mutation({
             query: (data) => ({
                 url: '/order/coupon-attempt',

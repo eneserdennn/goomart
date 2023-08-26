@@ -30,7 +30,7 @@ export const campaignApiSlice = apiSlice.injectEndpoints({
             query: (id) => `/campaign/${id}`,
         }),
         getAllCampaigns: builder.query<Campaign[], void>({
-            query: () => '/campaign',
+            query: () => '/campaign/usable',
         }),
     }),
 });

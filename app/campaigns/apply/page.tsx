@@ -21,9 +21,6 @@ import {
 
 const CampaignsApply: FC = () => {
     const dispatch = useDispatch();
-
-
-
     const [inputValueState, setInputValueState] = useState("");
     const inputValue = useSelector(state => selectCampaigns(state).inputValue);
     const showModal = useSelector(state => selectCampaigns(state).showModal);
@@ -37,7 +34,8 @@ const CampaignsApply: FC = () => {
     const { data: coupons, isLoading: couponsLoading, error: couponsError } = useGetCouponsQuery();
 
     if (usableCampaignsLoading || allCampaignsLoading || couponsLoading) return <Loading />;
-    if (usableCampaignsError || allCampaignsError || couponsError) return <div>Something went wrong</div>;
+    // if (usableCampaignsError || allCampaignsError || couponsError) return <div>Something went wrong</div>;
+    if (usableCampaignsError || couponsError) return <div>Something went wrong</div>;
 
     const handleInputChange = (newValue: string) => {
         setInputValueState(newValue);
@@ -73,7 +71,7 @@ const CampaignsApply: FC = () => {
                                             className="h-[18px] w-[26px]"
                                         />
                                         <span className="mx-2 font-[13px] font-bold">
-                                        {inputValue}
+                                        {inputValue ? inputValue : appliedCoupon.code}
                                     </span>
                                     </div>
                                     <button

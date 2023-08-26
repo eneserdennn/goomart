@@ -13,6 +13,7 @@ import Loading from '@/app/loading';
 import Modal from "@/components/modal/Modal";
 import {clearCart, closeModal} from "@/redux/features/cart/cartSlice";
 import ProgressBar from "@/components/ProgressBar";
+import Link from "next/link";
 
 type Props = {}
 
@@ -67,17 +68,17 @@ const Cart = (props: Props) => {
             </span>
                     </div>
                 </div>)}
-            <div className="flex fixed justify-center flex-row bottom-16 bg-white left-0 w-full">
+            <div className="flex fixed justify-center flex-row bottom-[70px] bg-white left-0 w-full">
                 <div className="flex w-[87px] mx-[34px] items-center justify-center ">
                     <span className="text-primary text-[21px] font-bold items-center">{totalPrice}</span>
                     <span className="text-primary text-[21px] font-bold ml-1 items-center">€</span>
                 </div>
                 <div className="flex w-full">
-                    <button
+                    <Link href="/checkout"
                         className="flex justify-center items-center w-full h-[60px] mr-[15px] my-[6px] bg-primary rounded-lg text-white text-[18px] font-bold"
                     >
                         Devam
-                    </button>
+                    </Link>
                 </div>
             </div>
             <Modal show={

@@ -14,7 +14,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ current, minimum, isFreeShipp
 
     return (
         <>
-        { current >= minimum ? <div className="flex fixed px-[15px] py-[10px] items-center bottom-[136px] h-[51px] bg-primary justify-center text-white w-full">
+        { current >= minimum ? <div className="flex fixed px-[15px] py-[10px] items-center bottom-[138px] h-[51px] bg-primary justify-center text-white w-full">
                 Minimum sepet tutarina ulastin. <Image src={ICONS.confetti} alt={'confetti'} width={18} height={18} className="ml-2"/>
             </div> :
         <div className={`flex fixed px-[15px] py-[10px] items-center bottom-[136px] h-[51px] border border-opacity-30 bg-white w-full ${isFreeShipping && 'h-[75px]'}`}>

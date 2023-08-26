@@ -169,6 +169,10 @@ const NavBar: React.FC = () => {
             href: `/campaigns`,
         },
         {
+            name: 'Kampanya Uygula',
+            href: `/campaigns/apply`,
+        },
+        {
             name: "Ürün Öneri",
             href: `/product-recommend`,
         },
@@ -187,6 +191,10 @@ const NavBar: React.FC = () => {
         {
             name: "Sipariş Detayları",
             href: `/orders/order-detail/${idPaths2}`,
+        },
+        {
+            name: "Ödeme",
+            href: `/checkout`,
         }
     ]
 
@@ -211,7 +219,7 @@ const NavBar: React.FC = () => {
                     )}
                 </div>
                 <div className="text-white font-bold">
-                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' ? (
+                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' || currentPage?.name === 'Kampanya Uygula' ? (
                         <div className="">
                             <Link href='/'>
                                 <Image
