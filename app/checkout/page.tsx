@@ -12,6 +12,7 @@ import {IMAGES} from "@/constants/imageConstants"
 import {useSelector, useDispatch} from "react-redux";
 import {selectCampaigns} from "@/redux/features/campaigns/campaignsSlice";
 import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
+import Loading from "@/app/loading";
 
 const people = [
     {date: 'Son 1 Ay'},
@@ -45,7 +46,7 @@ const CheckoutPage = () => {
         {title: "Sepa", image: ICONS.sepa},
     ]
 
-    console.log(appliedCoupon);
+    if (isLoading) return <Loading/>
     const CustomRadio: React.FC<CustomRadioProps> = ({title, desc, image, imageArray, onClick}) => {
         return (
             <div className="flex items-center justify-between bg-white w-full border h-[70px] rounded p-4" onClick={
@@ -202,7 +203,7 @@ const CheckoutPage = () => {
                 </div>
 
                 <div className="flex w-full">
-                    <Link href="/checkout"
+                    <Link href="/checkout/card-payment"
                           className="flex justify-center items-center w-full h-[60px] mr-[15px] my-[6px] bg-primary rounded-lg text-white text-[18px] font-bold"
                     >
                         Sipariş Ver
