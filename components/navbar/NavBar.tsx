@@ -195,16 +195,24 @@ const NavBar: React.FC = () => {
         {
             name: "Ödeme",
             href: `/checkout`,
+        },
+        {
+            name: "Kart Ödemesi",
+            href: `/checkout/card-payment`,
+        },
+        {
+            name: "Sipariş Onay",
+            href: `/checkout/order-confirmation`,
         }
     ]
 
     let currentPage = pages.find(page => page.href === path);
 
     return (
-        <nav className='w-full bg-primary text-[16px]'>
-            {isLoading ? <Loading/> : <div className="flex items-center justify-between p-4">
+        <nav className='flex w-full h-[60px] items-center justify-between  bg-primary text-[16px]'>
+            {isLoading ? <Loading/> : <div className="flex w-full items-center justify-between mx-[15px]">
                 <div className="">
-                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' ? (
+                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' || currentPage?.name === 'Sipariş Onay' ? (
                         <div></div>
                     ) : currentPage?.name === 'Kampanya Detay' ? (
                         <div className="flex items-center">
@@ -219,7 +227,7 @@ const NavBar: React.FC = () => {
                     )}
                 </div>
                 <div className="text-white font-bold">
-                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' || currentPage?.name === 'Kampanya Uygula' ? (
+                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' || currentPage?.name === 'Kampanya Uygula' || currentPage?.name === 'Sipariş Onay' ? (
                         <div className="">
                             <Link href='/'>
                                 <Image
