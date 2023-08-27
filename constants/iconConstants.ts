@@ -92,7 +92,20 @@ import paypalfill from '@/assets/icons/paypalfill.svg'
 import klarna from '@/assets/icons/klarna.svg'
 import sepa from '@/assets/icons/sepa.svg'
 import campaignCheckout from '@/assets/icons/campaignCheckout.svg'
+import personGray from '@/assets/icons/personGray.svg'
+import lock from '@/assets/icons/lock.svg'
+import creditCard from '@/assets/icons/creditCard.svg'
+import calendar from '@/assets/icons/calendar.svg'
+import celebrations from '@/assets/icons/celebrations.svg'
+import doneFilled from '@/assets/icons/doneFilled.svg'
+
 export const ICONS = {
+    doneFilled,
+    celebrations,
+    calendar,
+    creditCard,
+    lock,
+    personGray,
     campaignCheckout,
     sepa,
     klarna,
