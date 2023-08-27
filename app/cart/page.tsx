@@ -14,10 +14,13 @@ import Modal from "@/components/modal/Modal";
 import {clearCart, closeModal} from "@/redux/features/cart/cartSlice";
 import ProgressBar from "@/components/ProgressBar";
 import Link from "next/link";
+import {selectCurrentToken} from "@/redux/features/auth/authSlice";
 
 type Props = {}
 
 const Cart = (props: Props) => {
+    const token = useSelector(selectCurrentToken);
+
     const cartItems = useSelector((state) => state.cart.cartItems);
     const isModalOpen = useSelector(state => state.cart.isModalOpen);
     const dispatch = useDispatch();
@@ -26,6 +29,7 @@ const Cart = (props: Props) => {
     const [isLoading, setIsLoading] = useState(true); // Yeni state
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [isFreeShipping, setIsFreeShipping] = useState<boolean>(true);
+    const [modalToContinue, setModalToContinue] = useState<boolean>(false);
 
     const cartFromCookie = Cookies.get('cart');
 
@@ -73,13 +77,23 @@ const Cart = (props: Props) => {
                     <span className="text-primary text-[21px] font-bold items-center">{totalPrice}</span>
                     <span className="text-primary text-[21px] font-bold ml-1 items-center">€</span>
                 </div>
-                <div className="flex w-full">
-                    <Link href="/checkout"
+                {!token && <div className="flex w-full">
+                    <Button
                         className="flex justify-center items-center w-full h-[60px] mr-[15px] my-[6px] bg-primary rounded-lg text-white text-[18px] font-bold"
+                        onClick={() => setModalToContinue(true)}
                     >
                         Devam
-                    </Link>
-                </div>
+                    </Button>
+                </div>}
+                {token &&
+                    <div className="flex w-full">
+                        <Link href="/checkout"
+                              className="flex justify-center items-center w-full h-[60px] mr-[15px] my-[6px] bg-primary rounded-lg text-white text-[18px] font-bold"
+                        >
+                            Devam
+                        </Link>
+                    </div>
+                }
             </div>
             <Modal show={
                 isModalOpen
@@ -91,6 +105,14 @@ const Cart = (props: Props) => {
                     dispatch(closeModal());
                 }
             } message={'Sepetinizdeki tüm ürünler silinecektir, emin misiniz?'}/>
+            <Modal show={modalToContinue}
+                   hasCancelButton={false}
+                   buttonText={'Tamam'}
+                   onClose={() => setModalToContinue(false)}
+                   onConfirm={() => {
+                       setModalToContinue(false);
+                   }}
+                   message={'Ödemeye devam etmek icin giris yapmalisin.'}/>
 
             <ProgressBar current={currentAmount} minimum={minimumAmount} isFreeShipping={isFreeShipping}/>
 
