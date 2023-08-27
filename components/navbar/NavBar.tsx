@@ -203,6 +203,10 @@ const NavBar: React.FC = () => {
         {
             name: "Sipariş Onay",
             href: `/checkout/order-confirmation`,
+        },
+        {
+            name: "Sipariş Tekrar",
+            href: `/orders/order-reorder`,
         }
     ]
 
