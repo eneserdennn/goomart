@@ -29,8 +29,7 @@ const ConvertCategoryName = (name: string) => {
 
 const Categories: React.FC = () => {
     // @ts-ignore
-    const {data: categories, isLoading, isSuccess, isError, error,} = useGetCategoriesQuery(); 
-
+    const {data: categories, isLoading, isSuccess, isError, error,} = useGetCategoriesQuery();
     let content;
 
     if (isLoading) {
@@ -51,7 +50,7 @@ const Categories: React.FC = () => {
 
     } else if (categories) {
         // category name'i kucult ve bosluklari '-' ile degistir ayrica ingilizce olmayan harfleri ingilizceye cevir
-        
+
         content = (
             <div className="flex flex-wrap justify-center mb-16"> {/* justify-center sınıfını ekledik */}
                 {categories.map((category: Category) => (

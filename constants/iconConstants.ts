@@ -98,8 +98,10 @@ import creditCard from '@/assets/icons/creditCard.svg'
 import calendar from '@/assets/icons/calendar.svg'
 import celebrations from '@/assets/icons/celebrations.svg'
 import doneFilled from '@/assets/icons/doneFilled.svg'
+import checkWhite from '@/assets/icons/checkWhite.svg'
 
 export const ICONS = {
+    checkWhite,
     doneFilled,
     celebrations,
     calendar,

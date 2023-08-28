@@ -1,5 +1,4 @@
 import './globals.css';
-
 import NavBar from '@/components/navbar/NavBar';
 import {Providers} from "@/providers/provider";
 import ToastProvider from "@/providers/toast.provider";

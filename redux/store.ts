@@ -5,6 +5,7 @@ import categoryReducer from "@/redux/features/categories/categorySlice";
 import { configureStore } from '@reduxjs/toolkit';
 import forgotPasswordReducer from "@/redux/features/auth/forgotPasswordSlice";
 import campaignsReducer from "@/redux/features/campaigns/campaignsSlice";
+import productFilterReducer from "@/redux/features/products/productFilterSlice";
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,9 @@ export const store = configureStore({
         forgotPassword: forgotPasswordReducer,
         category: categoryReducer,
         cart: cartReducer,
-        campaigns: campaignsReducer
+        campaigns: campaignsReducer,
+        productFilter: productFilterReducer,
+
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({}).concat(apiSlice.middleware),

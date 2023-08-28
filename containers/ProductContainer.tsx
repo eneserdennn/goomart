@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect, useRef} from "react";
-import { useGetProductsByProductIdQuery, useGetProductsBySubCategoryIdQuery } from "@/redux/features/products/productApiSlice";
+import { useGetProductsByProductIdQuery, useGetProductsBySubCategoryIdQuery, useGetProductsAdvancedQueryQuery} from "@/redux/features/products/productApiSlice";
 
 import Loading from "@/app/loading";
 import ProductCard from "@/components/product-cards/ProductCard";
@@ -10,10 +10,10 @@ import ProductCardOutOfStock from "@/components/product-cards/ProductOutOfStock"
 import {RootState} from "@/redux/store";
 import {useSelector} from "react-redux";
 
+
 interface ProductContainerProps {
     children: React.ReactNode;
 }
-
 
 const ProductContainer = () => {
     const { selectedProductType, selectedSubCategory } = useSelector(
@@ -22,8 +22,6 @@ const ProductContainer = () => {
 
     // const { data, isLoading, error } = useGetProductsByProductIdQuery(selectedProductType.id);
     const { data, isLoading, error } = useGetProductsBySubCategoryIdQuery(selectedSubCategory.id);
-
-
 
     const isFirstRender = useRef(true);
     const productTypeRef = useRef(null);
@@ -46,6 +44,7 @@ const ProductContainer = () => {
         }
     }, [selectedProductType]);
 
+    const filtered = useSelector((state: RootState) => state.productFilter.isFilter);
 
     let content;
     if (isLoading) {

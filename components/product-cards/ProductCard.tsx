@@ -5,6 +5,10 @@ import React, {useState} from 'react';
 import {ICONS} from "@/constants/iconConstants";
 import Image from "next/image";
 import Link from 'next/link';
+import {useDispatch} from "react-redux";
+import {useSelector} from "react-redux";
+import {selectBrandNames} from "@/redux/features/products/productFilterSlice";
+import {addBrandName} from "@/redux/features/products/productFilterSlice";
 
 interface IProduct {
     id: string;
@@ -90,6 +94,8 @@ const ConvertProductName = (name: string) => {
 
 const ProductCard = ({product}: { product: IProduct }) => {
     const [quantity, setQuantity] = useState(1);
+    const dispatch = useDispatch();
+    dispatch(addBrandName(product.brand));
     return (
         <div className="flex relative my-2 w-[110px]">
             <Link href={`/product-detail/${product.id}/${ConvertProductName(product.name)}`}>
@@ -107,7 +113,7 @@ const ProductCard = ({product}: { product: IProduct }) => {
                             {product.brand}
                         </span>
                         <span>
-                            {product.name} {product.description}
+                            {product.name}
                         </span>
                     </div>
                 </div>

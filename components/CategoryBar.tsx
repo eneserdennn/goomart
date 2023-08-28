@@ -8,6 +8,7 @@ import Loading from "@/app/loading";
 import {RootState} from "@/redux/store";
 import {useEffect} from "react";
 import {useGetCategoriesByIdQuery} from "@/redux/features/categories/categoriesApiSlice";
+import {setBrandNames} from "@/redux/features/products/productFilterSlice";
 
 interface ISubCategory {
     id: string;
@@ -31,7 +32,6 @@ interface CategoryBarCompProps {
 
 const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
     const {data: category, isLoading, isSuccess, isError, error} = useGetCategoriesByIdQuery(categoryId);
-
     const dispatch = useDispatch();
     const { productType, selectedProductType, selectedSubCategory } = useSelector(
         (state: RootState) => state.category
@@ -51,7 +51,6 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
         dispatch(setProductType([]));
         dispatch(setSelectedProductType({ id: "", name: "", description: "", image: "" }));
     }, [categoryId, dispatch]); // categoryId'nin değiştiği her seferde bu useEffect çalışır
-
 
     if (isLoading) {
         return (
@@ -90,6 +89,7 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
                                     if (selectedSubCategory.id !== subCategory.id && subCategory.ProductType.length > 0) {
                                         dispatch(setSelectedProductType(subCategory.ProductType[0]));
                                     }
+                                    dispatch(setBrandNames([]));
                                 }}
                                 key={subCategory.id}>
                                 <div className="rounded-md">{subCategory.name}
