@@ -10,7 +10,6 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         }),
         getProductsByProductId: builder.query({
             query: (id) => `/product/${id}`
-
         }),
         getProductsBySubCategoryId: builder.query({
             query: (id) => `/sub-category/all-products/${id}`

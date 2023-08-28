@@ -7,7 +7,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         }),
         checkCart: builder.mutation({
             query: (data) => ({
-                url: '/order/check-your-cart',
+                url: '/order/check-cart',
                 method: 'POST',
                 body: data
             })

@@ -54,7 +54,7 @@ const cartSlice = createSlice({
                 Number(state.itemsPrice) +
                 Number(state.shippingPrice) +
                 Number(state.taxPrice)
-                ).toFixed(2);
+            ).toFixed(2);
 
             Cookies.set("cart", JSON.stringify(state));
 
