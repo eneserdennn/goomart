@@ -1,6 +1,5 @@
 import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import CategoryBar from '@/components/CategoryBar';
-import ProductCard from '@/components/product-cards/ProductCard';
 import ProductContainer from '@/containers/ProductContainer';
 
 const CategoriesPage = ({ params }) => {
@@ -18,7 +17,7 @@ const CategoriesPage = ({ params }) => {
         <>
             <CategoryBar categoryId={categoryId} />
             <div className="flex mb-20">
-            <ProductContainer />
+            <ProductContainer categoryId={categoryId}/>
             </div>
             <BottomNavBar />
         </>

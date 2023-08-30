@@ -12,8 +12,9 @@ export const categoriesApiSlice = apiSlice.injectEndpoints({
         getSubCategoriesById: builder.query({
             query: (id) => `/sub-category/${id}`,
         }),
-
-
+        allProductsByCategoryId: builder.query({
+            query: (id) => `/category/all-products/${id}`,
+        }),
     }),
 });
 
@@ -21,5 +22,6 @@ export const {
     useGetCategoriesQuery,
     useGetCategoriesByIdQuery,
     useGetSubCategoriesByIdQuery,
+    useAllProductsByCategoryIdQuery,
 
 } = categoriesApiSlice;

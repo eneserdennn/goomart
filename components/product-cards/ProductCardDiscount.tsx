@@ -104,7 +104,7 @@ const ProductCardDiscount = ({product}: { product: IProduct }) => {
             <Image className="flex flex-col items-center justify-around absolute top-0 left-0 mt-[-10px] ml-[-12.5px] "
             src={ICONS.discount} alt={'discount'} width={74} height={64}/>
             <span className="flex flex-col items-center justify-around absolute top-0 left-0 mt-[1px] ml-[3px] font-bold text-white text-[13px] ">
-                -25%
+                -{product.saleAmount}%
             </span>
             <div
                 className="flex flex-col border items-center justify-around p-1 border-primary bg-white h-[30px] w-[30px] ml-2 rounded-full absolute top-0 right-0 mt-[-6px] mr-[-6px] ">

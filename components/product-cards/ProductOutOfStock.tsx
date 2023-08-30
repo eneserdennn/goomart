@@ -97,7 +97,7 @@ const ProductCardOutOfStock = ({product}: { product: IProduct }) => {
                             {product.brand}
                         </span>
                         <span>
-                            {product.name} {product.description}
+                            {product.name}
                         </span>
                     </div>
                 </div>

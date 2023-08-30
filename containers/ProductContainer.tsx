@@ -1,7 +1,8 @@
 'use client'
 
 import React, {useEffect, useRef} from "react";
-import { useGetProductsByProductIdQuery, useGetProductsBySubCategoryIdQuery, useGetProductsAdvancedQueryQuery} from "@/redux/features/products/productApiSlice";
+import {useGetProductsBySubCategoryIdQuery} from "@/redux/features/products/productApiSlice";
+import {useAllProductsByCategoryIdQuery} from "@/redux/features/categories/categoriesApiSlice";
 
 import Loading from "@/app/loading";
 import ProductCard from "@/components/product-cards/ProductCard";
@@ -15,16 +16,17 @@ interface ProductContainerProps {
     children: React.ReactNode;
 }
 
-const ProductContainer = () => {
-    const { selectedProductType, selectedSubCategory } = useSelector(
+const ProductContainer = ({categoryId}) => {
+    const {selectedProductType, selectedSubCategory} = useSelector(
         (state: RootState) => state.category
     );
+    const {data, isLoading, error} = useGetProductsBySubCategoryIdQuery(selectedSubCategory.id);
+    const {data: data2, isLoading: isLoading2, error: error2} = useAllProductsByCategoryIdQuery(categoryId);
 
-    // const { data, isLoading, error } = useGetProductsByProductIdQuery(selectedProductType.id);
-    const { data, isLoading, error } = useGetProductsBySubCategoryIdQuery(selectedSubCategory.id);
 
     const isFirstRender = useRef(true);
     const productTypeRef = useRef(null);
+
 
     useEffect(() => {
         if (isFirstRender.current) {
@@ -44,29 +46,40 @@ const ProductContainer = () => {
         }
     }, [selectedProductType]);
 
-    const filtered = useSelector((state: RootState) => state.productFilter.isFilter);
+    const filtered = data2?.SubCategory.filter((subCategory) => subCategory.id === selectedSubCategory.id);
 
     let content;
     if (isLoading) {
-        content = <div className="flex items-center justify-center"><Loading /></div>;
+        content = <div className="flex items-center justify-center"><Loading/></div>;
     } else if (error) {
         content = <div>Something went wrong</div>;
-    } else if (data) {
-        const { ProductType } = data;
+    } else if (filtered) {
+        const {ProductType} = data;
         content = (
             <div className="flex flex-col w-full justify-center">
                 {ProductType.map((productType) => (
-                        <div
-                            key={productType.id}
-                            ref={productType.name === selectedProductType.name ? productTypeRef : null}
-                        >
-                             <div className="p-2 mt-12 my-1 font-bold text-[15px]">
-                                {productType.name}
-                            </div>
+                    <div
+                        key={productType.id}
+                        ref={productType.name === selectedProductType.name ? productTypeRef : null}
+                    >
+                        <div className="p-2 mt-12 my-1 font-bold text-[15px]">
+                            {productType.name}
+                        </div>
                         <div className="flex flex-wrap justify-around bg-white shadow-md">
-                            {productType.Product.map((product) => (
-                                <ProductCard key={product.id} product={product}/>
-                            ))}
+                            {productType.Product.map((product) => {
+                                let component;
+
+                                if (product.mainProductUnitStock > 0 && product.saleAmount > 0) {
+                                    component = <ProductCardDiscount key={product.id} product={product} />;
+                                } else if (product.mainProductUnitStock > 0) {
+                                    component = <ProductCard key={product.id} product={product} />;
+                                } else {
+                                    component = <ProductCardOutOfStock key={product.id} product={product} />;
+                                }
+
+                                return <div key={product.id}>{component}</div>;
+                            })}
+
                         </div>
                     </div>
                 ))}
