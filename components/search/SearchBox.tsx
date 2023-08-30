@@ -3,12 +3,13 @@
 import React, {useState, useEffect} from "react";
 import Image from "next/image";
 import {ICONS} from "@/constants/iconConstants";
-import {useGetProductsAdvancedQueryQuery} from "@/redux/features/products/productApiSlice";
+import {useSearchInAllProductsQuery} from "@/redux/features/categories/categoriesApiSlice";
 import Modal from "@/components/modal/Modal";
 import SearchHistory from "@/components/search/SearchHistory";
 import SearchResults from "@/components/search/SearchResults";
 import {IMAGES} from "@/constants/imageConstants";
 import Link from "next/link";
+import Loading from "@/app/loading";
 
 
 const SearchBox = () => {
@@ -19,32 +20,21 @@ const SearchBox = () => {
     const [isTrashIconClickable, setIsTrashIconClickable] = useState(false);
     const [showCloseIcon, setShowCloseIcon] = useState(false);
     const [isCloseIconClickable, setIsCloseIconClickable] = useState(false);
-    const [params, setParams] = useState({
-        "filter-product-type": 1,
-        "sort-by": "max-price",
-        lang: "en",
-    });
 
     const [searchResults, setSearchResults] = useState([]);
     const [searched, setSearched] = useState(false);
-    const { data, error, isLoading } = useGetProductsAdvancedQueryQuery(params);
+
+    const { data, error, isLoading } = useSearchInAllProductsQuery({
+        params: { search: searchTerm }
+    });
 
 
     const handleSearch = (e) => {
         e.preventDefault();
-
-        setParams({
-            ...params,
-            "filter-brand": searchTerm,
-        });
-
-
         if (searchTerm.trim() !== "") {
             updateSearchHistory(searchTerm);
-            setSearchResults(data);
         }
 
-        console.log('data', data)
         setIsSearchHistoryOpen(false);
         setSearched(true);
     };
@@ -72,6 +62,7 @@ const SearchBox = () => {
 
     useEffect(() => {
         setShowCloseIcon(searchTerm !== "");
+        console.log(data)
     }, [searchTerm]);
 
     const updateSearchHistory = (term) => {
@@ -104,6 +95,8 @@ const SearchBox = () => {
             setIsCloseIconClickable(false);
         }, 200);
     };
+
+    if (error) return <div>Something went wrong</div>;
 
     return (
         <div className="flex flex-col w-full">
@@ -166,18 +159,14 @@ const SearchBox = () => {
                     <SearchHistory searchHistory={searchHistory} onSearchTermClick={handleSearchTermClick}/>
                 </div>
             )}
-            {data && searchResults.length > 0 && (
+            {data && (
                 <div className="flex flex-col">
-                    {searchResults.length > 0 && (
-                        <SearchResults searchResults={searchResults}/>
+                    {searched && !isLoading && (
+                        <SearchResults searchResults={data.products} isLoading={isLoading}/>
                     )}
                 </div>
             )}
-            {
-              data && searched && searchResults.length === 0 && (<>
-                    <div className="flex flex-row w-full my-2.5 h-[34px] pl-[15px] pr-[20px] justify-between items-center text-[#363636] font-bold text-[14px] ">
-                        <span>Arama Sonuçları</span>
-                    </div>
+            {data?.productCount === 0 &&  (<>
                     <Link href={'/product-recommend'}>
                     <div className="flex flex-wrap bg-white shadow-md px-[20px] py-[30px]">
                         <div className="flex flex-col justify-center items-center text-center border rounded-md h-[130px] w-[130px]">
