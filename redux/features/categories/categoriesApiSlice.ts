@@ -14,6 +14,10 @@ export const categoriesApiSlice = apiSlice.injectEndpoints({
         }),
         allProductsByCategoryId: builder.query({
             query: (id) => `/category/all-products/${id}`,
+            query: ({id, params}) => ({
+                url: `/category/all-products/${id}`,
+                params,
+            })
         }),
     }),
 });

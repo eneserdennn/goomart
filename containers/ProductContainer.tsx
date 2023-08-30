@@ -21,7 +21,7 @@ const ProductContainer = ({categoryId}) => {
         (state: RootState) => state.category
     );
     const {data, isLoading, error} = useGetProductsBySubCategoryIdQuery(selectedSubCategory.id);
-    const {data: data2, isLoading: isLoading2, error: error2} = useAllProductsByCategoryIdQuery(categoryId);
+    const {data: data2, isLoading: isLoading2, error: error2} = useAllProductsByCategoryIdQuery({id: categoryId, params:{}});
 
 
     const isFirstRender = useRef(true);
@@ -54,7 +54,7 @@ const ProductContainer = ({categoryId}) => {
     } else if (error) {
         content = <div>Something went wrong</div>;
     } else if (filtered) {
-        const {ProductType} = data;
+        const {ProductType} = filtered[0];
         content = (
             <div className="flex flex-col w-full justify-center">
                 {ProductType.map((productType) => (
