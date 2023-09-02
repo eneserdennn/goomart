@@ -52,11 +52,11 @@ const Categories: React.FC = () => {
         // category name'i kucult ve bosluklari '-' ile degistir ayrica ingilizce olmayan harfleri ingilizceye cevir
 
         content = (
-            <div className="flex flex-wrap justify-center mb-16"> {/* justify-center sınıfını ekledik */}
+            <div className="flex flex-wrap justify-center mb-16">
                 {categories.map((category: Category) => (
-                    <div className="w-1/3 flex justify-around"
+                    <div className="w-1/3 md:w-1/4 lg:w-1/6 flex justify-around"
                          key={category.id}
-                            onClick={() => console.log('[...products].id', category.id)}
+                         onClick={() => console.log('[...products].id', category.id)}
                     >
                         <Link href={{
                             pathname: `/categories/${category.id}/${ConvertCategoryName(category.name)}`,

@@ -1,10 +1,10 @@
 'use client'
 
-import {useEffect, useState} from "react";
+import {ButtonHTMLAttributes, ReactNode, useEffect, useState} from "react";
 
-import {AiFillFilter} from "react-icons/ai";
+import {AiFillFilter, AiOutlineLoading3Quarters} from "react-icons/ai";
 import {ICONS} from "@/constants/iconConstants";
-import Image from 'next/image';
+import Image, {StaticImageData} from 'next/image';
 import {IoMdNotifications} from 'react-icons/io';
 import Link from 'next/link';
 import Loading from "@/app/loading";
@@ -17,6 +17,13 @@ import {useRouter} from 'next/navigation';
 import {openModal, closeModal} from "@/redux/features/cart/cartSlice";
 
 import Cookies from "js-cookie";
+import {IoMenu, IoPersonSharp} from "react-icons/io5";
+import {useField} from "formik";
+import InputMask from "react-input-mask";
+import {BiSearchAlt, BiSolidChevronDown} from "react-icons/bi";
+import IconButton from "@/components/icon-button";
+import Button from "@/components/button";
+import {FaShoppingCart} from "react-icons/fa";
 
 interface IMenuItem {
     name: string;
@@ -212,56 +219,139 @@ const NavBar: React.FC = () => {
 
     let currentPage = pages.find(page => page.href === path);
 
-    return (
-        <nav className='flex w-full h-[60px] items-center justify-between  bg-primary text-[16px]'>
-            {isLoading ? <Loading/> : <div className="flex w-full items-center justify-between mx-[15px]">
-                <div className="">
-                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' || currentPage?.name === 'Sipariş Onay' ? (
-                        <div></div>
-                    ) : currentPage?.name === 'Kampanya Detay' ? (
-                        <div className="flex items-center">
-                        <Image src={ICONS.closeOutlined} alt='goomart' className="h-[12px] w-[12px]"
-                                 onClick={() => router.back()}/>
-                        </div>
-                    ): (
-                        <div className="flex items-center">
-                            <Image src={ICONS.leftArrow} alt='goomart' className="h-5 w-5"
-                                   onClick={() => router.back()}/>
-                        </div>
-                    )}
+    interface IconInputProps {
+        icon: StaticImageData;
+        mask?: string;
+        name: string;
+        type: string;
+        placeholder: string;
+    }
+
+
+    // ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    //     className?: string;
+    //     disabled?: boolean;
+    //     type?: 'submit' | 'reset' | 'button';
+    //     loading?: boolean;
+    //     active?: boolean;
+    //     icon?: ReactNode;
+    //     svgIcon?: string;
+    //     iconSize?: number;
+    //     rightIcon?: boolean;
+    //     rightString?: string;
+
+    const IconInputNoMask: React.FC<IconInputProps> = ({icon: Icon, ...props}) => {
+        // const [field, meta] = useField(props);
+        // const errorText = meta.error && meta.touched ? meta.error : null;
+
+        return (
+            <div className="flex flex-col w-[528px]">
+                <div className="relative">
+                    <div className="absolute px-1 left-3 top-1/2 transform -translate-y-1/2">
+                        <BiSearchAlt size={23} color="#888"/>
+                    </div>
+                    <input
+                        {...props}
+                        className={`w-full rounded-2xl px-[43px]  h-[45px] gap-[15px] `}
+                    />
+
                 </div>
-                <div className="text-white font-bold">
-                    {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' || currentPage?.name === 'Kampanya Uygula' || currentPage?.name === 'Sipariş Onay' ? (
-                        <div className="">
-                            <Link href='/'>
-                                <Image
-                                    src={ICONS.goomart}
-                                    alt='goomart'
-                                    width={100}
-                                />
-                            </Link>
-                        </div>
-                    ) : (
-                        currentPage?.name
-                    )}
-                </div>
-                {currentPage?.name === 'Home' ? <div className="flex items-center">
-                    <Link href={`/notification`}>
-                        <IoMdNotifications className='text-white' size={30} color={'#FFD306'}/>
-                    </Link>
-                </div> : currentPage?.name === 'Ürünler' ? <div className="flex justify-between items-center">
-                    <SideBar data={data}/>
-                </div> : currentPage?.name === 'Ürün Detay' ? <div className="flex justify-between items-center">
-                    <Image src={ICONS.heart} alt='filter' width={20} height={19}/>
-                </div> : currentPage?.name === 'Sepet' ?
-                    <Image src={ICONS.trashWhite} alt='filter' width={20} height={19} onClick={() => {
-                        dispatch(openModal());
-                    }}/>
-                    : <div className="flex justify-between items-center"></div>
-                }
             </div>
-            }
-        </nav>
+        );
+    }
+
+    return (<>
+            <nav
+                className='hidden md:flex w-full h-[70px] px-[238px] items-center justify-between  bg-primary text-[16px]'>
+                {isLoading ? <Loading/> :
+                    <div className="flex w-full items-center justify-between mx-[15px]">
+                        <div className="flex flex-col items-center text-white">
+                            <IoMenu size={30} color={'#FFF'}/>
+                            <span className='text-[14px] font-bold'>Menu</span>
+                        </div>
+                        <Link href='/'>
+                            <Image
+                                src={ICONS.goomart}
+                                alt='goomart'
+                                width={100}
+                            />
+                        </Link>
+                        <IconInputNoMask icon={ICONS.search} name='search' type='text' placeholder='Ürün Ara...'/>
+                        <div className="flex flex-row space-x-[40px] pr-[90px]">
+                            <Button
+                                className='bg-[#0e6200] justify-between w-[180px] font-bold rounded-[16px] px-[15px] py-[12px] text-[14px] hover:bg-primary hover:text-white'
+                                onClick={() => router.push('/cart')}
+                            >
+                                <IoPersonSharp size={19} color={'#FFF'}/>
+                                Giris Yap / Kayit Ol
+                            </Button>
+                            <Button
+                                className='bg-[#0e6200] flex justify-between w-[180px] font-bold rounded-[16px] px-[15px] text-[14px] hover:bg-primary hover:text-white'
+                                onClick={() => router.push('/cart')}
+                            >
+                                <FaShoppingCart size={19} color={'#FFD306'}/>
+                                <span className="flex flex-col text-[14px]">
+                                    Sepetim
+                                    <span className="text-[13px] text-[#FFD306]">
+                                       125,95 €
+                                    </span>
+                                </span>
+                                <BiSolidChevronDown size={24} color={'#FFF'}/>
+                            </Button>
+                        </div>
+                    </div>
+                }
+            </nav>
+            <nav className='flex md:hidden w-full h-[60px] items-center justify-between  bg-primary text-[16px]'>
+                {isLoading ? <Loading/> : <div className="flex w-full items-center justify-between mx-[15px]">
+                    <div className="">
+                        {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' || currentPage?.name === 'Sipariş Onay' ? (
+                            <div></div>
+                        ) : currentPage?.name === 'Kampanya Detay' ? (
+                            <div className="flex items-center">
+                                <Image src={ICONS.closeOutlined} alt='goomart' className="h-[12px] w-[12px]"
+                                       onClick={() => router.back()}/>
+                            </div>
+                        ) : (
+                            <div className="flex items-center">
+                                <Image src={ICONS.leftArrow} alt='goomart' className="h-5 w-5"
+                                       onClick={() => router.back()}/>
+                            </div>
+                        )}
+                    </div>
+                    <div className="text-white font-bold">
+                        {currentPage?.name === 'Home' || currentPage?.name === 'Kampanyalar' || currentPage?.name === 'Kampanya Uygula' || currentPage?.name === 'Sipariş Onay' ? (
+                            <div className="">
+                                <Link href='/'>
+                                    <Image
+                                        src={ICONS.goomart}
+                                        alt='goomart'
+                                        width={100}
+                                    />
+                                </Link>
+                            </div>
+                        ) : (
+                            currentPage?.name
+                        )}
+                    </div>
+                    {currentPage?.name === 'Home' ? <div className="flex items-center">
+                        <Link href={`/notification`}>
+                            <IoMdNotifications className='text-white' size={30} color={'#FFD306'}/>
+                        </Link>
+                    </div> : currentPage?.name === 'Ürünler' ? <div className="flex justify-between items-center">
+                        <SideBar data={data}/>
+                    </div> : currentPage?.name === 'Ürün Detay' ? <div className="flex justify-between items-center">
+                        <Image src={ICONS.heart} alt='filter' width={20} height={19}/>
+                    </div> : currentPage?.name === 'Sepet' ?
+                        <Image src={ICONS.trashWhite} alt='filter' width={20} height={19} onClick={() => {
+                            dispatch(openModal());
+                        }}/>
+                        : <div className="flex justify-between items-center"></div>
+                    }
+                </div>
+                }
+            </nav>
+        </>
     );
 };
 

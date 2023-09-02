@@ -10,7 +10,7 @@ import Head from "next/head";
 export default function Home() {
 
     return (
-        <>
+        <div className="flex flex-col md:px-[238px]">
             <Head>
                 <title>Home</title>
             </Head>
@@ -18,6 +18,6 @@ export default function Home() {
             <Slider />
             <Categories />
             <BottomNavBar />
-        </>
+        </div>
     );
 }

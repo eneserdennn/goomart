@@ -35,7 +35,7 @@ const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     } = props;
 
     const RootClasses = cn(
-        'w-full py-4 mt-1 font-semibold rounded-md flex items-center justify-center transition duration-300 ease-in-out',
+        'w-full py-4 mt-1 font-semibold flex items-center justify-center transition duration-300 ease-in-out',
         'bg-white hover:bg-primary-[0.8] focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:outline-none hover:shadow-lg',
         {'opacity-50 cursor-not-allowed': disabled},
         className

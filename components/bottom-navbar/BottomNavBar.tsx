@@ -25,7 +25,7 @@ const BottomNavBar: React.FC = () => {
     }, [])
 
   return (
-      <div className="flex justify-around fixed bottom-0 h-[70px] left-0 w-full bg-white border-t border-gray-300">
+      <div className="flex md:hidden justify-around fixed bottom-0 h-[70px] left-0 w-full bg-white border-t border-gray-300">
               <button className="flex flex-col items-center justify-center space-x-1" onClick={() => router.push('/')}>
                   <GoHomeFill size={30} color="green" />
               </button>
