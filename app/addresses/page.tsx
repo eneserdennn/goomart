@@ -32,7 +32,6 @@ const DeliveryAddress: React.FC = () => {
 
     useEffect(() => {
         if (addresses) {
-            // console.log(addresses.addresses);
             setDeliveryAddress(addresses.addresses)
 
             const defaultAddressID = addresses.defaultAddressId;

@@ -22,6 +22,9 @@ module.exports = {
       fontFamily: {
         sans: ["Nunito", "sans-serif"],
       },
+      width: {
+        '1/7': '14.2857143%',  // This percentage equates to 1/7
+      },
     },
   },
   plugins: [

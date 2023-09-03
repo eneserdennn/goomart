@@ -1,28 +1,41 @@
 'use client'
 
 import React, {useEffect, useRef} from "react";
-import {useGetProductsBySubCategoryIdQuery} from "@/redux/features/products/productApiSlice";
-import {useAllProductsByCategoryIdQuery} from "@/redux/features/categories/categoriesApiSlice";
+import {useGetProductsAdvancedQueryQuery} from "@/redux/features/products/productApiSlice";
 
 import Loading from "@/app/loading";
 import ProductCard from "@/components/product-cards/ProductCard";
 import ProductCardDiscount from "@/components/product-cards/ProductCardDiscount";
 import ProductCardOutOfStock from "@/components/product-cards/ProductOutOfStock";
-import {RootState} from "@/redux/store";
-import {useSelector} from "react-redux";
-
+import {useDispatch, useSelector} from "react-redux";
+import {
+    selectIsFiltered,
+    selectProducts, selectProductTypes,
+    selectSelectedProductType,
+    setProducts
+} from "@/redux/features/filter/filterSlice";
 
 interface ProductContainerProps {
     children: React.ReactNode;
 }
 
 const ProductContainer = ({categoryId}) => {
-    const {selectedProductType, selectedSubCategory} = useSelector(
-        (state: RootState) => state.category
-    );
-    const {data, isLoading, error} = useGetProductsBySubCategoryIdQuery(selectedSubCategory.id);
-    const {data: data2, isLoading: isLoading2, error: error2} = useAllProductsByCategoryIdQuery({id: categoryId, params:{}});
+    const isFiltered = useSelector(selectIsFiltered);
+    const selectedProductType = useSelector(selectSelectedProductType);
+    const productTypes = useSelector(selectProductTypes);
+    const {data, isLoading, isSuccess, isError, error} = useGetProductsAdvancedQueryQuery({
+        'filter-product-type': selectedProductType?.id,
+    });
 
+    const dispatch = useDispatch();
+
+    if (isFiltered) {
+        console.log('isFiltered', isFiltered)
+    } else {
+        dispatch(setProducts(data));
+    }
+
+    const products = useSelector(selectProducts)
 
     const isFirstRender = useRef(true);
     const productTypeRef = useRef(null);
@@ -46,18 +59,15 @@ const ProductContainer = ({categoryId}) => {
         }
     }, [selectedProductType]);
 
-    const filtered = data2?.SubCategory.filter((subCategory) => subCategory.id === selectedSubCategory.id);
-
     let content;
     if (isLoading) {
         content = <div className="flex items-center justify-center"><Loading/></div>;
     } else if (error) {
         content = <div>Something went wrong</div>;
-    } else if (filtered) {
-        const {ProductType} = filtered[0];
+    } else if (data) {
         content = (
             <div className="flex flex-col w-full justify-center">
-                {ProductType.map((productType) => (
+                {productTypes?.map((productType) => (
                     <div
                         key={productType.id}
                         ref={productType.name === selectedProductType.name ? productTypeRef : null}
@@ -66,7 +76,7 @@ const ProductContainer = ({categoryId}) => {
                             {productType.name}
                         </div>
                         <div className="flex flex-wrap justify-around bg-white shadow-md">
-                            {productType.Product.map((product) => {
+                            {products?.map((product) => {
                                 let component;
 
                                 if (product.mainProductUnitStock > 0 && product.saleAmount > 0) {
@@ -76,10 +86,8 @@ const ProductContainer = ({categoryId}) => {
                                 } else {
                                     component = <ProductCardOutOfStock key={product.id} product={product} />;
                                 }
-
                                 return <div key={product.id}>{component}</div>;
                             })}
-
                         </div>
                     </div>
                 ))}

@@ -4,15 +4,12 @@ import ProductContainer from '@/containers/ProductContainer';
 
 const CategoriesPage = ({ params }) => {
     const categoryId = parseInt(params.categories[0])
-    console.log
-
     if (isNaN(categoryId)) {
         const defaultCategoryID = 0;
         return (
             <CategoryBar categoryId={defaultCategoryID} />
         );
     }
-
     return (
         <>
             <CategoryBar categoryId={categoryId} />

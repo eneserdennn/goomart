@@ -4,7 +4,9 @@ const initialState = {
     isFilter: false,
     brandNames: [],
     productName: '',
-    filteredList: []
+    filteredList: [],
+    productTypes: [],
+    categoryId: null,
 }
 
 const productFilterSlice = createSlice({
@@ -15,9 +17,8 @@ const productFilterSlice = createSlice({
             state.brandNames = action.payload;
         },
         addBrandName: (state, action) => {
-            // Aynı marka adını tekrar eklememek için kontrol
-            if (!state.brandNames.includes(action.payload)) {
-                state.brandNames.push(action.payload);
+            if (!state.brandNames?.includes(action.payload)) {
+                state.brandNames?.push(action.payload);
             }
         },
         productName: (state, action) => {
@@ -28,10 +29,38 @@ const productFilterSlice = createSlice({
         },
         filteredList: (state, action) => {
             state.filteredList = action.payload;
+        },
+        setProductTypes: (state, action) => {
+            state.productTypes = action.payload;
+        },
+        addProductType: (state, action) => {
+            if (!state.productTypes.includes(action.payload)) {
+                state.productTypes.push(action.payload);
+            }
+        },
+        setCategoryId: (state, action) => {
+            state.categoryId = action.payload;
         }
     }
 })
 
-export const {setBrandNames, addBrandName, productName, isFilter, filteredList} = productFilterSlice.actions;
+export const {
+    setBrandNames,
+    addBrandName,
+    productName,
+    isFilter,
+    filteredList,
+    setProductTypes,
+    addProductType,
+    setCategoryId
+} = productFilterSlice.actions;
+
+export const selectBrandNames = (state) => state.productFilter.brandNames;
+export const selectProductName = (state) => state.productFilter.productName;
+export const selectIsFilter = (state) => state.productFilter.isFilter;
+export const selectFilteredList = (state) => state.productFilter.filteredList;
+export const selectProductTypes = (state) => state.productFilter.productTypes;
+export const selectCategoryId = (state) => state.productFilter.categoryId;
+
 
 export default productFilterSlice.reducer;

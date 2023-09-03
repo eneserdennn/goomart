@@ -3,6 +3,7 @@
 import React, {useState} from 'react';
 import Image from "next/image";
 import {ICONS} from "@/constants/iconConstants";
+import {useDispatch} from "react-redux";
 
 interface IProduct {
     id: string;
@@ -75,7 +76,9 @@ interface ICategory {
 }
 
 const ProductCardDiscount = ({product}: { product: IProduct }) => {
+    const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
+
     return (
         <div className="flex relative my-2 w-[110px]">
             <div className="flex flex-col">

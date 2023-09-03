@@ -15,7 +15,6 @@ const CampaignDetail = ({params}) => {
     const {data: products, isLoading: productsLoading, error: productsError} = useGetProductsListWithCampaignQuery(campaign?.resourceId);
 
     let content;
-    console.log(window.innerWidth)
 
     if (campaignLoading) {
         content = <Loading/>;

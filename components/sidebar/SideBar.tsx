@@ -1,6 +1,5 @@
 'use client'
 
-import {FaAngleDown, FaTimes} from 'react-icons/fa'
 import React, {useEffect, useState} from 'react'
 
 import {Switch} from "@headlessui/react";
@@ -11,17 +10,47 @@ import {ICONS} from "@/constants/iconConstants";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/redux/store";
 import {useGetProductsAdvancedQueryQuery} from "@/redux/features/products/productApiSlice";
-import {filteredList} from "@/redux/features/products/productFilterSlice";
+import {
+    selectBrandNames,
+    selectCategoryId,
+    selectProductTypes,
+    setBrandNames
+} from "@/redux/features/products/productFilterSlice";
 import {IoMdCheckmark, IoMdRadioButtonOff, IoMdRadioButtonOn, IoMdSquareOutline} from "react-icons/io";
+import {useAllProductsByCategoryIdQuery} from "@/redux/features/categories/categoriesApiSlice";
+import {selectSelectedBrands, setSelectedBrands} from "@/redux/features/filter/filterSlice";
 
 // @ts-ignore
 const SideBar = ({data}) => {
     const dispatch = useDispatch();
+    // const selectedBrands = useSelector(selectSelectedBrands);
     const [toggleSideBar, setToggleSideBar] = useState<boolean>(false);
     const [isToggled, setIsToggled] = useState(false);
-    const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+    const [selectedBrandsLocal, setSelectedBrandsLocal] = useState<string[]>([]);
     const [selectedSort, setSelectedSort] = useState<string>('Önerilen');
+    const brandNames = useSelector(selectBrandNames);
+    console.log('brandNames', brandNames)
 
+    const categoryIdFromPath = window.location.pathname.split('/')[2];
+    const productTypes = useSelector(selectProductTypes)
+    const selectedBrands = useSelector(selectSelectedBrands);
+    const selectedBrandsString = selectedBrands.join(',');
+    console.log(selectedBrandsString)
+
+
+    const {data: data2, isLoading: isLoading2, error: error2} = useAllProductsByCategoryIdQuery({id: categoryIdFromPath, params:{
+            "filter-brand": selectedBrandsString
+        }});
+
+    dispatch(setBrandNames(data2?.brand));
+
+    const brands = useSelector(selectBrandNames)
+
+
+    useEffect(() => {
+        console.log(selectedBrandsLocal)
+        dispatch(setSelectedBrands(selectedBrandsLocal));
+    }, [selectedBrandsLocal]);
 
     const pages = ['Main', 'Sıralama', 'Markalar', 'Ürün Çeşidi', 'İndirimli Ürünler'];
     const sorts = ['Önerilen', 'En Düşük Fiyat', 'En Yüksek Fiyat', 'Indirim oranına gore', 'En yeni'];
@@ -32,21 +61,12 @@ const SideBar = ({data}) => {
         setToggleSideBar(prev => !prev);
     }
 
-    const filtered = useSelector((state: RootState) => state.productFilter.isFilter);
+    const CustomCheckbox = ({ label, isChecked, onCheckChange }) => {
+        const [checked, setChecked] = useState(isChecked);
 
-    if (filtered) {
-        const params = {
-            "filter-product-type": useSelector((state: RootState) => state.category.selectedProductType.id),
-        }
-
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const {data, isLoading, error} = useGetProductsAdvancedQueryQuery(params);
-        dispatch(filteredList(data));
-    }
-
-    const brands = useSelector((state: RootState) => state.productFilter.brandNames);
-    const CustomCheckbox = ({label, onCheckChange}) => {
-        const [checked, setChecked] = useState(false);
+        useEffect(() => {
+            setChecked(isChecked);
+        }, [isChecked]);
 
         const handleCheckboxChange = () => {
             const newCheckedState = !checked;
@@ -60,9 +80,9 @@ const SideBar = ({data}) => {
                 <div className="flex items-center w-full">
                     <div className="flex items-center">
                         <div className="flex flex-col">
-                            {selectedBrands.includes(label) ? (
+                            {checked ? (
                                 <Image src={ICONS.checkWhite} alt={'done'} width={20} height={20}
-                                       className="bg-primary rounded-md"/>
+                                       className="bg-primary rounded-md" />
                             ) : (
                                 <div
                                     className="flex items-center justify-center border-2 border-[#969696] rounded-md h-[20px] w-[20px]">
@@ -75,6 +95,7 @@ const SideBar = ({data}) => {
             </div>
         );
     };
+
 
     const CustomRadio = ({label}) => {
         return (
@@ -121,7 +142,7 @@ const SideBar = ({data}) => {
                   setToggleSideBar(false);
                   setIsToggled(false);
                   setSelectedPage(pages[0]);
-                  setSelectedBrands([]);
+                  dispatch(setSelectedBrands([]));
               }}>
                 Temizle
               </span>
@@ -154,7 +175,7 @@ const SideBar = ({data}) => {
                                 <span className="text-[14px]">Markalar</span>
                                 <div className="flex flex-row items-center">
                                     <span className="mr-3 text-[12px] text-deepgray">
-                                        {selectedBrands.length > 0 ? `${selectedBrands.length} marka` : 'Tümü'}
+                                        {selectedBrandsLocal.length > 0 ? `${selectedBrandsLocal.length} marka` : 'Tümü'}
                                     </span>
                                     <Image src={ICONS.rightArrow} alt={'right-arrow'} className="h-4 w-4"/>
                                 </div>
@@ -162,7 +183,11 @@ const SideBar = ({data}) => {
                         </div>
                         <div className="flex w-full h-[2px] bg-gray-200"></div>
 
-                        <div className="flex flex-col justify-center white h-[53px]">
+                        <div className="flex flex-col justify-center white h-[53px]" onClick={
+                            () => {
+                                setSelectedPage(pages[3]);
+                            }
+                        }>
                             <div className="flex flex-row justify-between px-3">
                                 <span className="text-[14px]">Ürün Çesidi</span>
                                 <div className="flex flex-row items-center">
@@ -218,21 +243,43 @@ const SideBar = ({data}) => {
                     </>)}
                 {selectedPage === pages[2] && (
                     <>
-                        {brands && brands.map((brand) => (
+                        {brands.map((brand) => (
                             <CustomCheckbox
-                                key={brand}
-                                label={brand}
+                                key={brand.productTypeId}
+                                label={brand.brandName}
+                                isChecked={selectedBrandsLocal.includes(brand.brandName)}
                                 onCheckChange={(brandName, isChecked) => {
-                                    if (isChecked && !selectedBrands.includes(brandName)) {
-                                        setSelectedBrands(prev => [...prev, brandName]);
+                                    if (isChecked && !selectedBrandsLocal.includes(brandName)) {
+                                        // setSelectedBrandsLocal(prev => [...prev, brandName]);
+
+
                                     } else {
-                                        setSelectedBrands(prev => prev.filter(b => b !== brandName));
+                                        // setSelectedBrandsLocal(prev => prev.filter(b => b !== brandName));
+                                        dispatch(setSelectedBrands(prev => prev.filter(b => b !== brandName)));
                                     }
                                 }}
                             />
                         ))}
                     </>
                 )}
+                {selectedPage === pages[3] && (
+                    <>
+                        {/*{productTypes && productTypes.map((productType) => (*/}
+                        {/*    <CustomCheckbox*/}
+                        {/*        key={productType.id}*/}
+                        {/*        label={productType.name}*/}
+                        {/*        onCheckChange={(productTypeName, isChecked) => {*/}
+                        {/*            if (isChecked && !selectedBrands.includes(productTypeName)) {*/}
+                        {/*                setSelectedBrandsLocal(prev => [...prev, productTypeName]);*/}
+                        {/*            } else {*/}
+                        {/*                setSelectedBrandsLocal(prev => prev.filter(b => b !== productTypeName));*/}
+                        {/*            }*/}
+                        {/*        }}*/}
+                        {/*    />*/}
+                        {/*))}*/}
+                    </>
+                )
+                }
                 <div className="flex w-full h-[2px] bg-gray-200"></div>
                 <div className="fixed bottom-0 left-0 w-full bg-white ">
                     <div className="flex justify-center py-2">

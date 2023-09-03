@@ -2,6 +2,8 @@ import CategoryCard from '../ui/CategoryCard';
 import Link from "next/link";
 import React from 'react';
 import {useGetCategoriesQuery} from '@/redux/features/categories/categoriesApiSlice';
+import {useDispatch, useSelector} from "react-redux";
+import {setCategories} from "@/redux/features/filter/filterSlice";
 
 interface SubCategory {
     id: number;
@@ -29,7 +31,10 @@ const ConvertCategoryName = (name: string) => {
 
 const Categories: React.FC = () => {
     // @ts-ignore
-    const {data: categories, isLoading, isSuccess, isError, error,} = useGetCategoriesQuery();
+    const {data: categoriesData, isLoading, isSuccess, isError, error,} = useGetCategoriesQuery();
+    const dispatch = useDispatch();
+    dispatch(setCategories(categoriesData));
+    const categories = useSelector((state: any) => state.filter.categories);
     let content;
 
     if (isLoading) {
@@ -49,14 +54,12 @@ const Categories: React.FC = () => {
         );
 
     } else if (categories) {
-        // category name'i kucult ve bosluklari '-' ile degistir ayrica ingilizce olmayan harfleri ingilizceye cevir
-
         content = (
-            <div className="flex flex-wrap justify-center mb-16">
+            <div className="flex flex-wrap mb-16">
                 {categories.map((category: Category) => (
-                    <div className="w-1/3 md:w-1/4 lg:w-1/6 flex justify-around"
+                    <div className="w-1/3 md:w-1/3 lg:w-1/7 flex justify-around"
                          key={category.id}
-                         onClick={() => console.log('[...products].id', category.id)}
+                         onClick={() => {}}
                     >
                         <Link href={{
                             pathname: `/categories/${category.id}/${ConvertCategoryName(category.name)}`,

@@ -1,6 +1,6 @@
 'use client'
 
-import { setProductType, setSelectedProductType, setSelectedSubCategory } from "@/redux/features/categories/categorySlice";
+import { setProductType } from "@/redux/features/categories/categorySlice";
 import {useDispatch, useSelector} from "react-redux";
 
 import Link from "next/link";
@@ -9,6 +9,15 @@ import {RootState} from "@/redux/store";
 import {useEffect} from "react";
 import {useGetCategoriesByIdQuery} from "@/redux/features/categories/categoriesApiSlice";
 import {setBrandNames} from "@/redux/features/products/productFilterSlice";
+import {
+    selectSelectedCategory,
+    selectSelectedSubCategory,
+    selectProductTypes,
+    setSelectedCategory,
+    setSelectedSubCategory,
+    setProductTypes, setSubCategories, selectSelectedProductType, selectSubCategories, setSelectedProductType,
+
+} from "@/redux/features/filter/filterSlice";
 
 interface ISubCategory {
     id: string;
@@ -29,28 +38,31 @@ interface CategoryBarCompProps {
     categoryId: number;
 }
 
-
 const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
-    const {data: category, isLoading, isSuccess, isError, error} = useGetCategoriesByIdQuery(categoryId);
+    const {data, isLoading, isSuccess, isError, error} = useGetCategoriesByIdQuery(categoryId);
     const dispatch = useDispatch();
-    const { productType, selectedProductType, selectedSubCategory } = useSelector(
-        (state: RootState) => state.category
-    );
-    if (isSuccess && category) {
-        const { SubCategory } = category;
-        if (selectedSubCategory.id === "") {
-            dispatch(setSelectedSubCategory(SubCategory[0]));
-            dispatch(setProductType(SubCategory[0].ProductType));
-            dispatch(setSelectedProductType(SubCategory[0].ProductType[0]));
-        }
-    }
+
+    dispatch(setSelectedCategory(data));
+    const category = useSelector(selectSelectedCategory);
+    const subCategories = useSelector(selectSubCategories);
+    const selectedSubCategory = useSelector(selectSelectedSubCategory);
+    const productTypes = useSelector(selectProductTypes);
+    const selectedProductType = useSelector(selectSelectedProductType);
+
 
     useEffect(() => {
-        // categoryId değiştiğinde çalışacak olan kod
-        dispatch(setSelectedSubCategory({ id: "", name: "", description: "", image: "", ProductType: [] }));
-        dispatch(setProductType([]));
-        dispatch(setSelectedProductType({ id: "", name: "", description: "", image: "" }));
-    }, [categoryId, dispatch]); // categoryId'nin değiştiği her seferde bu useEffect çalışır
+        if (category?.SubCategory) {
+            dispatch(setSubCategories(category.SubCategory));
+        }
+    }, [category]);
+
+    useEffect(() => {
+        if (selectedSubCategory?.ProductType) {
+            dispatch(setProductTypes(selectedSubCategory.ProductType));
+        }
+    }, [selectedSubCategory]);
+
+
 
     if (isLoading) {
         return (
@@ -67,13 +79,13 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
         );
     }
 
-    if (isSuccess) {
-        const {SubCategory} = category;
-        if (selectedSubCategory.id === undefined) {
+    if (isSuccess && category) {
+        const SubCategory = subCategories;
+        if (selectedSubCategory?.id === undefined) {
             dispatch(setSelectedSubCategory(SubCategory[0]));
-            dispatch(setProductType(SubCategory[0].ProductType));
-            dispatch(setSelectedProductType(SubCategory[0].ProductType[0]));
-
+        }
+        if(selectedProductType?.id === undefined) {
+            dispatch(setSelectedProductType(productTypes[0]));
         }
         return (
             <div className="sticky top-0 z-10 bg-white">
@@ -85,16 +97,12 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
                                 className="flex flex-col justify-center mx-4 items-center relative"
                                 onClick={() => {
                                     dispatch(setSelectedSubCategory(subCategory));
-                                    dispatch(setProductType(subCategory.ProductType));
-                                    if (selectedSubCategory.id !== subCategory.id && subCategory.ProductType.length > 0) {
-                                        dispatch(setSelectedProductType(subCategory.ProductType[0]));
-                                    }
-                                    dispatch(setBrandNames([]));
+                                    dispatch(setSelectedProductType(subCategory.ProductType[0]));
                                 }}
                                 key={subCategory.id}>
                                 <div className="rounded-md">{subCategory.name}
                                 </div>
-                                {selectedSubCategory.id === subCategory.id && (
+                                {selectedSubCategory?.id === subCategory.id && (
                                     <div
                                         className="h-1 w-full bg-yellow-400 rounded-full absolute bottom-[-6px] left-0"/>
                                 )}
@@ -113,16 +121,16 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
                     <div
                         className="flex overflow-x-auto h-[45px] items-center bg-white font-semibold text-[14px] text-[#444444]  whitespace-nowrap hide-scrollbar shadow-lg">
                         <div className="flex items-center">
-                            {productType && productType.length === 0 && (
+                            {productTypes && productTypes.length === 0 && (
                                 <div
                                     className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full bg-[#25AC10] text-white`}
                                     key={0}>
                                     Urun Tipi Yok
                                 </div>
                             )}
-                            {productType && productType.map((productType: IProductType) => (
+                            {productTypes && productTypes.map((productType: IProductType) => (
                                 <div
-                                    className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full ${selectedProductType.id === productType.id ? 'bg-[#25AC10] text-white' : 'bg-white text-[#444444]'}`}
+                                    className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full ${selectedProductType?.id === productType.id ? 'bg-[#25AC10] text-white' : 'bg-white text-[#444444]'}`}
                                     onClick={() => {
                                         dispatch(setSelectedProductType(productType));
                                     }}
