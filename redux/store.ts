@@ -5,7 +5,6 @@ import categoryReducer from "@/redux/features/categories/categorySlice";
 import { configureStore } from '@reduxjs/toolkit';
 import forgotPasswordReducer from "@/redux/features/auth/forgotPasswordSlice";
 import campaignsReducer from "@/redux/features/campaigns/campaignsSlice";
-import productFilterReducer from "@/redux/features/products/productFilterSlice";
 import filterReducer from "@/redux/features/filter/filterSlice";
 
 export const store = configureStore({
@@ -16,7 +15,6 @@ export const store = configureStore({
         category: categoryReducer,
         cart: cartReducer,
         campaigns: campaignsReducer,
-        productFilter: productFilterReducer,
         filter: filterReducer,
 
     },

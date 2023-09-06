@@ -5,20 +5,11 @@ import React, {useEffect, useState} from 'react'
 import {Switch} from "@headlessui/react";
 import {GiHamburgerMenu} from 'react-icons/gi'
 import Image from 'next/image';
-import dynamic from 'next/dynamic';
 import {ICONS} from "@/constants/iconConstants";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@/redux/store";
-import {useGetProductsAdvancedQueryQuery} from "@/redux/features/products/productApiSlice";
-import {
-    selectBrandNames,
-    selectCategoryId,
-    selectProductTypes,
-    setBrandNames
-} from "@/redux/features/products/productFilterSlice";
 import {IoMdCheckmark, IoMdRadioButtonOff, IoMdRadioButtonOn, IoMdSquareOutline} from "react-icons/io";
 import {useAllProductsByCategoryIdQuery} from "@/redux/features/categories/categoriesApiSlice";
-import {selectSelectedBrands, setSelectedBrands} from "@/redux/features/filter/filterSlice";
+import {setSelectedBrands, addSelectedBrand} from "@/redux/features/filter/filterSlice";
 
 // @ts-ignore
 const SideBar = ({data}) => {
@@ -28,23 +19,7 @@ const SideBar = ({data}) => {
     const [isToggled, setIsToggled] = useState(false);
     const [selectedBrandsLocal, setSelectedBrandsLocal] = useState<string[]>([]);
     const [selectedSort, setSelectedSort] = useState<string>('Önerilen');
-    const brandNames = useSelector(selectBrandNames);
-    console.log('brandNames', brandNames)
-
     const categoryIdFromPath = window.location.pathname.split('/')[2];
-    const productTypes = useSelector(selectProductTypes)
-    const selectedBrands = useSelector(selectSelectedBrands);
-    const selectedBrandsString = selectedBrands.join(',');
-    console.log(selectedBrandsString)
-
-
-    const {data: data2, isLoading: isLoading2, error: error2} = useAllProductsByCategoryIdQuery({id: categoryIdFromPath, params:{
-            "filter-brand": selectedBrandsString
-        }});
-
-    dispatch(setBrandNames(data2?.brand));
-
-    const brands = useSelector(selectBrandNames)
 
 
     useEffect(() => {
@@ -233,9 +208,9 @@ const SideBar = ({data}) => {
                                 key={sort}
                                 onCheckChange={(sortName, isChecked) => {
                                     if (isChecked && !selectedSort.includes(sortName)) {
-                                        setSelectedSort(prev => [...prev, sortName]);
+                                        console.log(sortName)
                                     } else {
-                                        setSelectedSort(prev => prev.filter(b => b !== sortName));
+                                        console.log(sortName)
                                     }
                                 }}
                             />

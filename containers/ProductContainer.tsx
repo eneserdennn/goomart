@@ -1,41 +1,47 @@
 'use client'
 
-import React, {useEffect, useRef} from "react";
-import {useGetProductsAdvancedQueryQuery} from "@/redux/features/products/productApiSlice";
-
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetProductsAdvancedQueryQuery } from "@/redux/features/products/productApiSlice";
 import Loading from "@/app/loading";
 import ProductCard from "@/components/product-cards/ProductCard";
 import ProductCardDiscount from "@/components/product-cards/ProductCardDiscount";
 import ProductCardOutOfStock from "@/components/product-cards/ProductOutOfStock";
-import {useDispatch, useSelector} from "react-redux";
 import {
     selectIsFiltered,
-    selectProducts, selectProductTypes,
+    selectProducts,
+    selectProductTypes,
     selectSelectedProductType,
-    setProducts
+    setProducts,
 } from "@/redux/features/filter/filterSlice";
 
 interface ProductContainerProps {
     children: React.ReactNode;
 }
 
-const ProductContainer = ({categoryId}) => {
+const ProductContainer = ({ categoryId }: ProductContainerProps) => {
     const isFiltered = useSelector(selectIsFiltered);
     const selectedProductType = useSelector(selectSelectedProductType);
     const productTypes = useSelector(selectProductTypes);
-    const {data, isLoading, isSuccess, isError, error} = useGetProductsAdvancedQueryQuery({
-        'filter-product-type': selectedProductType?.id,
-    });
+    const shouldSkipFetching = !selectedProductType?.id;
+
 
     const dispatch = useDispatch();
 
-    if (isFiltered) {
-        console.log('isFiltered', isFiltered)
-    } else {
-        dispatch(setProducts(data));
-    }
+    const { data, isLoading, isSuccess, isError, error } = useGetProductsAdvancedQueryQuery({
+        'filter-product-type': selectedProductType?.id,
+    }, {
+        skip: shouldSkipFetching
+    });
 
-    const products = useSelector(selectProducts)
+    useEffect(() => {
+        if (!isFiltered) {
+            dispatch(setProducts(data));
+        }
+        console.log("selectedProductType", selectedProductType);
+    }, [data, dispatch, isFiltered]);
+
+    const products = useSelector(selectProducts);
 
     const isFirstRender = useRef(true);
     const productTypeRef = useRef(null);

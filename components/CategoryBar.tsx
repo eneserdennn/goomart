@@ -1,23 +1,21 @@
 'use client'
 
-import { setProductType } from "@/redux/features/categories/categorySlice";
-import {useDispatch, useSelector} from "react-redux";
-
-import Link from "next/link";
-import Loading from "@/app/loading";
-import {RootState} from "@/redux/store";
-import {useEffect} from "react";
-import {useGetCategoriesByIdQuery} from "@/redux/features/categories/categoriesApiSlice";
-import {setBrandNames} from "@/redux/features/products/productFilterSlice";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetCategoriesByIdQuery } from "@/redux/features/categories/categoriesApiSlice";
 import {
     selectSelectedCategory,
-    selectSelectedSubCategory,
+    selectSubCategories,
     selectProductTypes,
-    setSelectedCategory,
+    selectSelectedSubCategory,
+    selectSelectedProductType,
+    setSubCategories,
+    setProductTypes,
     setSelectedSubCategory,
-    setProductTypes, setSubCategories, selectSelectedProductType, selectSubCategories, setSelectedProductType,
-
+    setSelectedProductType,
+    setSelectedCategory,
 } from "@/redux/features/filter/filterSlice";
+import Loading from "@/app/loading";
 
 interface ISubCategory {
     id: string;
@@ -38,40 +36,40 @@ interface CategoryBarCompProps {
     categoryId: number;
 }
 
-const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
-    const {data, isLoading, isSuccess, isError, error} = useGetCategoriesByIdQuery(categoryId);
+const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
+    const { data, isLoading, isSuccess, isError, error } = useGetCategoriesByIdQuery(categoryId);
     const dispatch = useDispatch();
 
-    dispatch(setSelectedCategory(data));
+    useEffect(() => {
+        if (data) {
+            dispatch(setSelectedCategory(data));
+        }
+    }, [data, dispatch]);
+
     const category = useSelector(selectSelectedCategory);
     const subCategories = useSelector(selectSubCategories);
     const selectedSubCategory = useSelector(selectSelectedSubCategory);
     const productTypes = useSelector(selectProductTypes);
     const selectedProductType = useSelector(selectSelectedProductType);
 
-
     useEffect(() => {
         if (category?.SubCategory) {
             dispatch(setSubCategories(category.SubCategory));
         }
-    }, [category]);
+    }, [category, dispatch]);
 
     useEffect(() => {
         if (selectedSubCategory?.ProductType) {
             dispatch(setProductTypes(selectedSubCategory.ProductType));
         }
-    }, [selectedSubCategory]);
-
-
+    }, [selectedSubCategory, dispatch]);
 
     if (isLoading) {
-        return (
-            <Loading/>
-        );
+        return <Loading />;
     }
 
     if (isError) {
-    console.log(error);
+        console.log(error);
         return (
             <div>
                 <h1>Something went wrong!</h1>
@@ -81,10 +79,10 @@ const CategoryBarComp = ({categoryId}: CategoryBarCompProps) => {
 
     if (isSuccess && category) {
         const SubCategory = subCategories;
-        if (selectedSubCategory?.id === undefined) {
+        if (!selectedSubCategory?.id) {
             dispatch(setSelectedSubCategory(SubCategory[0]));
         }
-        if(selectedProductType?.id === undefined) {
+        if (!selectedProductType?.id) {
             dispatch(setSelectedProductType(productTypes[0]));
         }
         return (

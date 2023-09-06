@@ -80,8 +80,9 @@ const filterSlice = createSlice({
             state.products = action.payload;
         },
         setSelectedBrands: (state, action) => {
-            // state.selectedBrands = action.payload;
-            // add brand to selectedBrands if it doesn't exist
+            state.selectedBrands = action.payload;
+        },
+        addSelectedBrand: (state, action) => {
             if (!state.selectedBrands.includes(action.payload)) {
                 state.selectedBrands.push(action.payload);
             }
@@ -98,7 +99,8 @@ export const {
     setSelectedProductType,
     setProducts,
     isFiltered,
-    setSelectedBrands
+    setSelectedBrands,
+    addSelectedBrand
 } = filterSlice.actions;
 
 export const selectCategories = (state) => state.filter.categories;
@@ -109,7 +111,6 @@ export const selectProductTypes = (state) => state.filter.productTypes;
 export const selectSelectedProductType = (state) => state.filter.selectedProductType;
 export const selectProducts = (state) => state.filter.products;
 export const selectIsFiltered = (state) => state.filter.isFiltered;
-export const selectSelectedBrands = (state) => state.filter.selectedBrands;
 
 
 export default filterSlice.reducer;
