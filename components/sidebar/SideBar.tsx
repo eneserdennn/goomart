@@ -9,31 +9,42 @@ import {ICONS} from "@/constants/iconConstants";
 import {useDispatch, useSelector} from "react-redux";
 import {IoMdCheckmark, IoMdRadioButtonOff, IoMdRadioButtonOn, IoMdSquareOutline} from "react-icons/io";
 import {useAllProductsByCategoryIdQuery} from "@/redux/features/categories/categoriesApiSlice";
-import {setSelectedBrands, addSelectedBrand} from "@/redux/features/filter/filterSlice";
+import {
+    setSelectedBrands,
+    addSelectedBrand,
+    selectBrands,
+    removeSelectedBrand,
+    isFiltered, filteredProducts,
+} from "@/redux/features/filter/filterSlice";
 
 // @ts-ignore
 const SideBar = ({data}) => {
     const dispatch = useDispatch();
-    // const selectedBrands = useSelector(selectSelectedBrands);
     const [toggleSideBar, setToggleSideBar] = useState<boolean>(false);
     const [isToggled, setIsToggled] = useState(false);
-    const [selectedBrandsLocal, setSelectedBrandsLocal] = useState<string[]>([]);
     const [selectedSort, setSelectedSort] = useState<string>('Önerilen');
     const categoryIdFromPath = window.location.pathname.split('/')[2];
-
-
-    useEffect(() => {
-        console.log(selectedBrandsLocal)
-        dispatch(setSelectedBrands(selectedBrandsLocal));
-    }, [selectedBrandsLocal]);
 
     const pages = ['Main', 'Sıralama', 'Markalar', 'Ürün Çeşidi', 'İndirimli Ürünler'];
     const sorts = ['Önerilen', 'En Düşük Fiyat', 'En Yüksek Fiyat', 'Indirim oranına gore', 'En yeni'];
 
     const [selectedPage, setSelectedPage] = useState(pages[0]);
 
+    const selectedBrands = useSelector((state) => state.filter.selectedBrands);
+
+
     const handleTogglingSideBar = () => {
         setToggleSideBar(prev => !prev);
+    }
+
+    const brandList = useSelector(selectBrands);
+
+    const handleBrandCheckChange = (brand) => {
+        if (selectedBrands.includes(brand)) {
+            dispatch(removeSelectedBrand(brand));
+        } else {
+            dispatch(addSelectedBrand(brand));
+        }
     }
 
     const CustomCheckbox = ({ label, isChecked, onCheckChange }) => {
@@ -97,12 +108,9 @@ const SideBar = ({data}) => {
 
     return (
         <>
-            <Image src={ICONS.filter} alt={'filter'} className="h-8 w-8 bg-white p-1.5 rounded-md"
-                   onClick={handleTogglingSideBar}/>
-            <div
-                className={`bg-white fixed right-0 top-0 bottom-0 w-4/5 md:w-1/5 h-screen z-50 transition-transform duration-300 ${
-                    toggleSideBar ? 'translate-x-0' : 'translate-x-full'
-                }`}>
+            <Image src={ICONS.filter} alt={'filter'} className="h-8 w-8 bg-white p-1.5 rounded-md" onClick={handleTogglingSideBar}/>
+            <div className={`bg-white fixed right-0 top-0 bottom-0 w-4/5 md:w-1/5 h-screen z-50 transition-transform duration-300 ${toggleSideBar ? 'translate-x-0' : 'translate-x-full'}`}>
+
                 <div className="flex items-center justify-between pl-4 py-4 border-b bg-primary">
                     <Image src={ICONS.leftArrow} alt={'left-arrow'} width={11} height={20} onClick={() => {
                         setSelectedPage(pages[0]);
@@ -126,6 +134,7 @@ const SideBar = ({data}) => {
                         <GiHamburgerMenu size={30}/>
                     </div>
                 </div>
+                <div className="overflow-y-auto" style={{ maxHeight: "calc(100% - 150px)" }}> {/* Buradaki 150px değeri header ve footer'ın toplam yüksekliği olarak varsayıldı. */}
 
                 {selectedPage === pages[0] && (<>
                         <div className="flex flex-col justify-center white h-[53px]" onClick={() => {
@@ -150,7 +159,7 @@ const SideBar = ({data}) => {
                                 <span className="text-[14px]">Markalar</span>
                                 <div className="flex flex-row items-center">
                                     <span className="mr-3 text-[12px] text-deepgray">
-                                        {selectedBrandsLocal.length > 0 ? `${selectedBrandsLocal.length} marka` : 'Tümü'}
+                                        {/*{selectedBrandsLocal.length > 0 ? `${selectedBrandsLocal.length} marka` : 'Tümü'}*/}
                                     </span>
                                     <Image src={ICONS.rightArrow} alt={'right-arrow'} className="h-4 w-4"/>
                                 </div>
@@ -218,43 +227,23 @@ const SideBar = ({data}) => {
                     </>)}
                 {selectedPage === pages[2] && (
                     <>
-                        {brands.map((brand) => (
+                        {brandList.map((brand) => (
                             <CustomCheckbox
                                 key={brand.productTypeId}
-                                label={brand.brandName}
-                                isChecked={selectedBrandsLocal.includes(brand.brandName)}
-                                onCheckChange={(brandName, isChecked) => {
-                                    if (isChecked && !selectedBrandsLocal.includes(brandName)) {
-                                        // setSelectedBrandsLocal(prev => [...prev, brandName]);
-
-
-                                    } else {
-                                        // setSelectedBrandsLocal(prev => prev.filter(b => b !== brandName));
-                                        dispatch(setSelectedBrands(prev => prev.filter(b => b !== brandName)));
-                                    }
-                                }}
+                                label={brand}
+                                isChecked={selectedBrands.includes(brand)}
+                                onCheckChange={() => handleBrandCheckChange(brand)}
                             />
                         ))}
                     </>
                 )}
                 {selectedPage === pages[3] && (
                     <>
-                        {/*{productTypes && productTypes.map((productType) => (*/}
-                        {/*    <CustomCheckbox*/}
-                        {/*        key={productType.id}*/}
-                        {/*        label={productType.name}*/}
-                        {/*        onCheckChange={(productTypeName, isChecked) => {*/}
-                        {/*            if (isChecked && !selectedBrands.includes(productTypeName)) {*/}
-                        {/*                setSelectedBrandsLocal(prev => [...prev, productTypeName]);*/}
-                        {/*            } else {*/}
-                        {/*                setSelectedBrandsLocal(prev => prev.filter(b => b !== productTypeName));*/}
-                        {/*            }*/}
-                        {/*        }}*/}
-                        {/*    />*/}
-                        {/*))}*/}
+
                     </>
                 )
                 }
+                </div>
                 <div className="flex w-full h-[2px] bg-gray-200"></div>
                 <div className="fixed bottom-0 left-0 w-full bg-white ">
                     <div className="flex justify-center py-2">
@@ -265,7 +254,12 @@ const SideBar = ({data}) => {
                                 setToggleSideBar(false);
                                 setIsToggled(false);
                                 setSelectedPage(pages[0]);
-
+                                if (selectedBrands.length >= 1) {
+                                    dispatch(isFiltered(true));
+                                } else {
+                                    dispatch(isFiltered(false));
+                                    filteredProducts([]);
+                                }
                             }}
                         >
                             {selectedPage === pages[0] ? 'Ürünleri Görüntüle (12 Ürün)' : 'Uygula'}

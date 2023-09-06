@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import Image from "next/image";
 import {ICONS} from "@/constants/iconConstants";
 import {useDispatch} from "react-redux";
+import {addBrands} from "@/redux/features/filter/filterSlice";
 
 interface IProduct {
     id: string;
@@ -78,6 +79,7 @@ interface ICategory {
 const ProductCardOutOfStock = ({product}: { product: IProduct }) => {
     const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
+    dispatch(addBrands(product.brand));
 
     return (
         <div className="flex relative my-2 w-[110px]">

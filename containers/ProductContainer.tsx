@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetProductsAdvancedQueryQuery } from "@/redux/features/products/productApiSlice";
+import { useAllProductsByCategoryIdQuery} from "@/redux/features/categories/categoriesApiSlice";
 import Loading from "@/app/loading";
 import ProductCard from "@/components/product-cards/ProductCard";
 import ProductCardDiscount from "@/components/product-cards/ProductCardDiscount";
@@ -13,18 +14,18 @@ import {
     selectProductTypes,
     selectSelectedProductType,
     setProducts,
+    selectSelectedBrands, filteredProducts, addFilteredProduct
 } from "@/redux/features/filter/filterSlice";
 
-interface ProductContainerProps {
-    children: React.ReactNode;
-}
 
-const ProductContainer = ({ categoryId }: ProductContainerProps) => {
+const ProductContainer = ( ) => {
     const isFiltered = useSelector(selectIsFiltered);
     const selectedProductType = useSelector(selectSelectedProductType);
     const productTypes = useSelector(selectProductTypes);
     const shouldSkipFetching = !selectedProductType?.id;
+    const selectedBrands = useSelector(selectSelectedBrands);
 
+    const categoryId= window.location.pathname.split('/')[2];
 
     const dispatch = useDispatch();
 
@@ -34,12 +35,32 @@ const ProductContainer = ({ categoryId }: ProductContainerProps) => {
         skip: shouldSkipFetching
     });
 
+    const { data: filteredData, isError: isFilteredError, isSuccess: isFilteredSuccess } = useAllProductsByCategoryIdQuery(
+        {
+            id: categoryId,
+            params: {
+                'filter-brand': selectedBrands
+            }
+        }
+    );
+
     useEffect(() => {
         if (!isFiltered) {
             dispatch(setProducts(data));
         }
-        console.log("selectedProductType", selectedProductType);
-    }, [data, dispatch, isFiltered]);
+        if (isFiltered && isFilteredSuccess) {
+            dispatch(filteredProducts([]));
+            const filteredProductsData = filteredData?.SubCategory?.map((subCategory) => {
+                return subCategory?.ProductType?.map((productType) => {
+                    return productType?.Product?.map((product) => {
+                        dispatch(addFilteredProduct(product));
+                        return product;
+                    });
+                });
+            });
+        }
+
+    }, [data, dispatch, isFiltered, filteredData], );
 
     const products = useSelector(selectProducts);
 
