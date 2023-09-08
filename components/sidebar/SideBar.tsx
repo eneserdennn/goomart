@@ -11,9 +11,11 @@ import {
     selectFilteredProductWithBrands,
     selectIsFiltered,
     selectProductTypes,
+    selectSaleToggle,
     selectSortBy,
     setFilteredProductTypes,
     setProducts,
+    setSaleToggle,
     setSelectedBrands,
     setSortBy
 } from "@/redux/features/filter/filterSlice";
@@ -28,13 +30,14 @@ import {Switch} from "@headlessui/react";
 const SideBar = ({data}) => {
     const dispatch = useDispatch();
     const [toggleSideBar, setToggleSideBar] = useState<boolean>(false);
-    const [isToggled, setIsToggled] = useState(false);
+    // const [isToggled, setIsToggled] = useState(false);
     const sortBys = useSelector(selectSortBy);
     const filteredProductCount = useSelector(selectFilteredProductCount);
     const [sortSelected, setSortSelected] = useState(sortBys);
     const selectedBrands = useSelector((state) => state.filter.selectedBrands);
     const [tempSelectedBrands, setTempSelectedBrands] = useState([...selectedBrands]);
 
+    const isToggled = useSelector(selectSaleToggle);
     const filtered = useSelector(selectIsFiltered);
     const filteredProductWithBrands = useSelector(selectFilteredProductWithBrands);
     const allProductTypes = useSelector(selectProductTypes)
@@ -164,7 +167,7 @@ const SideBar = ({data}) => {
                     <div className="flexitems-center text-white text-[14px] font-bold">
               <span onClick={() => {
                   setToggleSideBar(false);
-                  setIsToggled(false);
+                  dispatch(setSaleToggle(false));
                   setSelectedPage(pages[0]);
                   dispatch(setSelectedBrands([]));
                   dispatch(setSortBy('default'));
@@ -244,7 +247,10 @@ const SideBar = ({data}) => {
                                             }`}
                                             role="switch"
                                             aria-checked={isToggled}
-                                            onClick={() => setIsToggled(!isToggled)}
+                                            onClick={() => {
+                                                dispatch(setSaleToggle(!isToggled));
+                                                dispatch(isFiltered(true));
+                                            }}
                                         >
                             <span
                                 className={`${

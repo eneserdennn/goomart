@@ -55,6 +55,7 @@ const initialState = {
     filteredProductCount: 0 as number,
     isSearched: false as boolean,
     filteredProductTypes: [] as any[],
+    saleToggle: false as boolean
 }
 
 const filterSlice = createSlice({
@@ -124,7 +125,11 @@ const filterSlice = createSlice({
         },
         setFilteredProductTypes: (state, action) => {
             state.filteredProductTypes = action.payload;
+        },
+        setSaleToggle: (state, action) => {
+            state.saleToggle = action.payload;
         }
+
     }
 })
 
@@ -147,7 +152,8 @@ export const {
     setSortBy,
     setFilteredProductCount,
     isSearched,
-    setFilteredProductTypes
+    setFilteredProductTypes,
+    setSaleToggle
 
 } = filterSlice.actions;
 
@@ -166,6 +172,7 @@ export const selectSortBy = (state) => state.filter.sortBy;
 export const selectFilteredProductCount = (state) => state.filter.filteredProductCount;
 export const selectIsSearched = (state) => state.filter.isSearched;
 export const selectFilteredProductTypes = (state) => state.filter.filteredProductTypes;
+export const selectSaleToggle = (state) => state.filter.saleToggle;
 
 
 export default filterSlice.reducer;
