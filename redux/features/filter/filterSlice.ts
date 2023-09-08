@@ -50,7 +50,11 @@ const initialState = {
     products: [] as any[],
     brands: [] as any[],
     selectedBrands: [] as any[],
-    filteredProducts: [] as any[],
+    filteredProductWithBrands: [] as any[],
+    sortBy: 'default' as string,
+    filteredProductCount: 0 as number,
+    isSearched: false as boolean,
+    filteredProductTypes: [] as any[],
 }
 
 const filterSlice = createSlice({
@@ -103,13 +107,23 @@ const filterSlice = createSlice({
                 state.selectedBrands.splice(index, 1);
             }
         },
-        filteredProducts: (state, action) => {
-            state.products = action.payload;
+        addFilteredProductWithBrands: (state, action) => {
+            state.filteredProductWithBrands.push(action.payload);
         },
-        addFilteredProduct: (state, action) => {
-            if (!state.filteredProducts.includes(action.payload)) {
-                state.filteredProducts.push(action.payload);
-            }
+        setFilteredProductWithBrands: (state, action) => {
+            state.filteredProductWithBrands = action.payload;
+        },
+        setSortBy: (state, action) => {
+            state.sortBy = action.payload;
+        },
+        setFilteredProductCount: (state, action) => {
+            state.filteredProductCount = action.payload;
+        },
+        isSearched: (state, action) => {
+            state.isSearched = action.payload;
+        },
+        setFilteredProductTypes: (state, action) => {
+            state.filteredProductTypes = action.payload;
         }
     }
 })
@@ -127,8 +141,14 @@ export const {
     addSelectedBrand,
     addBrands,
     removeSelectedBrand,
-    filteredProducts,
-    addFilteredProduct,
+    setBrands,
+    addFilteredProductWithBrands,
+    setFilteredProductWithBrands,
+    setSortBy,
+    setFilteredProductCount,
+    isSearched,
+    setFilteredProductTypes
+
 } = filterSlice.actions;
 
 export const selectCategories = (state) => state.filter.categories;
@@ -141,10 +161,11 @@ export const selectProducts = (state) => state.filter.products;
 export const selectIsFiltered = (state) => state.filter.isFiltered;
 export const selectBrands = (state) => state.filter.brands;
 export const selectSelectedBrands = (state) => state.filter.selectedBrands;
-export const selectFilteredProducts = (state) => state.filter.filteredProducts;
-
-
-
+export const selectFilteredProductWithBrands = (state) => state.filter.filteredProductWithBrands;
+export const selectSortBy = (state) => state.filter.sortBy;
+export const selectFilteredProductCount = (state) => state.filter.filteredProductCount;
+export const selectIsSearched = (state) => state.filter.isSearched;
+export const selectFilteredProductTypes = (state) => state.filter.filteredProductTypes;
 
 
 export default filterSlice.reducer;

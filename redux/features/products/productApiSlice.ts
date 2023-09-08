@@ -19,8 +19,11 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 url: `/custom-product-list/${id}?lang=tr`,
             })
         }),
+        getProductTypeById: builder.query({
+            query: (id) => `/product-type/${id}`
+        }),
     })
 });
 
-export const { useGetProductsAdvancedQueryQuery, useGetProductsByProductIdQuery ,useGetProductsBySubCategoryIdQuery, useGetProductsListWithCampaignQuery } = productsApiSlice;
+export const { useGetProductsAdvancedQueryQuery, useGetProductsByProductIdQuery ,useGetProductsBySubCategoryIdQuery, useGetProductsListWithCampaignQuery, useGetProductTypeByIdQuery } = productsApiSlice;
 

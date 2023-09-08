@@ -1,10 +1,11 @@
 'use client'
 
 import React, {useState} from 'react';
-import Image from "next/image";
+
 import {ICONS} from "@/constants/iconConstants";
-import {useDispatch} from "react-redux";
+import Image from "next/image";
 import {addBrands} from "@/redux/features/filter/filterSlice";
+import {useDispatch} from "react-redux";
 
 interface IProduct {
     id: string;

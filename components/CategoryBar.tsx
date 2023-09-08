@@ -1,21 +1,24 @@
 'use client'
 
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useGetCategoriesByIdQuery } from "@/redux/features/categories/categoriesApiSlice";
 import {
-    selectSelectedCategory,
-    selectSubCategories,
+    selectFilteredProductTypes,
+    selectIsSearched,
     selectProductTypes,
-    selectSelectedSubCategory,
+    selectSelectedCategory,
     selectSelectedProductType,
-    setSubCategories,
+    selectSelectedSubCategory,
+    selectSubCategories,
     setProductTypes,
-    setSelectedSubCategory,
-    setSelectedProductType,
     setSelectedCategory,
+    setSelectedProductType,
+    setSelectedSubCategory,
+    setSubCategories,
 } from "@/redux/features/filter/filterSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 import Loading from "@/app/loading";
+import { useGetCategoriesByIdQuery } from "@/redux/features/categories/categoriesApiSlice";
 
 interface ISubCategory {
     id: string;
@@ -38,6 +41,7 @@ interface CategoryBarCompProps {
 
 const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
     const { data, isLoading, isSuccess, isError, error } = useGetCategoriesByIdQuery(categoryId);
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -51,6 +55,18 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
     const selectedSubCategory = useSelector(selectSelectedSubCategory);
     const productTypes = useSelector(selectProductTypes);
     const selectedProductType = useSelector(selectSelectedProductType);
+    const isSearched = useSelector(selectIsSearched)
+
+    const filteredProductTypes = useSelector(selectFilteredProductTypes);
+    const [productTypeList, setProductTypeList] = React.useState<IProductType[]>(productTypes);
+
+    useEffect(() => {
+        if (filteredProductTypes.length > 0) {
+            setProductTypeList(filteredProductTypes);
+        }
+        console.log(productTypeList );
+        console.log(productTypes)
+    } , [filteredProductTypes]);
 
     useEffect(() => {
         if (category?.SubCategory) {
@@ -119,21 +135,39 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
                     <div
                         className="flex overflow-x-auto h-[45px] items-center bg-white font-semibold text-[14px] text-[#444444]  whitespace-nowrap hide-scrollbar shadow-lg">
                         <div className="flex items-center">
-                            {productTypes && productTypes.length === 0 && (
+                        {isSearched && productTypeList && productTypeList.length > 0 ? (
+                            productTypeList.map((productType: IProductType) => (
                                 <div
-                                    className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full bg-[#25AC10] text-white`}
-                                    key={0}>
-                                    Urun Tipi Yok
+                                className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full ${selectedProductType?.id === productType.id ? 'bg-[#25AC10] text-white' : 'bg-white text-[#444444]'}`}
+                                onClick={() => {
+                                    dispatch(setSelectedProductType(productType));
+                                }}
+                                key={productType.id}
+                                >
+                                {productType.id ? productType.name : 'Ürün Tipi'}
                                 </div>
-                            )}
-                            {productTypes && productTypes.map((productType: IProductType) => (
+                            ))
+                            ) : productTypes && productTypes.length > 0 ? (
+                            productTypes.map((productType: IProductType) => (
                                 <div
-                                    className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full ${selectedProductType?.id === productType.id ? 'bg-[#25AC10] text-white' : 'bg-white text-[#444444]'}`}
-                                    onClick={() => {
-                                        dispatch(setSelectedProductType(productType));
-                                    }}
-                                    key={productType.id}>{productType.id ? productType.name : 'Ürün Tipi'}</div>
-                            ))}
+                                className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full ${selectedProductType?.id === productType.id ? 'bg-[#25AC10] text-white' : 'bg-white text-[#444444]'}`}
+                                onClick={() => {
+                                    dispatch(setSelectedProductType(productType));
+                                }}
+                                key={productType.id}
+                                >
+                                {productType.id ? productType.name : 'Ürün Tipi'}
+                                </div>
+                            ))
+                            ) : (
+                            <div
+                                className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full bg-[#25AC10] text-white`}
+                                key={0}
+                            >
+                                Urun Tipi Yok
+                            </div>
+                            )}
+
                         </div>
                     </div>
                 </div>

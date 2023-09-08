@@ -1,79 +1,72 @@
 'use client'
 
-import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useGetProductsAdvancedQueryQuery } from "@/redux/features/products/productApiSlice";
-import { useAllProductsByCategoryIdQuery} from "@/redux/features/categories/categoriesApiSlice";
-import Loading from "@/app/loading";
-import ProductCard from "@/components/product-cards/ProductCard";
-import ProductCardDiscount from "@/components/product-cards/ProductCardDiscount";
-import ProductCardOutOfStock from "@/components/product-cards/ProductOutOfStock";
+import React, { useEffect, useRef, useState } from 'react';
 import {
+    selectFilteredProductTypes,
     selectIsFiltered,
+    selectIsSearched,
     selectProducts,
-    selectProductTypes,
+    selectSelectedBrands,
     selectSelectedProductType,
-    setProducts,
-    selectSelectedBrands, filteredProducts, addFilteredProduct
-} from "@/redux/features/filter/filterSlice";
+    selectSelectedSubCategory,
+    selectSortBy,
+    setFilteredProductCount,
+    setProducts
+} from '@/redux/features/filter/filterSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
+import ProductCard from '@/components/product-cards/ProductCard';
+import ProductCardDiscount from '@/components/product-cards/ProductCardDiscount';
+import ProductCardOutOfStock from '@/components/product-cards/ProductOutOfStock';
+import { useAllProductsByCategoryIdQuery } from '@/redux/features/categories/categoriesApiSlice';
 
-const ProductContainer = ( ) => {
-    const isFiltered = useSelector(selectIsFiltered);
-    const selectedProductType = useSelector(selectSelectedProductType);
-    const productTypes = useSelector(selectProductTypes);
-    const shouldSkipFetching = !selectedProductType?.id;
-    const selectedBrands = useSelector(selectSelectedBrands);
-
-    const categoryId= window.location.pathname.split('/')[2];
-
+const ProductContainer = () => {
     const dispatch = useDispatch();
-
-    const { data, isLoading, isSuccess, isError, error } = useGetProductsAdvancedQueryQuery({
-        'filter-product-type': selectedProductType?.id,
-    }, {
-        skip: shouldSkipFetching
-    });
-
-    const { data: filteredData, isError: isFilteredError, isSuccess: isFilteredSuccess } = useAllProductsByCategoryIdQuery(
-        {
-            id: categoryId,
-            params: {
-                'filter-brand': selectedBrands
-            }
-        }
-    );
-
-    useEffect(() => {
-        if (!isFiltered) {
-            dispatch(setProducts(data));
-        }
-        if (isFiltered && isFilteredSuccess) {
-            dispatch(filteredProducts([]));
-            const filteredProductsData = filteredData?.SubCategory?.map((subCategory) => {
-                return subCategory?.ProductType?.map((productType) => {
-                    return productType?.Product?.map((product) => {
-                        dispatch(addFilteredProduct(product));
-                        return product;
-                    });
-                });
-            });
-        }
-
-    }, [data, dispatch, isFiltered, filteredData], );
+    const categoryId = window.location.pathname.split('/')[2];
 
     const products = useSelector(selectProducts);
+    const selectedSubCategory = useSelector(selectSelectedSubCategory);
+    const selectedProductType = useSelector(selectSelectedProductType);
+    const sortBy = useSelector(selectSortBy);
+    const selectedBrands = useSelector(selectSelectedBrands);
+    const filteredProductTypes = useSelector(selectFilteredProductTypes);
+    const isSearched = useSelector(selectIsSearched);
+
+    const [params, setParams] = useState({});
+    const { data } = useAllProductsByCategoryIdQuery({ id: categoryId, params });
+
+    useEffect(() => {
+        if(isSearched) {
+        const newParams = {
+            'sort-by': sortBy,
+            'filter-brand': selectedBrands,
+            'filter-product-type': filteredProductTypes.map((productType) => productType.id)
+        }
+        setParams(newParams);
+        } else {
+            const newParams = {}
+            setParams(newParams);
+        }
+    }, [sortBy, selectedBrands, filteredProductTypes, isSearched]);
+
+    useEffect(() => {
+        if (data) {
+            dispatch(setFilteredProductCount(data.productCount));
+            dispatch(setProducts(data));
+            console.log(data);
+        }
+    }, [data, selectedSubCategory, params]);
+
+    const filteredProducts = products.SubCategory?.filter(product => product.id === selectedSubCategory.id);
 
     const isFirstRender = useRef(true);
     const productTypeRef = useRef(null);
-
 
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
             return;
         }
-
         if (productTypeRef.current) {
             const stickyHeaderHeight = 74;
             const elementPosition = productTypeRef.current.offsetTop;
@@ -86,43 +79,35 @@ const ProductContainer = ( ) => {
         }
     }, [selectedProductType]);
 
-    let content;
-    if (isLoading) {
-        content = <div className="flex items-center justify-center"><Loading/></div>;
-    } else if (error) {
-        content = <div>Something went wrong</div>;
-    } else if (data) {
-        content = (
-            <div className="flex flex-col w-full justify-center">
-                {productTypes?.map((productType) => (
-                    <div
-                        key={productType.id}
-                        ref={productType.name === selectedProductType.name ? productTypeRef : null}
-                    >
-                        <div className="p-2 mt-12 my-1 font-bold text-[15px]">
-                            {productType.name}
+    return (
+        <div className="flex flex-col w-full justify-center">
+            {filteredProducts?.map((productTypes) => (
+                <div>
+                    {productTypes.ProductType.map((productType) => (
+                        <div key={productType.id} ref={productType.name === selectedProductType.name ? productTypeRef : null}>
+                            {productType.Product.length > 0 && (
+                                <div className="p-2 mt-12 my-1 font-bold text-[15px]">
+                                    {productType.name}
+                                </div>
+                            )}
+                            <div className="flex flex-wrap justify-around bg-white shadow-md">
+                                {productType.Product.map((product) => {
+                                    const key = product.id;
+                                    if (product.mainProductUnitStock > 0 && product.saleAmount > 0) {
+                                        return <ProductCardDiscount key={key} product={product} />;
+                                    }
+                                    if (product.mainProductUnitStock > 0) {
+                                        return <ProductCard key={key} product={product} />;
+                                    }
+                                    return <ProductCardOutOfStock key={key} product={product} />;
+                                })}
+                            </div>
                         </div>
-                        <div className="flex flex-wrap justify-around bg-white shadow-md">
-                            {products?.map((product) => {
-                                let component;
-
-                                if (product.mainProductUnitStock > 0 && product.saleAmount > 0) {
-                                    component = <ProductCardDiscount key={product.id} product={product} />;
-                                } else if (product.mainProductUnitStock > 0) {
-                                    component = <ProductCard key={product.id} product={product} />;
-                                } else {
-                                    component = <ProductCardOutOfStock key={product.id} product={product} />;
-                                }
-                                return <div key={product.id}>{component}</div>;
-                            })}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        );
-    }
-
-    return content;
+                    ))}
+                </div>
+            ))}
+        </div>
+    );
 };
 
 export default ProductContainer;

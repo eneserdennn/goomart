@@ -14,7 +14,7 @@ const CategoriesPage = ({ params }) => {
         <>
             <CategoryBar categoryId={categoryId} />
             <div className="flex mb-20">
-            <ProductContainer categoryId={categoryId}/>
+            <ProductContainer/>
             </div>
             <BottomNavBar />
         </>
