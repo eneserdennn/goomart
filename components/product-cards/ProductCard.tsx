@@ -116,7 +116,6 @@ const ProductCard = ({ product }: { product: IProduct }) => {
       quantityInProductUnit: 1,
     };
 
-    console.log("requestData", requestData);
     removeFromCart(requestData);
   };
 
@@ -127,12 +126,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
           product.name
         )}`}
       >
-        <div
-          className="flex flex-col"
-          onClick={() => {
-            console.log(product.id);
-          }}
-        >
+        <div className="flex flex-col" onClick={() => {}}>
           <div className="flex flex-wrap flex-col justify-center h-[110px] w-[110px] border rounded-lg border-primary">
             {!product.image && (
               <Image

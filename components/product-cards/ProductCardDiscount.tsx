@@ -91,7 +91,6 @@ const ProductCardDiscount = ({ product }: { product: IProduct }) => {
       quantityInProductUnit: 1,
     };
 
-    console.log(product.ProductUnits[0].convertionToMainUnit);
     addToCart(requestData);
   };
 

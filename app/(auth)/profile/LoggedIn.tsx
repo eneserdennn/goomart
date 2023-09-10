@@ -24,7 +24,6 @@ const LoggedIn: React.FC = () => {
   } = useGetProfileQuery(token);
 
   const handleLogOut = () => {
-    console.log("asdas");
     // @ts-ignore
     dispatch(logOut());
     localStorage.removeItem("token");
@@ -171,7 +170,7 @@ const LoggedIn: React.FC = () => {
                     alt="sozlesmeler-icon"
                   />
                 }
-                onClick={() => console.log("Heart icon clicked")}
+                onClick={() => {}}
               >
                 Sözleşmeler ve Politikalar
               </IconButton>
@@ -193,13 +192,11 @@ const LoggedIn: React.FC = () => {
           <div className="my-4">
             <span className="m-1">Dil - Language</span>
             <div className="mt-4">
-              <IconButton onClick={() => console.log("Heart icon clicked")}>
-                Türkçe
-              </IconButton>
+              <IconButton onClick={() => {}}>Türkçe</IconButton>
               <IconButton
                 rightIcon={false}
                 rightString={"1.0.0"}
-                onClick={() => console.log("Heart icon clicked")}
+                onClick={() => {}}
               >
                 Versiyon
               </IconButton>

@@ -5,14 +5,10 @@ import { IMAGES } from "@/constants/imageConstants";
 import Image from "next/image";
 
 const ProductCardPlusButton = ({ product }) => {
-  console.log(product);
   return (
     <div className="mx-0.5">
       <div className="flex relative my-2 w-[110px]">
-        <div
-          className="flex flex-col"
-          onClick={() => console.log("Ürün tıklandı")}
-        >
+        <div className="flex flex-col" onClick={() => {}}>
           <div className="flex flex-wrap justify-center h-[110px] w-[110px] border rounded-lg bg-white border-primary">
             <Image
               src={IMAGES.recommendProduct}

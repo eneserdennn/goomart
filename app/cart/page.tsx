@@ -1,5 +1,6 @@
 "use client";
 
+import { clearCart, closeModal } from "@/redux/features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
@@ -13,7 +14,6 @@ import Link from "next/link";
 import Loading from "@/app/loading";
 import Modal from "@/components/modal/Modal";
 import ProgressBar from "@/components/ProgressBar";
-import { closeModal } from "@/redux/features/cart/cartSlice";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { useCheckCartMutation } from "@/redux/features/order/orderApiSlice";
 import { useDeleteWholeProductFromCartMutation } from "@/redux/features/cart/cartApiSlice";
@@ -80,10 +80,17 @@ const Cart: React.FC = () => {
       const cartItemsFromCookie = JSON.parse(cartFromCookie) as CartItem[];
       // Burada yapılacak işlemleri ekleyin
     }
+
+    // Her cartItems değiştiğinde checkCart'ı tekrar çağır
+    const requestData = {
+      deliveryAddressId: 1,
+    };
+    checkCart(requestData);
+
     setIsLoading(false);
   }, [cartItems]);
 
-  if (checkLoading) {
+  if (checkLoading || deleteWholeProductFromCartLoading) {
     return <Loading />;
   }
 
@@ -163,6 +170,7 @@ const Cart: React.FC = () => {
         onClose={() => dispatch(closeModal())}
         onConfirm={() => {
           dispatch(closeModal());
+          dispatch(clearCart());
           deleteWholeProductFromCart();
         }}
         message={"Sepetinizdeki tüm ürünler silinecektir, emin misiniz?"}

@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
 import "react-phone-input-2/lib/bootstrap.css";
 
 import * as Yup from "yup";
 
-import { Field, Form, Formik, FormikHelpers } from 'formik';
+import { Field, Form, Formik, FormikHelpers } from "formik";
 import React, { useEffect, useState } from "react";
 
+import AddAddressForm from "@/components/address/AddAddressForm";
 import CountrySelect from "@/components/country-select/CountrySelect";
 import Loading from "@/app/loading";
 import PhoneInput from "react-phone-input-2";
 import { useGetCountriesQuery } from "@/redux/features/countriesApiSlice";
-import AddAddressForm from "@/components/address/AddAddressForm";
 
 interface IFormValues {
   nameSurname: string;
@@ -23,14 +23,11 @@ interface IFormValues {
   phoneNumber: string;
 }
 
-
-
-
-  interface Values {
-    firstName: string;
-    lastName: string;
-    email: string;
-  }
+interface Values {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 const AddAddress: React.FC = () => {
   const { data, isLoading, isError, isSuccess } = useGetCountriesQuery();
@@ -41,35 +38,39 @@ const AddAddress: React.FC = () => {
   useEffect(() => {
     if (isSuccess && data) {
       setCountries(data.countries.map((country) => country.name));
-      setCountryCodes(data.countries.map((country) => country.code.toUpperCase()));
+      setCountryCodes(
+        data.countries.map((country) => country.code.toUpperCase())
+      );
     }
   }, [isSuccess, data]);
 
-  const initialValues: IFormValues = {
-    nameSurname: "",
-    address: "",
-    countryCode: "+90",
-    city: "",
-    zipCode: "",
-    areaCode: "",
-    phoneNumber: "",
-  };
+  // const initialValues: IFormValues = {
+  //   nameSurname: "",
+  //   address: "",
+  //   countryCode: "+90",
+  //   city: "",
+  //   zipCode: "",
+  //   areaCode: "",
+  //   phoneNumber: "",
+  // };
 
+  // const validationSchema = Yup.object().shape({
+  //   nameSurname: Yup.string()
+  //     .required("Ad Soyad alanı zorunlu")
+  //     .max(100, "Ad Soyad alanı çok uzun"),
+  //   address: Yup.string().required("Adres alanı zorunlu"),
+  //   countryCode: Yup.string().required(),
+  //   city: Yup.string().required("Şehir alanı zorunlu"),
+  //   zipCode: Yup.string().required("Posta Kodu alanı zorunlu"),
+  //   areaCode: Yup.string().required("Alan Kodu zorunlu"),
+  //   phoneNumber: Yup.string()
+  //     .required("Telefon Numarası zorunlu")
+  //     .matches(/^\+?[0-9]+$/, "Geçerli bir telefon numarası girin"),
+  // });
 
-  const validationSchema = Yup.object().shape({
-    nameSurname: Yup.string().required("Ad Soyad alanı zorunlu").max(100, "Ad Soyad alanı çok uzun"),
-    address: Yup.string().required("Adres alanı zorunlu"),
-    countryCode: Yup.string().required(),
-    city: Yup.string().required("Şehir alanı zorunlu"),
-    zipCode: Yup.string().required("Posta Kodu alanı zorunlu"),
-    areaCode: Yup.string().required("Alan Kodu zorunlu"),
-    phoneNumber: Yup.string().required("Telefon Numarası zorunlu").matches(/^\+?[0-9]+$/, "Geçerli bir telefon numarası girin"),
-  });
-
-  const handleSubmit = (values: IFormValues) => {
-    // Handle form submission here
-    console.log("Form values:")
-  };
+  // const handleSubmit = (values: IFormValues) => {
+  //   // Handle form submission here
+  // };
 
   let content;
 
@@ -78,9 +79,7 @@ const AddAddress: React.FC = () => {
   } else if (isError) {
     content = <div>error</div>;
   } else if (isSuccess) {
-    content = (
-        <AddAddressForm />
-    );
+    content = <AddAddressForm />;
   }
 
   return content;
