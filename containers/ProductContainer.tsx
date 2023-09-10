@@ -53,7 +53,6 @@ const ProductContainer = () => {
         if (data) {
             dispatch(setFilteredProductCount(data.productCount));
             dispatch(setProducts(data));
-            console.log(data);
         }
     }, [data, selectedSubCategory, params]);
 

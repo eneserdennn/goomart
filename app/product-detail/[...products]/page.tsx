@@ -26,6 +26,7 @@ const ProductDetail = ({params}) => {
     } else if (isError) {
         content = <div>Something went wrong!</div>
     } else if (isSuccess) {
+        console.log(data)
         content = (
             <div className="flex flex-col ">
                 <div className="flex flex-col relative justify-center items-center pt-[15px] pb-[41px] bg-white">
@@ -71,7 +72,7 @@ const ProductDetail = ({params}) => {
                     </div>
                 </div>
                 <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300">
-                    {data.mainProductUnitStock > 0 ?
+                    {data.mainProductUnitStock <= 0 ?
                         <div className="flex justify-center py-2">
                             <button
                                 className="h-12 m-2 w-full bg-[#8E8E93B2] opacity-70 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
