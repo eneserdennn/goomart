@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
+import { useAddToCartMutation } from "@/redux/features/cart/cartApiSlice";
 import { useDispatch } from "react-redux";
 
 interface IProduct {
@@ -79,7 +80,20 @@ interface ICategory {
 const ProductCardDiscount = ({ product }: { product: IProduct }) => {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
-  console.log(product);
+
+  const [addToCart, { isLoading, isError, isSuccess, data, error }] =
+    useAddToCartMutation();
+
+  const handleAddToCart = () => {
+    const requestData = {
+      productId: product.id,
+      productUnitId: product.ProductUnits[0].id,
+      quantityInProductUnit: 1,
+    };
+
+    console.log(product.ProductUnits[0].convertionToMainUnit);
+    addToCart(requestData);
+  };
 
   return (
     <div className="flex relative my-2 w-[110px]">
@@ -137,7 +151,9 @@ const ProductCardDiscount = ({ product }: { product: IProduct }) => {
           alt={ICONS.warning}
           width={14}
           height={14}
-          onClick={() => setQuantity(quantity + 1)}
+          onClick={() => {
+            handleAddToCart();
+          }}
         />
       </div>
     </div>
