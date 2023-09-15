@@ -16,10 +16,13 @@ const cartSlice = createSlice({
     addProductToCart: (state, action) => {
       // add product to cart and save to local storage
       const product = action.payload;
+      // @ts-ignore
       const index = state.products.findIndex((x) => x.id === product.id);
       if (index >= 0) {
+        // @ts-ignore
         state.products[index].quantity += 1;
       } else {
+        // @ts-ignore
         state.products.push(product);
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
@@ -27,6 +30,7 @@ const cartSlice = createSlice({
     removeProductFromCart: (state, action) => {
       // remove product from cart and save to local storage
       const productId = action.payload;
+      // @ts-ignore
       const index = state.products.findIndex((x) => x.id === productId);
       if (index >= 0) {
         state.products.splice(index, 1);
@@ -51,7 +55,7 @@ export const {
   setCartFromLocalStorage,
   modalToggle,
 } = cartSlice.actions;
-
+// @ts-ignore
 export const selectCart = (state) => state.cart;
 
 export default cartSlice.reducer;

@@ -7,7 +7,6 @@ import { Disclosure } from "@headlessui/react";
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
 import Loading from "@/app/loading";
-import { addToCart } from "@/redux/features/cart/cartSlice";
 import { useAddToCartMutation } from "@/redux/features/cart/cartApiSlice";
 import { useDispatch } from "react-redux";
 import { useGetProductsByProductIdQuery } from "@/redux/features/products/productApiSlice";
@@ -172,13 +171,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ params }) => {
                 className="h-12 m-2 w-full bg-primary hover:bg-green-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300"
                 type="submit"
                 onClick={() => {
-                  dispatch(
-                    addToCart({
-                      ...data,
-                      qty: count,
-                    })
-                  );
-
                   handleAddToCart();
                 }}
               >

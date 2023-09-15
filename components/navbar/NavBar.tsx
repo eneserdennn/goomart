@@ -5,7 +5,6 @@ import { BiSearchAlt, BiSolidChevronDown } from "react-icons/bi";
 import { ButtonHTMLAttributes, ReactNode, useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { IoMenu, IoPersonSharp } from "react-icons/io5";
-import { closeModal, openModal } from "@/redux/features/cart/cartSlice";
 
 import Button from "@/components/button";
 import Cookies from "js-cookie";
@@ -377,7 +376,7 @@ const NavBar: React.FC = () => {
                 width={20}
                 height={19}
                 onClick={() => {
-                  dispatch(openModal());
+                  // dispatch(openModal());
                 }}
               />
             ) : (
