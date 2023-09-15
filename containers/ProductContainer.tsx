@@ -19,10 +19,12 @@ import ProductCard from "@/components/product-cards/ProductCard";
 import ProductCardDiscount from "@/components/product-cards/ProductCardDiscount";
 import ProductCardOutOfStock from "@/components/product-cards/ProductOutOfStock";
 import { useAllProductsByCategoryIdQuery } from "@/redux/features/categories/categoriesApiSlice";
+import { usePathname } from "next/navigation";
 
 const ProductContainer = () => {
   const dispatch = useDispatch();
-  const categoryId = window.location.pathname.split("/")[2];
+  // const categoryId = window.location.pathname.split("/")[2];
+  const categoryId = usePathname().split("/")[2];
 
   const products = useSelector(selectProducts);
   const selectedSubCategory = useSelector(selectSelectedSubCategory);
@@ -36,11 +38,13 @@ const ProductContainer = () => {
   const { data } = useAllProductsByCategoryIdQuery({ id: categoryId, params });
 
   useEffect(() => {
+    console.log(filteredProductTypes);
     if (isSearched) {
       const newParams = {
         "sort-by": sortBy,
         "filter-brand": selectedBrands,
         "filter-product-type": filteredProductTypes.map(
+          // @ts-ignore
           (productType) => productType.id
         ),
       };
@@ -59,6 +63,7 @@ const ProductContainer = () => {
   }, [data, selectedSubCategory, params]);
 
   const filteredProducts = products.SubCategory?.filter(
+    // @ts-ignore
     (product) => product.id === selectedSubCategory.id
   );
 
@@ -72,6 +77,7 @@ const ProductContainer = () => {
     }
     if (productTypeRef.current) {
       const stickyHeaderHeight = 74;
+      // @ts-ignore
       const elementPosition = productTypeRef.current.offsetTop;
       const offsetPosition = elementPosition - stickyHeaderHeight;
 
@@ -84,41 +90,54 @@ const ProductContainer = () => {
 
   return (
     <div className="flex flex-col w-full justify-center">
-      {filteredProducts?.map((productTypes) => (
-        <div>
-          {productTypes.ProductType.map((productType) => (
-            <div
-              key={productType.id}
-              ref={
-                productType.name === selectedProductType?.name
-                  ? productTypeRef
-                  : null
-              }
-            >
-              {productType.Product.length > 0 && (
-                <div className="p-2 mt-12 my-1 font-bold text-[15px]">
-                  {productType.name}
+      {
+        // @ts-ignore
+        filteredProducts?.map((productTypes) => (
+          <div>
+            {
+              // @ts-ignore
+              productTypes.ProductType.map((productType) => (
+                <div
+                  key={productType.id}
+                  ref={
+                    productType.name === selectedProductType?.name
+                      ? productTypeRef
+                      : null
+                  }
+                >
+                  {productType.Product.length > 0 && (
+                    <div className="p-2 mt-12 my-1 font-bold text-[15px]">
+                      {productType.name}
+                    </div>
+                  )}
+                  <div className="flex flex-wrap justify-around bg-white shadow-md">
+                    {
+                      // @ts-ignore
+                      productType.Product.map((product) => {
+                        const key = product.id;
+                        if (
+                          product.mainProductUnitStock > 0 &&
+                          product.saleAmount > 0
+                        ) {
+                          return (
+                            <ProductCardDiscount key={key} product={product} />
+                          );
+                        }
+                        if (product.mainProductUnitStock > 0) {
+                          return <ProductCard key={key} product={product} />;
+                        }
+                        return (
+                          <ProductCardOutOfStock key={key} product={product} />
+                        );
+                      })
+                    }
+                  </div>
                 </div>
-              )}
-              <div className="flex flex-wrap justify-around bg-white shadow-md">
-                {productType.Product.map((product) => {
-                  const key = product.id;
-                  if (
-                    product.mainProductUnitStock > 0 &&
-                    product.saleAmount > 0
-                  ) {
-                    return <ProductCardDiscount key={key} product={product} />;
-                  }
-                  if (product.mainProductUnitStock > 0) {
-                    return <ProductCard key={key} product={product} />;
-                  }
-                  return <ProductCardOutOfStock key={key} product={product} />;
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      ))}
+              ))
+            }
+          </div>
+        ))
+      }
     </div>
   );
 };

@@ -3,7 +3,7 @@ import ProductCardDiscount from "@/components/product-cards/ProductCardDiscount"
 import ProductCardOutOfStock from "@/components/product-cards/ProductOutOfStock";
 import React from "react";
 
-const SearchResults = ({ searchResults, isLoading }) => {
+const SearchResults = ({ searchResults, isLoading }: any) => {
   if (isLoading) {
     return <div className="flex items-center justify-center">Loading...</div>;
   }
@@ -13,8 +13,8 @@ const SearchResults = ({ searchResults, isLoading }) => {
         <span>Arama Sonuçları</span>
       </div>
       <div className="flex flex-wrap justify-around bg-white shadow-md mb-20">
-        {searchResults?.map((product) => (
-          <div className="flex">
+        {searchResults?.map((product: any) => (
+          <div className="flex" key={product.id}>
             {product.mainProductUnitStock > 0 && product.saleAmount > 0 && (
               <ProductCardDiscount key={product.id} product={product} />
             )}

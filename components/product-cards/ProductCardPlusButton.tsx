@@ -4,7 +4,7 @@ import { ICONS } from "@/constants/iconConstants";
 import { IMAGES } from "@/constants/imageConstants";
 import Image from "next/image";
 
-const ProductCardPlusButton = ({ product }) => {
+const ProductCardPlusButton = ({ product }: { product: any }) => {
   return (
     <div className="mx-0.5">
       <div className="flex relative my-2 w-[110px]">

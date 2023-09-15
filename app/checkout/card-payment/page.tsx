@@ -31,20 +31,23 @@ const IconInput: React.FC<IconInputProps> = ({
     <div className="flex flex-col mb-4">
       <div className="relative">
         <InputMask
-          mask={mask}
+          mask={mask || ""}
           value={field.value}
           onChange={field.onChange}
-          onBlur={field.onBlur} // Doğrudan onBlur özelliğini ekledik
+          onBlur={field.onBlur}
         >
-          {(inputProps) => (
-            <input
-              {...props}
-              {...inputProps}
-              className={`appearance-none border ${
-                errorText ? "border-red-500" : "border-0"
-              } p-[15px] h-[53px] rounded-lg w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10`} // px değerini sağa aldık (pr-10)
-            />
-          )}
+          {
+            // @ts-ignore
+            (inputProps) => (
+              <input
+                {...props}
+                {...inputProps}
+                className={`appearance-none border ${
+                  errorText ? "border-red-500" : "border-0"
+                } p-[15px] h-[53px] rounded-lg w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10`} // px değerini sağa aldık (pr-10)
+              />
+            )
+          }
         </InputMask>
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
           <Image src={Icon} alt={"icon"} width={18} height={18} />

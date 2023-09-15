@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { addToCart, removeFromCart } from "@/redux/features/cart/cartSlice";
 import {
   useAddToCartMutation,
   useRemoveFromCartMutation,
 } from "@/redux/features/cart/cartApiSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
+import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 
 interface IProductUnit {
   id: string;
@@ -99,6 +102,8 @@ const ConvertProductName = (name: string): string => {
 };
 
 const CartProduct: React.FC<{ product: ICartItem }> = ({ product }) => {
+  const dispatch = useDispatch();
+  const selectedToken = useSelector(selectCurrentToken);
   const [count, setCount] = useState<number>(1);
   const { productItself } = product;
 
@@ -122,6 +127,7 @@ const CartProduct: React.FC<{ product: ICartItem }> = ({ product }) => {
       productUnitId: product.productItself.ProductUnits[0].id,
       quantityInProductUnit: 1,
     };
+
     removeFromCart(requestData);
   };
 
@@ -129,62 +135,160 @@ const CartProduct: React.FC<{ product: ICartItem }> = ({ product }) => {
     setCount(product.quantityInProductUnit);
   }, []);
 
-  return (
-    <div className="flex border-b bg-white p-[10px]">
-      <div className="flex flex-row w-full justify-between" onClick={() => {}}>
-        <div className="flex items-center h-[90px] w-[90px] border rounded-[15px] border-[#E2E2E2] overflow-hidden">
-          {productItself.image && (
-            <Image
-              src={productItself.image}
-              alt={"product-image"}
-              width={90}
-              height={90}
-              objectFit="cover"
-            />
-          )}
-        </div>
+  let content;
 
-        <div className="flex flex-col w-1/3">
-          <div className="font-semibold text-[14px]">
-            <span className="mr-1">{productItself.brand}</span>
-            <span>{productItself.name}</span>
+  if (selectedToken) {
+    content = (
+      <div className="flex border-b bg-white p-[10px]">
+        <div
+          className="flex flex-row w-full justify-between"
+          onClick={() => {}}
+        >
+          <div className="flex items-center h-[90px] w-[90px] border rounded-[15px] border-[#E2E2E2] overflow-hidden">
+            {productItself.image && (
+              <Image
+                src={productItself.image}
+                alt={"product-image"}
+                width={90}
+                height={90}
+                objectFit="cover"
+              />
+            )}
           </div>
-          <div className="text-primary font-bold text-[15px]">
-            €{productItself.mainProductUnitPrice}
-          </div>
-        </div>
-        <div className="flex justify-center items-center py-2.5 w-1/3">
-          <div className="flex justify-evenly items-center rounded-md w-[109px] h-[36px] border transition duration-150">
-            <Image
-              src={ICONS.minus}
-              alt={"image"}
-              width={13}
-              height={13}
-              onClick={() => {
-                if (count > 0) {
-                  setCount(count - 1);
-                  handleRemoveFromCart();
-                }
-              }}
-            />
-            <div className=" bg-primary text-white h-full w-[42px] flex justify-center items-center">
-              {count}
+
+          <div className="flex flex-col w-1/3">
+            <div className="font-semibold text-[14px]">
+              <span className="mr-1">{productItself.brand}</span>
+              <span>{productItself.name}</span>
             </div>
-            <Image
-              src={ICONS.plus}
-              alt={"image"}
-              width={13}
-              height={13}
-              onClick={() => {
-                setCount(count + 1);
-                handleAddToCart();
-              }}
-            />
+            <div className="text-primary font-bold text-[15px]">
+              €{productItself.mainProductUnitPrice}
+            </div>
+          </div>
+          <div className="flex justify-center items-center py-2.5 w-1/3">
+            <div className="flex justify-evenly items-center rounded-md w-[109px] h-[36px] border transition duration-150">
+              <Image
+                src={ICONS.minus}
+                alt={"image"}
+                width={13}
+                height={13}
+                onClick={() => {
+                  if (count > 0) {
+                    setCount(count - 1);
+                    handleRemoveFromCart();
+                  }
+                }}
+              />
+              <div className=" bg-primary text-white h-full w-[42px] flex justify-center items-center">
+                {count}
+              </div>
+              <Image
+                src={ICONS.plus}
+                alt={"image"}
+                width={13}
+                height={13}
+                onClick={() => {
+                  setCount(count + 1);
+                  handleAddToCart();
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    content = (
+      <div className="flex border-b bg-white p-[10px]">
+        <div
+          className="flex flex-row w-full justify-between"
+          onClick={() => {}}
+        >
+          <div className="flex items-center h-[90px] w-[90px] border rounded-[15px] border-[#E2E2E2] overflow-hidden">
+            {
+              // @ts-ignore
+              product.image && (
+                <Image
+                  src={
+                    // @ts-ignore
+                    product.image
+                  }
+                  alt={"product-image"}
+                  width={90}
+                  height={90}
+                  objectFit="cover"
+                />
+              )
+            }
+          </div>
+
+          <div className="flex flex-col w-1/3">
+            <div className="font-semibold text-[14px]">
+              <span className="mr-1">
+                {
+                  // @ts-ignore
+                  product.brand
+                }
+              </span>
+              <span>
+                {
+                  // @ts-ignore
+                  product.name
+                }
+              </span>
+            </div>
+            <div className="text-primary font-bold text-[15px]">
+              €
+              {
+                // @ts-ignore
+                product.mainProductUnitPrice
+              }
+            </div>
+          </div>
+          <div className="flex justify-center items-center py-2.5 w-1/3">
+            <div className="flex justify-evenly items-center rounded-md w-[109px] h-[36px] border transition duration-150">
+              <Image
+                src={ICONS.minus}
+                alt={"image"}
+                width={13}
+                height={13}
+                onClick={() => {
+                  if (count > 0) {
+                    setCount(count - 1);
+                    dispatch(
+                      // @ts-ignore
+                      removeFromCart(product)
+                    );
+                  }
+                }}
+              />
+              <div className=" bg-primary text-white h-full w-[42px] flex justify-center items-center">
+                {
+                  // @ts-ignore
+                  product.qty
+                }
+              </div>
+              <Image
+                src={ICONS.plus}
+                alt={"image"}
+                width={13}
+                height={13}
+                onClick={() => {
+                  setCount(count + 1);
+                  dispatch(
+                    // @ts-ignore
+                    addToCart(product)
+                  );
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return content;
 };
 
 export default CartProduct;

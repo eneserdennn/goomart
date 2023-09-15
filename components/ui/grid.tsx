@@ -1,20 +1,14 @@
-
-import React, { ReactNode } from 'react'
+import React, { ReactNode } from "react";
 
 type GridProps = {
-    gap?:number;
-    children:any;
-    cols:number;
-    className?:string;
-}
+  gap?: number;
+  children: any;
+  cols: number;
+  className?: string;
+};
 
-const Grid: React.FC<GridProps> = ({
-    gap,
-    children,
-    cols,
+const Grid: React.FC<GridProps> = ({ gap, children, cols }) => {
+  return <div className={`grid grid-cols-${cols} gap-${gap}`}>{children}</div>;
+};
 
-})=>{
-    return<div className={`grid grid-cols-${cols} gap-${gap}`}>{children}</div>
-}
-
-export default Grid
+export default Grid;

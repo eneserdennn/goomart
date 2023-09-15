@@ -3,9 +3,11 @@ import { apiSlice } from "@/redux/api/apiSlice";
 export const cartApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCart: builder.query({
+      // @ts-ignore
       query: () => "/cart/get-cart",
     }),
     addToCart: builder.mutation({
+      // @ts-ignore
       query: ({ productId, productUnitId, quantityInProductUnit }) => ({
         url: "/cart/add-to-cart",
         method: "POST",
@@ -17,6 +19,7 @@ export const cartApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     removeFromCart: builder.mutation({
+      // @ts-ignore
       query: ({ productId, productUnitId, quantityInProductUnit }) => ({
         url: "/cart/remove-from-cart",
         method: "POST",
@@ -28,6 +31,7 @@ export const cartApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     deleteWholeProductFromCart: builder.mutation({
+      // @ts-ignore
       query: () => ({
         url: "/cart/kill-cart",
         method: "POST",

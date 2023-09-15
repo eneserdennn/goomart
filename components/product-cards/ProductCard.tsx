@@ -9,6 +9,7 @@ import {
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
 import Link from "next/link";
+import { customSuccess } from "../CustomToast";
 import { useCheckCartMutation } from "@/redux/features/order/orderApiSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -167,6 +168,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
           onClick={() => {
             handleAddToCart();
             setQuantity(quantity + 1);
+            customSuccess("Ürün sepete eklendi.");
           }}
         />
         <div className="flex items-center text-primary font-bold text-[14px] bg-primary bg-opacity-20 rounded-full w-[32px] h-[32px] justify-center">
@@ -180,6 +182,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
           onClick={() => {
             handleRemoveFromCart();
             setQuantity(quantity - 1);
+            customSuccess("Ürün sepetten çıkarıldı.");
           }}
         />
       </div>

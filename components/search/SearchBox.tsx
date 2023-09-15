@@ -28,7 +28,7 @@ const SearchBox = () => {
     params: { search: searchTerm },
   });
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchTerm.trim() !== "") {
       updateSearchHistory(searchTerm);
@@ -38,17 +38,23 @@ const SearchBox = () => {
     setSearched(true);
   };
 
-  const handleSearchTermClick = (term) => {
-    setSearchTerm(term); // Set the clicked search term as the new search term
+  const handleSearchTermClick = (term: string) => {
+    setSearchTerm(term);
 
     // Update search history with reordering behavior
     const updatedHistory = searchHistory.filter((item) => item !== term);
-    updatedHistory.unshift(term);
+    updatedHistory.unshift(
+      // @ts-ignore
+      term
+    );
     setSearchHistory(updatedHistory);
     localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
 
     // Update search results, even if there are no actual results
-    setSearchResults(term.trim() !== "" ? term : []);
+    setSearchResults(
+      // @ts-ignore
+      term.trim() !== "" ? term : []
+    );
     setIsSearchHistoryOpen(false);
   };
 
@@ -63,9 +69,15 @@ const SearchBox = () => {
     setShowCloseIcon(searchTerm !== "");
   }, [searchTerm]);
 
-  const updateSearchHistory = (term) => {
+  const updateSearchHistory = (
+    // @ts-ignore
+    term
+  ) => {
     const updatedHistory = searchHistory.filter((item) => item !== term); // Remove the term if it already exists
-    updatedHistory.unshift(term); // Add the term to the beginning of the array
+    updatedHistory.unshift(
+      // @ts-ignore
+      term
+    ); // Add the term to the beginning of the array
     setSearchHistory(updatedHistory);
     localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
   };

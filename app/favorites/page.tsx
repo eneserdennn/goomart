@@ -9,7 +9,7 @@ import React from "react";
 import { useGetMyFavoriteProductsQuery } from "@/redux/features/products/productApiSlice";
 
 const FavoritesPage = () => {
-  const { data, error, isLoading } = useGetMyFavoriteProductsQuery();
+  const { data, error, isLoading } = useGetMyFavoriteProductsQuery({});
 
   if (isLoading) return <Loading />;
   return (
@@ -19,13 +19,16 @@ const FavoritesPage = () => {
       } flex-wrap`}
     >
       {/* <ProductCardPlusButton /> */}
-      {data?.map((product) => {
-        if (product.mainProductUnitStock === 0) {
-          return <ProductCardOutOfStock key={product.id} product={product} />;
-        } else if (product.discountedPrice > 0)
-          return <ProductCardDiscount key={product.id} product={product} />;
-        else return <ProductCard key={product.id} product={product} />;
-      })}
+      {
+        // @ts-ignore
+        data?.map((product) => {
+          if (product.mainProductUnitStock === 0) {
+            return <ProductCardOutOfStock key={product.id} product={product} />;
+          } else if (product.discountedPrice > 0)
+            return <ProductCardDiscount key={product.id} product={product} />;
+          else return <ProductCard key={product.id} product={product} />;
+        })
+      }
     </div>
   );
 };

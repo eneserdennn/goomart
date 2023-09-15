@@ -232,7 +232,10 @@ const AddressForm: React.FC = () => {
               >
                 <div className="flex flex-row items-center">
                   <Image
-                    src={ICONS[selectedCountry.code]}
+                    src={
+                      // @ts-ignore
+                      ICONS[selectedCountry.code]
+                    }
                     alt={selectedCountry.code}
                     className="h-6 w-6"
                   />

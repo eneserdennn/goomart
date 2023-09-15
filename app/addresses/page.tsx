@@ -1,6 +1,7 @@
 "use client";
 
 import { IoMdRadioButtonOff, IoMdRadioButtonOn } from "react-icons/io";
+// 1. Importlar
 import React, { useEffect, useState } from "react";
 import {
   useArchiveAnAddressMutation,
@@ -16,67 +17,92 @@ import Link from "next/link";
 import Loading from "@/app/loading";
 import { customSuccess } from "@/components/CustomToast";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
-import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
-interface Props {
+// 2. Interfaces
+interface Country {
+  id: number;
+  name: string;
+  code: string;
+  shipmentFee: number;
+  image: string;
+  canFreeShip: boolean;
+  minCartValue: number;
+  minFreeShipCartValue: number;
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+  archivedAt: null | string;
+}
+
+interface Address {
+  id: number;
+  city: string;
+  postalCode: string;
   address: string;
-  selectedAddress: string | null;
-  onSelectAddress: (address: string) => void;
+  nameAndSurname: string;
+  phone: string;
+  type: "DELIVERY";
+  country: Country;
+}
+
+interface CustomRadioProps {
+  address: Address;
+  selectedAddress: number | null;
+  onSelectAddress: (addressId: number) => void;
 }
 
 const DeliveryAddress: React.FC = () => {
+  // 3. States
   const token = useSelector(selectCurrentToken);
-
-  const [deliveryAddress, setDeliveryAddress] = useState<string[] | null>(null);
-  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+  const [deliveryAddress, setDeliveryAddress] = useState<Address[] | null>(
+    null
+  );
+  const [selectedAddress, setSelectedAddress] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [addressToDelete, setAddressToDelete] = useState<string | null>(null);
+  const [addressToDelete, setAddressToDelete] = useState<number | null>(null);
 
+  // API Calls
   const {
     data: addresses,
     isLoading,
     isSuccess,
     isError,
-    error,
-  } = useGetMyAddressesQuery();
-  const [setDefaultAddress, { isLoading: isSettingDefaultAddress }] =
-    useSetDefaultAddressMutation();
-  const [archiveAnAddress, { isLoading: isArchivingAddress }] =
-    useArchiveAnAddressMutation();
+  } = useGetMyAddressesQuery({});
+  const [setDefaultAddress] = useSetDefaultAddressMutation();
+  const [archiveAnAddress] = useArchiveAnAddressMutation();
 
+  // 4. Effects
   useEffect(() => {
     if (addresses) {
       setDeliveryAddress(addresses.addresses);
-
-      const defaultAddressID = addresses.defaultAddressId;
-
-      if (defaultAddressID) {
-        setSelectedAddress(defaultAddressID);
+      if (addresses.defaultAddressId) {
+        setSelectedAddress(addresses.defaultAddressId);
       }
     }
   }, [addresses]);
 
-  const handleDeleteAddress = (address: string) => {
-    setAddressToDelete(address.id);
+  // Helper Functions
+  const handleDeleteAddress = (addressId: number) => {
+    setAddressToDelete(addressId);
     setShowModal(true);
   };
 
-  const handleSelectAddress = (address: string) => {
-    setDefaultAddress(address.id);
-    setSelectedAddress(address.id);
+  const handleSelectAddress = (addressId: number) => {
+    setDefaultAddress(addressId);
+    setSelectedAddress(addressId);
   };
 
   const confirmDeleteAddress = () => {
     if (addressToDelete) {
       archiveAnAddress(addressToDelete);
       customSuccess("Adresiniz başarıyla silindi");
+      setShowModal(false);
+      setAddressToDelete(null);
     }
-    setShowModal(false);
-    setAddressToDelete(null);
   };
 
-  const CustomRadio: React.FC<Props> = ({
+  const CustomRadio: React.FC<CustomRadioProps> = ({
     address,
     selectedAddress,
     onSelectAddress,
@@ -84,12 +110,9 @@ const DeliveryAddress: React.FC = () => {
     return (
       <div
         className="flex items-center justify-between w-full border h-[100px] rounded p-4"
-        onClick={() => onSelectAddress(address)}
+        onClick={() => onSelectAddress(address.id)}
       >
         <div className="flex items-center">
-          {" "}
-          {/* Radio button section takes 1/5 of the width */}
-          {/* Radio button icon */}
           {address.id === selectedAddress ? (
             <IoMdRadioButtonOn className="text-primary mr-4 h-6 w-6" />
           ) : (
@@ -129,7 +152,7 @@ const DeliveryAddress: React.FC = () => {
             className="cursor-pointer text-primary h-5 w-5"
             onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
               e.stopPropagation();
-              handleDeleteAddress(address);
+              handleDeleteAddress(address.id);
             }}
           />
         </div>
@@ -145,7 +168,7 @@ const DeliveryAddress: React.FC = () => {
     content = (
       <>
         <div className="flex flex-col relative items-center justify-center">
-          {deliveryAddress?.length > 0 ? (
+          {deliveryAddress && deliveryAddress?.length > 0 ? (
             <div className="flex flex-col items-center w-full bg-white">
               {deliveryAddress.map((address, idx) => (
                 <CustomRadio

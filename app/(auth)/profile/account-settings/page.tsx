@@ -30,19 +30,17 @@ interface IFormValues {
   campaignConsent: boolean;
 }
 
-interface RootState {
-  user: {
+interface ICountry {
     name: string;
-    surname: string;
-    email: string;
-    campaignConsent: boolean;
-  };
+    code: string;
+    dialCode: string;
+    flag: string;
+
 }
 
-const countries = [
+const countries: ICountry[] = [
   { name: "Turkey", code: "TR", dialCode: "+90", flag: "🇹🇷" },
   { name: "United States", code: "US", dialCode: "+1", flag: "🇺🇸" },
-  // Diğer ülkeler...
 ];
 
 const AccountSettings: React.FC = () => {
@@ -61,10 +59,16 @@ const AccountSettings: React.FC = () => {
     isError,
   } = useGetProfileQuery(token);
 
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const [selectedCountry, setSelectedCountry] = useState({
+    name: "United States",
+    code: "US",
+    dialCode: "+1",
+    flag: "🇺🇸",
+  })
+
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  const [dialCode, setDialCode] = useState("+90");
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [wrongOldPassword, setWrongOldPassword] = useState(false);
@@ -250,10 +254,10 @@ const AccountSettings: React.FC = () => {
                         onChange={(selectedCountry) => {
                           // @ts-ignore
                           setSelectedCountry(selectedCountry);
-                          setDialCode(selectedCountry.dialCode);
                           handleChange({
                             target: {
                               name: "dialCode",
+                              // @ts-ignore
                               value: selectedCountry.dialCode,
                             },
                           });
@@ -261,11 +265,8 @@ const AccountSettings: React.FC = () => {
                       >
                         <Listbox.Button className="flex bg-white items-center space-x-2 px-3 py-2 border rounded-l-md ">
                           <span>{selectedCountry.flag}</span>{" "}
-                          {/* Bayrak ikonunu buraya ekleyebilirsiniz */}
                           <span>{selectedCountry.dialCode}</span>{" "}
-                          {/* Bayrak ikonunu buraya ekleyebilirsiniz */}
                         </Listbox.Button>
-                        {/*<div className="border-l-2" />*/}
                         <input
                           type="text"
                           placeholder="Telefon numarası"

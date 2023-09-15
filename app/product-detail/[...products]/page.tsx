@@ -12,7 +12,14 @@ import { useAddToCartMutation } from "@/redux/features/cart/cartApiSlice";
 import { useDispatch } from "react-redux";
 import { useGetProductsByProductIdQuery } from "@/redux/features/products/productApiSlice";
 
-const ProductDetail = ({ params }) => {
+interface ProductDetailProps {
+  params: {
+    products: string[];
+  };
+}
+
+const ProductDetail: React.FC<ProductDetailProps> = ({ params }) => {
+  console.log(params);
   const dispatch = useDispatch();
   const productId = params.products[0];
   const [isDiscount, setIsDiscount] = useState<boolean>(true);
