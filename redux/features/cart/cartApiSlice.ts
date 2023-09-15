@@ -5,6 +5,7 @@ export const cartApiSlice = apiSlice.injectEndpoints({
     getCart: builder.query({
       // @ts-ignore
       query: () => "/cart/get-cart",
+      providesTags: ["Cart"],
     }),
     addToCart: builder.mutation({
       // @ts-ignore
@@ -17,6 +18,7 @@ export const cartApiSlice = apiSlice.injectEndpoints({
           quantityInProductUnit: 1,
         },
       }),
+      invalidatesTags: ["Cart"],
     }),
     removeFromCart: builder.mutation({
       // @ts-ignore

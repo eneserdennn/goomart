@@ -62,7 +62,7 @@ const baseQueryWithReauth: BaseQueryFn<RefreshResult> = async (
 
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Address"],
+  tagTypes: ["Address", "Cart"],
   // @ts-ignore
   endpoints: (builder) => ({}), // You can define your endpoints here
 });

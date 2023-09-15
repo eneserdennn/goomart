@@ -2,6 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import {
+  addProductToCart,
+  removeProductFromCart,
+} from "@/redux/features/cart/cartSlice";
+import {
   useAddToCartMutation,
   useRemoveFromCartMutation,
 } from "@/redux/features/cart/cartApiSlice";
@@ -95,6 +99,7 @@ const ConvertProductName = (name: string) => {
 };
 
 const ProductCard = ({ product }: { product: IProduct }) => {
+  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(0);
   const [addToCart, { isLoading: addToCartLoading }] = useAddToCartMutation();
   const [removeFromCart, { isLoading: removeFromCartLoading }] =
@@ -169,6 +174,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
             handleAddToCart();
             setQuantity(quantity + 1);
             customSuccess("Ürün sepete eklendi.");
+            dispatch(addProductToCart(product));
           }}
         />
         <div className="flex items-center text-primary font-bold text-[14px] bg-primary bg-opacity-20 rounded-full w-[32px] h-[32px] justify-center">

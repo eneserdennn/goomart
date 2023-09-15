@@ -6,6 +6,7 @@ const initialState = {
   shipmentFee: 5,
   totalPrice: 0,
   products: [],
+  isModalOpen: false,
 };
 
 const cartSlice = createSlice({
@@ -17,7 +18,7 @@ const cartSlice = createSlice({
       const product = action.payload;
       const index = state.products.findIndex((x) => x.id === product.id);
       if (index >= 0) {
-        state.products[index].quantity += product.quantity;
+        state.products[index].quantity += 1;
       } else {
         state.products.push(product);
       }
@@ -32,9 +33,25 @@ const cartSlice = createSlice({
       }
       localStorage.setItem("cart", JSON.stringify(state.products));
     },
+    setCartFromLocalStorage: (state) => {
+      const cart = localStorage.getItem("cart");
+      if (cart) {
+        state.products = JSON.parse(cart);
+      }
+    },
+    modalToggle: (state) => {
+      state.isModalOpen = !state.isModalOpen;
+    },
   },
 });
 
-export const { addProductToCart, removeProductFromCart } = cartSlice.actions;
+export const {
+  addProductToCart,
+  removeProductFromCart,
+  setCartFromLocalStorage,
+  modalToggle,
+} = cartSlice.actions;
+
+export const selectCart = (state) => state.cart;
 
 export default cartSlice.reducer;
