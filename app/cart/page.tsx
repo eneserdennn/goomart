@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  clearCart,
   selectCart,
+  selectModal,
   setCartFromLocalStorage,
 } from "@/redux/features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,9 +27,10 @@ const Cart = () => {
   const token = useSelector(selectCurrentToken);
   const cart = useSelector(selectCart);
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   const [modalToContinue, setModalToContinue] = useState<boolean>(false);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const isModalOpen = useSelector(selectModal);
 
   const [
     deleteWholeProductFromCart,
@@ -144,11 +147,11 @@ const Cart = () => {
       {content}
       <Modal
         show={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => dispatch(modalToggle())}
         onConfirm={() => {
-          setIsModalOpen(false);
-          // dispatch(clearCart());
+          dispatch(modalToggle());
           deleteWholeProductFromCart({});
+          dispatch(clearCart());
         }}
         message={"Sepetinizdeki tüm ürünler silinecektir, emin misiniz?"}
       />

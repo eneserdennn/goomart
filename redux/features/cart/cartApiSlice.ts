@@ -39,6 +39,7 @@ export const cartApiSlice = apiSlice.injectEndpoints({
         url: "/cart/kill-cart",
         method: "POST",
       }),
+      invalidatesTags: ["Cart"],
     }),
   }),
   overrideExisting: false,

@@ -107,6 +107,12 @@ const cartSlice = createSlice({
       }
     },
 
+    clearCart: (state) => {
+      state.products = [];
+      state.totalPrice = 0;
+      localStorage.removeItem("cart");
+    },
+
     modalToggle: (state) => {
       state.isModalOpen = !state.isModalOpen;
     },
@@ -118,8 +124,11 @@ export const {
   removeProductFromCart,
   setCartFromLocalStorage,
   modalToggle,
+  clearCart,
 } = cartSlice.actions;
 
 export const selectCart = (state: { cart: CartState }) => state.cart;
+// @ts-ignore
+export const selectModal = (state) => state.cart.isModalOpen;
 
 export default cartSlice.reducer;

@@ -17,6 +17,7 @@ import Link from "next/link";
 import Loading from "@/app/loading";
 import React from "react";
 import SideBar from "../sidebar/SideBar";
+import { modalToggle } from "@/redux/features/cart/cartSlice";
 import { setCredentials } from "@/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useField } from "formik";
@@ -376,7 +377,7 @@ const NavBar: React.FC = () => {
                 width={20}
                 height={19}
                 onClick={() => {
-                  // dispatch(openModal());
+                  dispatch(modalToggle());
                 }}
               />
             ) : (
