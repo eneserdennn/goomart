@@ -11,6 +11,7 @@ import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import CartProduct from "@/components/product-cards/CartProduct";
 import { IMAGES } from "@/constants/imageConstants";
 import Image from "next/image";
+import Link from "next/link";
 import Loading from "../loading";
 import Modal from "@/components/modal/Modal";
 import ProgressBar from "@/components/ProgressBar";
@@ -51,7 +52,7 @@ const Cart = () => {
     if (cart.products.length === 0 && !token) {
       dispatch(setCartFromLocalStorage());
     }
-  }, [cart]);
+  }, []);
 
   useEffect(() => {
     setTotalPrice(data?.totalPrice);
@@ -62,19 +63,13 @@ const Cart = () => {
   if (checkLoading) {
     return <Loading />;
   } else if (isError && (error as any).status === 401) {
-    console.log(cart);
     content = (
       <div>
-        {cart?.products.length > 0 ? (
+        {cart?.products?.length > 0 ? (
           <>
             {cart.products.map((item: any) => (
-              <CartProduct
-                product={item}
-                key={item.id}
-                qty={item.quantityInProductUnit}
-              />
+              <CartProduct product={item} key={item.id} qty={item.quantity} />
             ))}
-            <BottomNavBar />
           </>
         ) : (
           <>
@@ -94,7 +89,6 @@ const Cart = () => {
                 </span>
               </div>
             </div>
-            <BottomNavBar />
           </>
         )}
       </div>
@@ -112,7 +106,6 @@ const Cart = () => {
               qty={item.quantityInProductUnit}
             />
           ))}
-          <BottomNavBar />
         </>
       ) : (
         <>
@@ -132,7 +125,6 @@ const Cart = () => {
               </span>
             </div>
           </div>
-          <BottomNavBar />
         </>
       );
   }
@@ -161,31 +153,62 @@ const Cart = () => {
         message={"Ödemeye devam etmek icin giris yapmalisin."}
       />
 
-      {token && (
-        <div className="flex fixed justify-center flex-row bottom-[70px] bg-white left-0 w-full">
-          <div className="flex w-[87px] mx-[34px] items-center justify-center ">
-            <span className="text-primary text-[21px] font-bold items-center">
-              {totalPrice}
-            </span>
-            <span className="text-primary text-[21px] font-bold ml-1 items-center">
-              €
-            </span>
+      {token && data?.products?.length > 0 && (
+        <>
+          <div className="flex fixed justify-center flex-row bottom-[70px] bg-white left-0 w-full">
+            <div className="flex w-[87px] mx-[34px] items-center justify-center ">
+              <span className="text-primary text-[21px] font-bold items-center">
+                {totalPrice}
+              </span>
+              <span className="text-primary text-[21px] font-bold ml-1 items-center">
+                €
+              </span>
+            </div>
+            <div className="flex w-full">
+              <a
+                href="/checkout"
+                className="flex justify-center items-center w-full h-[60px] mr-[15px] my-[6px] bg-primary rounded-lg text-white text-[18px] font-bold"
+              >
+                Devam
+              </a>
+            </div>
           </div>
-          <div className="flex w-full">
-            <a
-              href="/checkout"
+          <ProgressBar
+            current={data?.totalPrice}
+            minimum={data?.shipmentFee}
+            isFreeShipping={data?.canFreeShip}
+          />
+        </>
+      )}
+      {!token && cart?.products?.length > 0 && (
+        <>
+          <div className="flex fixed justify-center flex-row bottom-[70px] bg-white left-0 w-full">
+            <div className="flex w-[87px] mx-[34px] items-center justify-center ">
+              <span className="text-primary text-[21px] font-bold items-center">
+                {totalPrice}
+              </span>
+              <span className="text-primary text-[21px] font-bold ml-1 items-center">
+                €{cart.totalPrice}
+              </span>
+            </div>
+            <div
+              onClick={() => {
+                setModalToContinue(true);
+              }}
               className="flex justify-center items-center w-full h-[60px] mr-[15px] my-[6px] bg-primary rounded-lg text-white text-[18px] font-bold"
             >
-              Devam
-            </a>
+              <div className="flex  justify-center w-full">Devam</div>
+            </div>
           </div>
-        </div>
+          <ProgressBar
+            current={cart.totalPrice}
+            minimum={cart.shipmentFee}
+            isFreeShipping={cart.canFreeShip}
+          />
+        </>
       )}
-      <ProgressBar
-        current={data?.totalPrice}
-        minimum={data?.shipmentFee}
-        isFreeShipping={data?.canFreeShip}
-      />
+
+      <BottomNavBar />
     </div>
   );
 };

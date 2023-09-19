@@ -13,7 +13,7 @@ function classNames(...classes: (string | undefined | null)[]) {
 }
 
 function TabContent({ posts }: { posts: any[] }) {
-  console.log(posts);
+
   return (
     <Tab.Panel
       className={classNames(

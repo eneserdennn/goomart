@@ -65,7 +65,7 @@ const CampaignsApply: FC = () => {
   };
 
   const handleConfirm = () => {
-    console.log(coupons);
+
     const matchedCoupons = coupons?.filter(
       // @ts-ignore
       (coupon) => coupon.code === inputValue

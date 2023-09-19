@@ -15,7 +15,7 @@ interface CampaignParams {
 }
 
 const CampaignDetail = ({ params }: { params: CampaignParams }) => {
-  console.log(params);
+
   const {
     data: campaign,
     isLoading: campaignLoading,

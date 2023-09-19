@@ -72,15 +72,15 @@ const LoginForm: React.FC = () => {
         // @ts-ignore
         if (err.response?.status === 400) {
           setErrMsg("Invalid credentials");
-          console.log("hata");
+
         } else {
           // @ts-ignore
           if (err.response?.status === 401) {
             setErrMsg("Unauthorized");
-            console.log("hata");
+
           } else {
             setErrMsg("Something went wrong");
-            console.log("hata");
+
           }
         }
       }

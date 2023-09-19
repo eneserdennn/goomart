@@ -1,6 +1,45 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface Product {
+  id: number;
+  brand: string;
+  name: string;
+  description: string;
+  image: string;
+  mainProductUnitName: string;
+  mainProductUnitPrice: number;
+  mainProductUnitStock: number;
+  productTypeId: number;
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+  archivedAt: string | null;
+  ProductUnits: {
+    id: number;
+    name: string;
+    convertionToMainUnit: number;
+    createdAt: string;
+    updatedAt: string;
+    productId: number;
+    archived: boolean;
+    archivedAt: string | null;
+    isMainUnit: boolean;
+  }[];
+  discountedPrice: number;
+  saleAmount: number;
+  quantity: number;
+}
+
+interface CartState {
+  canOrder: boolean;
+  canFreeShip: boolean;
+  shipmentFee: number;
+  totalPrice: number;
+  products: Product[];
+  isModalOpen: boolean;
+}
+
+const initialState: CartState = {
   canOrder: false,
   canFreeShip: false,
   shipmentFee: 5,
@@ -13,36 +52,61 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addProductToCart: (state, action) => {
-      // add product to cart and save to local storage
-      const product = action.payload;
-      // @ts-ignore
-      const index = state.products.findIndex((x) => x.id === product.id);
+    addProductToCart: (state, action: PayloadAction<Product>) => {
+      const productToAdd = action.payload;
+      const index = state.products.findIndex((x) => x.id === productToAdd.id);
       if (index >= 0) {
-        // @ts-ignore
+        // Increment the quantity by 1
         state.products[index].quantity += 1;
       } else {
-        // @ts-ignore
-        state.products.push(product);
+        // Add the product to the cart with a quantity of 1
+        state.products.push({ ...productToAdd, quantity: 1 });
       }
+      // Adjust total price
+      state.totalPrice += productToAdd.mainProductUnitPrice;
       localStorage.setItem("cart", JSON.stringify(state.products));
     },
-    removeProductFromCart: (state, action) => {
-      // remove product from cart and save to local storage
+
+    removeProductFromCart: (state, action: PayloadAction<number>) => {
       const productId = action.payload;
-      // @ts-ignore
-      const index = state.products.findIndex((x) => x.id === productId);
-      if (index >= 0) {
-        state.products.splice(index, 1);
+      const productIndex = state.products.findIndex((x) => x.id === productId);
+
+      if (productIndex === -1) return;
+
+      if (state.products[productIndex].quantity > 1) {
+        state.products[productIndex].quantity -= 1;
+        state.totalPrice -= state.products[productIndex].mainProductUnitPrice;
+      } else {
+        state.totalPrice -=
+          state.products[productIndex].mainProductUnitPrice *
+          state.products[productIndex].quantity;
+        state.products.splice(productIndex, 1);
       }
-      localStorage.setItem("cart", JSON.stringify(state.products));
+
+      const totalQuantity = state.products.reduce(
+        (acc, product) => acc + product.quantity,
+        0
+      );
+
+      if (totalQuantity === 0) {
+        localStorage.removeItem("cart");
+      } else {
+        localStorage.setItem("cart", JSON.stringify(state.products));
+      }
     },
+
     setCartFromLocalStorage: (state) => {
       const cart = localStorage.getItem("cart");
       if (cart) {
         state.products = JSON.parse(cart);
+
+        // Calculate totalPrice based on the products restored from localStorage
+        state.totalPrice = state.products.reduce((acc, product) => {
+          return acc + product.mainProductUnitPrice * product.quantity;
+        }, 0);
       }
     },
+
     modalToggle: (state) => {
       state.isModalOpen = !state.isModalOpen;
     },
@@ -55,7 +119,7 @@ export const {
   setCartFromLocalStorage,
   modalToggle,
 } = cartSlice.actions;
-// @ts-ignore
-export const selectCart = (state) => state.cart;
+
+export const selectCart = (state: { cart: CartState }) => state.cart;
 
 export default cartSlice.reducer;

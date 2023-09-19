@@ -38,7 +38,7 @@ const ProductContainer = () => {
   const { data } = useAllProductsByCategoryIdQuery({ id: categoryId, params });
 
   useEffect(() => {
-    console.log(filteredProductTypes);
+
     if (isSearched) {
       const newParams = {
         "sort-by": sortBy,

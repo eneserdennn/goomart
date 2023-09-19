@@ -75,7 +75,7 @@ const ForgotPasswordForm = () => {
           "E-posta adresi ile ilişkili kayıtlı hesap bulunamadı."
         );
       } else {
-        console.error(err);
+
       }
     }
   };
