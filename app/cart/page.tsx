@@ -19,6 +19,7 @@ import Modal from "@/components/modal/Modal";
 import ProgressBar from "@/components/ProgressBar";
 import { modalToggle } from "@/redux/features/cart/cartSlice";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
+import { useAddToCartMutation } from "@/redux/features/cart/cartApiSlice";
 import { useCheckCartMutation } from "@/redux/features/order/orderApiSlice";
 import { useDeleteWholeProductFromCartMutation } from "@/redux/features/cart/cartApiSlice";
 import { useGetCartQuery } from "@/redux/features/cart/cartApiSlice";
@@ -36,6 +37,11 @@ const Cart = () => {
     deleteWholeProductFromCart,
     { isLoading: deleteWholeProductFromCartLoading },
   ] = useDeleteWholeProductFromCartMutation();
+
+  const [
+    addToCart,
+    { isLoading: addToCartLoading, isSuccess: addToCartSuccess },
+  ] = useAddToCartMutation();
 
   const { data, isLoading, isError, isSuccess, error } = useGetCartQuery({});
 
@@ -62,10 +68,27 @@ const Cart = () => {
       console.log(cart.products);
     }
 
-    if (cart.products.length === 0 && !token) {
+    if (!token) {
       dispatch(setCartFromLocalStorage());
     }
   }, []);
+
+  useEffect(() => {
+    const localCart = JSON.parse(localStorage.getItem("cart") || "{}");
+    if (token && localCart?.length > 0) {
+      console.log("user logged in and cart is not empty");
+      console.log(JSON.parse(localStorage.getItem("cart") || "{}"));
+
+      localCart.map((item: any) => {
+        const requestData = {
+          productId: item.id,
+          quantityInProductUnit: item.quantity,
+          productUnitId: item.ProductUnits[0].id,
+        };
+        addToCart(requestData);
+      });
+    }
+  }, [cart]);
 
   useEffect(() => {
     setTotalPrice(data?.totalPrice);

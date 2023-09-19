@@ -97,6 +97,7 @@ const AddressForm: React.FC = () => {
         if (!token) {
           // Mevcut adresleri al
           let deliveryAddresses =
+            // @ts-ignore
             JSON.parse(localStorage.getItem("deliveryAddress")) || [];
 
           // Yeni adresi mevcut adreslere ekle
