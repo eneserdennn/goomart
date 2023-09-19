@@ -35,7 +35,7 @@ const baseQueryWithReauth: BaseQueryFn<RefreshResult> = async (
   let result = await baseQuery(args, api, extraOptions);
 
   // @ts-ignore
-  if (result.error?.status === 403) {
+  if (result.error?.status === 401) {
     const oldToken = (api.getState() as RootState).auth.token;
     const refreshResult = (await baseQuery(
       {
