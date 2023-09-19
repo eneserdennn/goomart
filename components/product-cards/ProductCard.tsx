@@ -174,6 +174,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
             handleAddToCart();
             setQuantity(quantity + 1);
             customSuccess("Ürün sepete eklendi.");
+            // @ts-ignore
             dispatch(addProductToCart(product));
           }}
         />
