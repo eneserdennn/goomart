@@ -18,8 +18,10 @@ import { ICONS } from "@/constants/iconConstants";
 import IconButton from "@/components/icon-button";
 import Image from "next/image";
 import Loading from "@/app/loading";
+import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { useFormik } from "formik";
 import { useGetCountriesQuery } from "@/redux/features/countriesApiSlice";
+import { useSelector } from "react-redux";
 
 interface AddressFormValues {
   fullName: string;
@@ -46,6 +48,7 @@ function capitalizeFirstLetter(string: string) {
 
 const AddressForm: React.FC = () => {
   const router = useRouter();
+  const token = useSelector(selectCurrentToken);
 
   const pathname = usePathname();
   const lastPartOfUrl = pathname.split("/").pop();
@@ -91,28 +94,96 @@ const AddressForm: React.FC = () => {
       };
 
       if (!isEditing) {
-        createAddress(newAddress)
-          .unwrap()
-          .then((res) => {
-            router.push("/addresses");
-            customSuccess("Adresiniz başarıyla eklendi");
-          })
-          .catch((err) => {});
-      } else {
-        updateAddress({ id: lastPartOfUrl, address: newAddress })
-          .unwrap()
-          .then((res) => {
-            router.push("/addresses");
-            customSuccess("Adresiniz başarıyla güncellendi");
-          })
-          .catch((err) => {
-            customError("Adresiniz güncellenirken bir hata oluştu");
+        if (!token) {
+          // Mevcut adresleri al
+          let deliveryAddresses =
+            JSON.parse(localStorage.getItem("deliveryAddress")) || [];
+
+          // Yeni adresi mevcut adreslere ekle
+          deliveryAddresses.push({
+            ...newAddress,
+            id: Math.floor(Math.random() * 1000),
           });
+
+          // Yenilenen adres listesini tekrar local storage'a yaz
+          localStorage.setItem(
+            "deliveryAddress",
+            JSON.stringify(deliveryAddresses)
+          );
+
+          router.push("/addresses");
+        } else {
+          createAddress(newAddress)
+            .unwrap()
+            .then((res) => {
+              router.push("/addresses");
+              customSuccess("Adresiniz başarıyla eklendi");
+            })
+            .catch((err) => {});
+        }
+      } else {
+        if (!token) {
+          const deliveryAddressLocal = JSON.parse(
+            // @ts-ignore
+            localStorage.getItem("deliveryAddress")
+          );
+          const addressFind = deliveryAddressLocal.find(
+            (item: any) => item.id === Number(lastPartOfUrl)
+          );
+          if (addressFind) {
+            addressFind.nameAndSurname = fullName;
+            addressFind.address = address;
+            addressFind.city = city;
+            addressFind.postalCode = postalCode;
+            addressFind.phone = phoneNumber;
+            addressFind.countryCode = selectedCountry.code;
+          }
+          localStorage.setItem(
+            "deliveryAddress",
+            JSON.stringify(deliveryAddressLocal)
+          );
+
+          router.push("/addresses");
+        } else {
+          updateAddress({ id: lastPartOfUrl, address: newAddress })
+            .unwrap()
+            .then((res) => {
+              router.push("/addresses");
+              customSuccess("Adresiniz başarıyla güncellendi");
+            })
+            .catch((err) => {
+              customError("Adresiniz güncellenirken bir hata oluştu");
+            });
+        }
       }
     },
   });
 
-  // get country code from selected country name
+  useEffect(() => {
+    if (!token) {
+      if (lastPartOfUrl !== "add-address") {
+        setIsEditing(true);
+
+        const addressLocal = JSON.parse(
+          // @ts-ignore
+          localStorage.getItem("deliveryAddress")
+        );
+        const addressFind = addressLocal.find(
+          (item: any) => item.id === Number(lastPartOfUrl)
+        );
+        if (addressFind) {
+          formik.setValues({
+            fullName: addressFind.nameAndSurname || "",
+            address: addressFind.address || "",
+            city: addressFind.city || "",
+            postalCode: addressFind.postalCode || "",
+            phoneNumber: addressFind.phone || "",
+            countryCode: addressFind.countryCode || "",
+          });
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (lastPartOfUrl !== "add-address") {

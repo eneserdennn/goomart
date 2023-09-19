@@ -1,38 +1,36 @@
-'use client'
+"use client";
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
+import Loading from "@/app/loading";
 import LoggedIn from "@/app/(auth)/profile/LoggedIn";
 import LoggedOut from "@/app/(auth)/profile/LoggedOut";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { useGetProfileQuery } from "@/redux/features/auth/userProfileApiSlice";
 import { useSelector } from "react-redux";
-import Loading from "@/app/loading";
 
 const Profile: React.FC = () => {
-    const token = useSelector(selectCurrentToken);
-    const { data: profile, isLoading, isSuccess, isError, error } = useGetProfileQuery(token);
+  const token = useSelector(selectCurrentToken);
+  let content;
+  if (token) {
+    content = (
+      <div className="flex flex-col p-4">
+        <LoggedIn />
+        <BottomNavBar />
+      </div>
+    );
+  } else if (!token) {
+    content = (
+      <div className="flex flex-col p-4 mb-10">
+        <LoggedOut />
+        <BottomNavBar />
+      </div>
+    );
+  } else {
+    content = <div>Something went wrong</div>;
+  }
 
-    let content;
-
-    if (isLoading) {
-        content = <Loading />
-    } else if (isSuccess) {
-        content = <div className="flex flex-col p-4">
-            <LoggedIn/>
-            <BottomNavBar/>
-    </div>
-    } else if (isError) {
-        content = <div className="flex flex-col p-4 mb-10">
-            <LoggedOut/>
-            <BottomNavBar/>
-        </div>
-    } else {
-        content = <div>Something went wrong</div>;
-    }
-
-    return content;
-}
-;
+  return content;
+};
 export default Profile;

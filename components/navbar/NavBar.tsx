@@ -133,7 +133,7 @@ const NavBar: React.FC = () => {
     },
     {
       name: "Adres Düzenle",
-      href: `/addresses/edit-address/${idPaths}`,
+      href: `/addresses/edit-address/${idPaths2}`,
     },
     {
       name: "Ürünler",

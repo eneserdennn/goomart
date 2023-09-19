@@ -61,6 +61,9 @@ const DeliveryAddress: React.FC = () => {
   const [selectedAddress, setSelectedAddress] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [addressToDelete, setAddressToDelete] = useState<number | null>(null);
+  const [localDefaultAddress, setLocalDefaultAddress] = useState<number | null>(
+    null
+  );
 
   // API Calls
   const {
@@ -71,6 +74,16 @@ const DeliveryAddress: React.FC = () => {
   } = useGetMyAddressesQuery({});
   const [setDefaultAddress] = useSetDefaultAddressMutation();
   const [archiveAnAddress] = useArchiveAnAddressMutation();
+
+  useEffect(() => {
+    if (!token) {
+      const defaultAddressLocal: number = JSON.parse(
+        localStorage.getItem("defaultAddress") || "null"
+      );
+      setLocalDefaultAddress(defaultAddressLocal);
+      setSelectedAddress(defaultAddressLocal);
+    }
+  }, []);
 
   // 4. Effects
   useEffect(() => {
@@ -89,8 +102,13 @@ const DeliveryAddress: React.FC = () => {
   };
 
   const handleSelectAddress = (addressId: number) => {
-    setDefaultAddress(addressId);
-    setSelectedAddress(addressId);
+    if (token) {
+      setDefaultAddress(addressId);
+      setSelectedAddress(addressId);
+    } else {
+      localStorage.setItem("defaultAddress", JSON.stringify(addressId));
+      setSelectedAddress(addressId);
+    }
   };
 
   const confirmDeleteAddress = () => {
@@ -100,6 +118,24 @@ const DeliveryAddress: React.FC = () => {
       setShowModal(false);
       setAddressToDelete(null);
     }
+
+    const deliveryAddressLocal: Address[] = JSON.parse(
+      localStorage.getItem("deliveryAddress") || "[]"
+    );
+    const selectedAddressLocal = deliveryAddressLocal.find(
+      (address) => address.id === addressToDelete
+    );
+
+    if (selectedAddressLocal) {
+      const index = deliveryAddressLocal.indexOf(selectedAddressLocal);
+      if (index > -1) {
+        deliveryAddressLocal.splice(index, 1);
+      }
+      localStorage.setItem(
+        "deliveryAddress",
+        JSON.stringify(deliveryAddressLocal)
+      );
+    }
   };
 
   const CustomRadio: React.FC<CustomRadioProps> = ({
@@ -107,6 +143,8 @@ const DeliveryAddress: React.FC = () => {
     selectedAddress,
     onSelectAddress,
   }) => {
+    console.log("address", address.id);
+    console.log("selectedAddress", selectedAddress);
     return (
       <div
         className="flex items-center justify-between w-full border h-[100px] rounded p-4"
@@ -143,6 +181,7 @@ const DeliveryAddress: React.FC = () => {
               className="cursor-pointer text-primary h-5 w-5 mr-2"
               onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                 e.stopPropagation();
+                console.log("edit");
               }}
             />
           </Link>
@@ -209,7 +248,52 @@ const DeliveryAddress: React.FC = () => {
       </>
     );
   } else if (!token) {
-    content = <div>Giriş yapmalısınız</div>;
+    const deliveryAddressLocal: Address[] = JSON.parse(
+      localStorage.getItem("deliveryAddress") || "[]"
+    );
+    content = (
+      <>
+        <div className="flex flex-col relative items-center justify-center">
+          {deliveryAddressLocal && deliveryAddressLocal?.length > 0 ? (
+            <div className="flex flex-col items-center w-full bg-white">
+              {deliveryAddressLocal.map((address, idx) => (
+                <CustomRadio
+                  key={idx}
+                  address={address}
+                  selectedAddress={selectedAddress}
+                  onSelectAddress={handleSelectAddress}
+                />
+              ))}
+            </div>
+          ) : (
+            <>
+              <Image
+                src={IMAGES.address}
+                alt={"addresses-image"}
+                className="my-12"
+              />
+              <p className="text-md font-bold">Kayıtlı adresiniz bulunmuyor.</p>
+              <p className="text-md font-bold">Hemen ilk adresinizi ekleyin.</p>
+            </>
+          )}
+          <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300">
+            <div className="flex justify-center py-2">
+              <button className="h-12 m-2 w-full bg-primary hover:bg-green-800 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <Link href="/addresses/add-address">Adres Ekle</Link>
+              </button>
+            </div>
+          </div>
+          <ConfirmModal
+            show={showModal}
+            message={
+              "Adresiniz silinecektir, devam etmek istediginize emin misiniz?"
+            }
+            onClose={() => setShowModal(false)}
+            onConfirm={confirmDeleteAddress}
+          />
+        </div>
+      </>
+    );
   } else if (isError) {
     content = <div>ERROR</div>;
   }
