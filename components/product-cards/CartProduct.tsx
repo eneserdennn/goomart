@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
+import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 
 interface Product {
   id: number;
@@ -86,6 +87,7 @@ interface Props {
 }
 
 const CartProduct = (props: Props) => {
+  const token = useSelector(selectCurrentToken);
   const dispatch = useDispatch();
   const { product, qty } = props;
 
@@ -100,7 +102,10 @@ const CartProduct = (props: Props) => {
       productUnitId: product.ProductUnits[0].id,
       quantityInProductUnit: 1,
     };
-    addToCart(requestData);
+    if (token) {
+      addToCart(requestData);
+    }
+
     setCount(count + 1);
 
     // @ts-ignore
@@ -113,7 +118,9 @@ const CartProduct = (props: Props) => {
       productUnitId: product.ProductUnits[0].id,
       quantityInProductUnit: 1,
     };
-    removeFromCart(requestData);
+    if (token) {
+      removeFromCart(requestData);
+    }
     setCount(count - 1);
 
     dispatch(removeProductFromCart(product.id));

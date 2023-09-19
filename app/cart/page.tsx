@@ -19,6 +19,7 @@ import { modalToggle } from "@/redux/features/cart/cartSlice";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { useCheckCartMutation } from "@/redux/features/order/orderApiSlice";
 import { useDeleteWholeProductFromCartMutation } from "@/redux/features/cart/cartApiSlice";
+import { useGetCartQuery } from "@/redux/features/cart/cartApiSlice";
 
 const Cart = () => {
   const token = useSelector(selectCurrentToken);
@@ -33,16 +34,25 @@ const Cart = () => {
     { isLoading: deleteWholeProductFromCartLoading },
   ] = useDeleteWholeProductFromCartMutation();
 
+  const { data, isLoading, isError, isSuccess, error } = useGetCartQuery({});
+
   const [
     checkCart,
-    { isLoading: checkLoading, isError, isSuccess, data, error },
+    {
+      isLoading: checkLoading,
+      isSuccess: successCheck,
+      data: dataCheck,
+      error: errorCheck,
+    },
   ] = useCheckCartMutation();
 
   useEffect(() => {
-    const requestData = {
-      deliveryAddressId: 1,
-    };
-    checkCart(requestData);
+    if (token) {
+      const requestData = {
+        deliveryAddressId: 1,
+      };
+      checkCart(requestData);
+    }
 
     if (!token) {
       console.log("user not logged in");
@@ -60,7 +70,7 @@ const Cart = () => {
 
   let content;
 
-  if (checkLoading) {
+  if (isLoading) {
     return <Loading />;
   } else if (isError && (error as any).status === 401) {
     content = (
@@ -175,8 +185,8 @@ const Cart = () => {
           </div>
           <ProgressBar
             current={data?.totalPrice}
-            minimum={data?.shipmentFee}
-            isFreeShipping={data?.canFreeShip}
+            minimum={dataCheck?.shipmentFee}
+            isFreeShipping={dataCheck?.canFreeShip}
           />
         </>
       )}

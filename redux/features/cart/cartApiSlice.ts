@@ -31,6 +31,7 @@ export const cartApiSlice = apiSlice.injectEndpoints({
           quantityInProductUnit: 1,
         },
       }),
+      invalidatesTags: ["Cart"],
     }),
     deleteWholeProductFromCart: builder.mutation({
       // @ts-ignore
