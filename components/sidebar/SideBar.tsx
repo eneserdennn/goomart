@@ -47,8 +47,8 @@ const SideBar = ({ data }) => {
   const [sortSelected, setSortSelected] = useState(sortBys);
   const selectedBrands = useSelector(
     (
-      state // @ts-ignore
-    ) => state.filter.selectedBrands
+      state, // @ts-ignore
+    ) => state.filter.selectedBrands,
   );
   const [tempSelectedBrands, setTempSelectedBrands] = useState([
     ...selectedBrands,
@@ -57,7 +57,7 @@ const SideBar = ({ data }) => {
   const isToggled = useSelector(selectSaleToggle);
   const filtered = useSelector(selectIsFiltered);
   const filteredProductWithBrands = useSelector(
-    selectFilteredProductWithBrands
+    selectFilteredProductWithBrands,
   );
   const allProductTypes = useSelector(selectProductTypes);
   const filteredProductTypes = useSelector(selectFilteredProductTypes);
@@ -106,7 +106,7 @@ const SideBar = ({ data }) => {
   const handleBrandCheckChange = (brand: string) => {
     if (tempSelectedBrands.includes(brand)) {
       setTempSelectedBrands((prevBrands) =>
-        prevBrands.filter((b) => b !== brand)
+        prevBrands.filter((b) => b !== brand),
       );
     } else {
       setTempSelectedBrands((prevBrands) => [...prevBrands, brand]);
@@ -374,9 +374,9 @@ const SideBar = ({ data }) => {
               {brandList.map((brand: any) => (
                 <CustomCheckbox
                   key={brand.productTypeId}
-                  label={brand}
-                  isChecked={tempSelectedBrands.includes(brand)}
-                  onCheckChange={() => handleBrandCheckChange(brand)}
+                  label={brand.brandName}
+                  isChecked={tempSelectedBrands.includes(brand.brandName)}
+                  onCheckChange={() => handleBrandCheckChange(brand.brandName)}
                 />
               ))}
               <div className="fixed bottom-0 left-0 w-full bg-white ">
@@ -404,22 +404,20 @@ const SideBar = ({ data }) => {
                   label={productType.name}
                   isChecked={tempSelectedProductTypeList.includes(
                     // @ts-ignore
-                    productType
+                    productType.id,
                   )}
                   onCheckChange={() => {
-                    if (
-                      tempSelectedProductTypeList.includes(
-                        // @ts-ignore
-                        productType
-                      )
-                    ) {
+                    // @ts-ignore
+                    if (tempSelectedProductTypeList.includes(productType.id)) {
                       setTempSelectedProductTypeList((prevProductTypes) =>
-                        prevProductTypes.filter((b) => b !== productType)
+                        prevProductTypes.filter((id) => id !== productType.id),
                       );
                     } else {
-                      setTempSelectedProductTypeList((prevProductTypes) =>
-                        prevProductTypes.filter((id) => id !== productType.id)
-                      );
+                      // @ts-ignore
+                      setTempSelectedProductTypeList((prevProductTypes) => [
+                        ...prevProductTypes,
+                        productType.id,
+                      ]);
                     }
                   }}
                 />
@@ -436,7 +434,7 @@ const SideBar = ({ data }) => {
                       dispatch(
                         setFilteredProductTypes([
                           ...tempSelectedProductTypeList,
-                        ])
+                        ]),
                       );
                     }}
                   >
