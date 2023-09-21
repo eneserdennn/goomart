@@ -8,20 +8,20 @@ import { FaShoppingBag } from "react-icons/fa";
 import { GoHomeFill } from "react-icons/go";
 import { IoPersonSharp } from "react-icons/io5";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { selectCurrentToken } from "@/redux/features/auth/authSlice";
+import { useSelector } from "react-redux";
 
 const BottomNavBar: React.FC = () => {
-  // State variable to hold the cart item count
-  const [cartItemCount, setCartItemCount] = useState(3); // Replace with your actual cart item count
+  const token = useSelector(selectCurrentToken);
   const [isLogin, setIsLogin] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLogin(true);
-    }
-  }, []);
+  const path = usePathname();
+  // http://localhost:3000/profile/account-settings -> profile and http://localhost:3000/campaigns -> campaigns
+  const pathName = path.split("/")[1];
+
+  useEffect(() => {}, []);
 
   return (
     <div className="flex md:hidden justify-around fixed bottom-0 h-[70px] left-0 w-full bg-white border-t border-gray-300">
@@ -29,29 +29,49 @@ const BottomNavBar: React.FC = () => {
         className="flex flex-col items-center justify-center space-x-1"
         onClick={() => router.push("/")}
       >
-        <GoHomeFill size={30} color="green" />
+        {pathName === "" ? (
+          <GoHomeFill size={30} color="green" />
+        ) : (
+          <GoHomeFill size={30} color="#888" />
+        )}
       </button>
 
       <button className="flex flex-col items-center justify-center space-x-1">
         <Link href={"search"}>
-          <BiSearchAlt size={30} color="#888" />
+          {pathName === "search" ? (
+            <BiSearchAlt size={30} color="green" />
+          ) : (
+            <BiSearchAlt size={30} color="#888" />
+          )}
         </Link>
       </button>
 
       <button className="flex flex-col items-center justify-center space-x-1">
         <Link href={"/cart"}>
-          <FaShoppingBag size={30} color="#888" />
+          {pathName === "cart" ? (
+            <FaShoppingBag size={30} color="green" />
+          ) : (
+            <FaShoppingBag size={30} color="#888" />
+          )}
         </Link>
       </button>
 
       <button className="flex flex-col items-center justify-center space-x-1">
         <Link href={"/campaigns"}>
-          <BsFillGiftFill size={30} color="#888" />
+          {pathName === "campaigns" ? (
+            <BsFillGiftFill size={30} color="green" />
+          ) : (
+            <BsFillGiftFill size={30} color="#888" />
+          )}
         </Link>
       </button>
       <button className="flex flex-col items-center justify-center space-x-1">
         <Link href={"/profile"}>
-          <IoPersonSharp size={30} color="#888" />
+          {pathName === "profile" ? (
+            <IoPersonSharp size={30} color="green" />
+          ) : (
+            <IoPersonSharp size={30} color="#888" />
+          )}
         </Link>
       </button>
     </div>
