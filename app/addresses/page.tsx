@@ -56,13 +56,13 @@ const DeliveryAddress: React.FC = () => {
   // 3. States
   const token = useSelector(selectCurrentToken);
   const [deliveryAddress, setDeliveryAddress] = useState<Address[] | null>(
-    null
+    null,
   );
   const [selectedAddress, setSelectedAddress] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [addressToDelete, setAddressToDelete] = useState<number | null>(null);
   const [localDefaultAddress, setLocalDefaultAddress] = useState<number | null>(
-    null
+    null,
   );
 
   // API Calls
@@ -78,7 +78,7 @@ const DeliveryAddress: React.FC = () => {
   useEffect(() => {
     if (!token) {
       const defaultAddressLocal: number = JSON.parse(
-        localStorage.getItem("defaultAddress") || "null"
+        localStorage.getItem("defaultAddress") || "null",
       );
       setLocalDefaultAddress(defaultAddressLocal);
       setSelectedAddress(defaultAddressLocal);
@@ -120,10 +120,10 @@ const DeliveryAddress: React.FC = () => {
     }
 
     const deliveryAddressLocal: Address[] = JSON.parse(
-      localStorage.getItem("deliveryAddress") || "[]"
+      localStorage.getItem("deliveryAddress") || "[]",
     );
     const selectedAddressLocal = deliveryAddressLocal.find(
-      (address) => address.id === addressToDelete
+      (address) => address.id === addressToDelete,
     );
 
     if (selectedAddressLocal) {
@@ -133,7 +133,7 @@ const DeliveryAddress: React.FC = () => {
       }
       localStorage.setItem(
         "deliveryAddress",
-        JSON.stringify(deliveryAddressLocal)
+        JSON.stringify(deliveryAddressLocal),
       );
     }
   };
@@ -143,8 +143,6 @@ const DeliveryAddress: React.FC = () => {
     selectedAddress,
     onSelectAddress,
   }) => {
-    console.log("address", address.id);
-    console.log("selectedAddress", selectedAddress);
     return (
       <div
         className="flex items-center justify-between w-full border h-[100px] rounded p-4"
@@ -181,7 +179,6 @@ const DeliveryAddress: React.FC = () => {
               className="cursor-pointer text-primary h-5 w-5 mr-2"
               onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                 e.stopPropagation();
-                console.log("edit");
               }}
             />
           </Link>
@@ -249,7 +246,7 @@ const DeliveryAddress: React.FC = () => {
     );
   } else if (!token) {
     const deliveryAddressLocal: Address[] = JSON.parse(
-      localStorage.getItem("deliveryAddress") || "[]"
+      localStorage.getItem("deliveryAddress") || "[]",
     );
     content = (
       <>

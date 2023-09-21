@@ -59,7 +59,6 @@ const ProductContainer = () => {
     if (data) {
       dispatch(setFilteredProductCount(data.productCount));
       dispatch(setProducts(data));
-      console.log("data", data);
       dispatch(setBrands(data.brand));
     }
   }, [data, selectedSubCategory, params]);

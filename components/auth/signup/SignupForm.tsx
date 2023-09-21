@@ -36,7 +36,7 @@ const SignUpForm: React.FC = () => {
 
   const handleSubmit = async (
     values: ISignUpFormValues,
-    setSubmitting: FormikHelpers<ISignUpFormValues>
+    setSubmitting: FormikHelpers<ISignUpFormValues>,
   ) => {
     const newUser = {
       email: values.email,
@@ -48,7 +48,6 @@ const SignUpForm: React.FC = () => {
     try {
       const result = await register(newUser).unwrap();
     } catch (err) {
-      console.error(err);
       // @ts-ignore
       setErrMessage(err.data.message);
     }

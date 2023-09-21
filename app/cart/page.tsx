@@ -64,11 +64,6 @@ const Cart = () => {
     }
 
     if (!token) {
-      console.log("user not logged in");
-      console.log(cart.products);
-    }
-
-    if (!token) {
       dispatch(setCartFromLocalStorage());
     }
   }, []);
@@ -76,9 +71,6 @@ const Cart = () => {
   useEffect(() => {
     const localCart = JSON.parse(localStorage.getItem("cart") || "{}");
     if (token && localCart?.length > 0) {
-      console.log("user logged in and cart is not empty");
-      console.log(JSON.parse(localStorage.getItem("cart") || "{}"));
-
       localCart.map((item: any) => {
         const requestData = {
           productId: item.id,

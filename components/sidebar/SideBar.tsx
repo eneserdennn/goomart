@@ -404,19 +404,26 @@ const SideBar = ({ data }) => {
                   label={productType.name}
                   isChecked={tempSelectedProductTypeList.includes(
                     // @ts-ignore
-                    productType.id,
+                    productType,
                   )}
                   onCheckChange={() => {
-                    // @ts-ignore
-                    if (tempSelectedProductTypeList.includes(productType.id)) {
+                    const exists = tempSelectedProductTypeList.some(
+                      // @ts-ignore
+                      (item) => item.id === productType.id,
+                    );
+
+                    if (exists) {
                       setTempSelectedProductTypeList((prevProductTypes) =>
-                        prevProductTypes.filter((id) => id !== productType.id),
+                        prevProductTypes.filter(
+                          // @ts-ignore
+                          (item) => item.id !== productType.id,
+                        ),
                       );
                     } else {
                       // @ts-ignore
                       setTempSelectedProductTypeList((prevProductTypes) => [
                         ...prevProductTypes,
-                        productType.id,
+                        productType,
                       ]);
                     }
                   }}

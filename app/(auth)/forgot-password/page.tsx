@@ -24,6 +24,7 @@ import OtpInput from "react-otp-input";
 import { RootState } from "@/redux/store";
 import Verification from "@/assets/images/verification.svg";
 import { useRouter } from "next/navigation";
+import { customError } from "@/components/CustomToast";
 
 interface IEmailFormValues {
   email: string;
@@ -53,7 +54,7 @@ const ForgotPasswordForm = () => {
 
   // @ts-ignore
   const forgotPasswordState = useSelector(
-    (state: RootState) => state.forgotPassword
+    (state: RootState) => state.forgotPassword,
   );
 
   const initialValues = {
@@ -72,10 +73,9 @@ const ForgotPasswordForm = () => {
     } catch (err: any) {
       if (err?.response?.data?.message === "User not found") {
         setErrorMessage(
-          "E-posta adresi ile ilişkili kayıtlı hesap bulunamadı."
+          "E-posta adresi ile ilişkili kayıtlı hesap bulunamadı.",
         );
       } else {
-
       }
     }
   };
@@ -92,7 +92,6 @@ const ForgotPasswordForm = () => {
         setOtpConfirmed(true);
       }
     } catch (err) {
-      console.error(err);
       // Hata durumunda kullanıcıya bildirim göstermek
     }
   };
@@ -110,8 +109,8 @@ const ForgotPasswordForm = () => {
         setPasswordChangeSuccess(true);
       }
     } catch (err) {
-      console.error(err);
       // Hata durumunda kullanıcıya bildirim göstermek
+      customError("Şifre değiştirilemedi");
     }
   };
 
