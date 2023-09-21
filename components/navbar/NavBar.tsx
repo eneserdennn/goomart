@@ -1,17 +1,12 @@
 "use client";
-
-import { AiFillFilter, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BiSearchAlt, BiSolidChevronDown } from "react-icons/bi";
-import { ButtonHTMLAttributes, ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { IoMenu, IoPersonSharp } from "react-icons/io5";
 
 import Button from "@/components/button";
-import Cookies from "js-cookie";
 import { FaShoppingCart } from "react-icons/fa";
 import { ICONS } from "@/constants/iconConstants";
-import IconButton from "@/components/icon-button";
-import InputMask from "react-input-mask";
 import { IoMdNotifications } from "react-icons/io";
 import Link from "next/link";
 import Loading from "@/app/loading";
@@ -20,7 +15,8 @@ import SideBar from "../sidebar/SideBar";
 import { modalToggle } from "@/redux/features/cart/cartSlice";
 import { setCredentials } from "@/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
-import { useField } from "formik";
+import { useAddProductToFavoriteMutation } from "@/redux/features/products/productApiSlice";
+
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 
@@ -45,6 +41,10 @@ const NavBar: React.FC = () => {
   const path = usePathname();
 
   const router = useRouter();
+
+  const [addProductToFavorite] = useAddProductToFavoriteMutation();
+
+  const productId = path.split("/").splice(2)[0];
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -231,25 +231,10 @@ const NavBar: React.FC = () => {
     placeholder: string;
   }
 
-  // ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  //     className?: string;
-  //     disabled?: boolean;
-  //     type?: 'submit' | 'reset' | 'button';
-  //     loading?: boolean;
-  //     active?: boolean;
-  //     icon?: ReactNode;
-  //     svgIcon?: string;
-  //     iconSize?: number;
-  //     rightIcon?: boolean;
-  //     rightString?: string;
-
   const IconInputNoMask: React.FC<IconInputProps> = ({
     icon: Icon,
     ...props
   }) => {
-    // const [field, meta] = useField(props);
-    // const errorText = meta.error && meta.touched ? meta.error : null;
-
     return (
       <div className="flex flex-col w-[528px]">
         <div className="relative">
@@ -368,7 +353,15 @@ const NavBar: React.FC = () => {
               </div>
             ) : currentPage?.name === "Ürün Detay" ? (
               <div className="flex justify-between items-center">
-                <Image src={ICONS.heart} alt="filter" width={20} height={19} />
+                <Image
+                  src={ICONS.heart}
+                  alt="filter"
+                  width={20}
+                  height={19}
+                  onClick={async () => {
+                    await addProductToFavorite(productId);
+                  }}
+                />
               </div>
             ) : currentPage?.name === "Sepet" ? (
               <Image
