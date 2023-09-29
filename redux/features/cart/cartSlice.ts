@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { stat } from "fs";
 
 interface Product {
   id: number;
@@ -36,7 +37,7 @@ interface CartState {
   shipmentFee: number;
   totalPrice: number;
   products: Product[];
-  isModalOpen: boolean;
+  isModalOpen?: boolean;
 }
 
 const initialState: CartState = {
@@ -85,7 +86,7 @@ const cartSlice = createSlice({
 
       const totalQuantity = state.products.reduce(
         (acc, product) => acc + product.quantity,
-        0
+        0,
       );
 
       if (totalQuantity === 0) {
@@ -112,7 +113,6 @@ const cartSlice = createSlice({
       state.totalPrice = 0;
       localStorage.removeItem("cart");
     },
-
     modalToggle: (state) => {
       state.isModalOpen = !state.isModalOpen;
     },
