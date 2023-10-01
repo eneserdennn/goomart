@@ -85,7 +85,14 @@ const AddressForm: React.FC = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      const { fullName, address, city, postalCode, phoneNumber } = values;
+      const {
+        fullName,
+        address,
+        city,
+        postalCode,
+        phoneNumber,
+        phoneAreaCode,
+      } = values;
       const newAddress = {
         nameAndSurname: fullName,
         address,
@@ -93,6 +100,7 @@ const AddressForm: React.FC = () => {
         postalCode,
         phone: phoneNumber,
         countryCode: selectedCountry.code,
+        phoneAreaCode,
       };
 
       if (!isEditing) {
@@ -352,24 +360,23 @@ const AddressForm: React.FC = () => {
                 </div>
               </div>
             </div>
-            {/* phone area code */}
-            <div className="flex items-start justify-center">
-              <div className="flex w-full flex-col mr-4">
+            <div className="grid gap-x-1 grid-cols-12 ">
+              <div className="col-span-3">
                 <input
-                  className={`shadow w-full appearance-none border rounded p-4 font-semibold text-[14px]placeholder:font-semibold ${
+                  className={`shadow w-full  appearance-none border rounded p-4 font-semibold text-[14px]placeholder:font-semibold ${
                     formik.errors.phoneAreaCode ? "border-red-500" : ""
                   }`}
                   id="phoneAreaCode"
                   name="phoneAreaCode"
                   type="text"
-                  placeholder="Telefon Alan Kodu"
+                  placeholder="Alan Kodu"
                   onChange={formik.handleChange}
                   value={formik.values.phoneAreaCode}
                 />
               </div>
-              <div className="flex w-full flex-col">
+              <div className="col-span-9 ">
                 <input
-                  className={`shadow w-full appearance-none border rounded p-4 font-semibold text-[14px]placeholder:font-semibold ${
+                  className={`shadow w-full  appearance-none border rounded p-4 font-semibold text-[14px]placeholder:font-semibold ${
                     formik.errors.phoneNumber ? "border-red-500" : ""
                   }`}
                   id="phoneNumber"
@@ -381,19 +388,6 @@ const AddressForm: React.FC = () => {
                 />
               </div>
             </div>
-            {/* <div>
-              <input
-                className={`shadow w-full appearance-none border rounded p-4 font-semibold text-[14px]placeholder:font-semibold ${
-                  formik.errors.phoneNumber ? "border-red-500" : ""
-                }`}
-                id="phoneNumber"
-                name="phoneNumber"
-                type="text"
-                placeholder="Telefon Numarası"
-                onChange={formik.handleChange}
-                value={formik.values.phoneNumber}
-              />
-            </div> */}
             <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300">
               <div className="flex justify-center py-2">
                 <button
