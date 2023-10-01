@@ -352,7 +352,7 @@ const NavBar: React.FC = () => {
                 <SideBar data={data} />
               </div>
             ) : currentPage?.name === "Ürün Detay" ? (
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between place-self-end mr-2">
                 <Image
                   src={ICONS.heart}
                   alt="filter"
