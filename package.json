@@ -24,6 +24,7 @@
     "framer-motion": "^10.16.4",
     "http-proxy-middleware": "^2.0.6",
     "js-cookie": "^3.0.5",
+    "lottie-react": "^2.4.0",
     "negotiator": "^0.6.3",
     "next": "13.4.12",
     "next-intl": "^2.20.2",

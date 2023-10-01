@@ -1,7 +1,9 @@
+"use client";
+
 import Button from "@/components/button";
-import { ICONS } from "@/constants/iconConstants";
-import Image from "next/image";
+import Lottie from "lottie-react";
 import React from "react";
+import uyari from "@/constants/lotties/uyari.json";
 
 interface ConfirmModalProps {
   show: boolean;
@@ -34,9 +36,9 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           {icon ? (
             icon
           ) : (
-            <Image
-              src={ICONS.warning}
-              alt={"warning"}
+            <Lottie
+              animationData={uyari}
+              loop={false}
               className="h-[56px] w-[56px]"
             />
           )}
