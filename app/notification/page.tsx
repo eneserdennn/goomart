@@ -1,11 +1,16 @@
 "use client";
 
+import {
+  useGetNotificationsQuery,
+  useMarkAsReadMutation,
+} from "@/redux/features/notificationApiSlice";
+
 import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
+import Loading from "../loading";
 import MyCoupons from "@/app/my-coupons/page";
 import { Tab } from "@headlessui/react";
-import { useGetNotificationsQuery } from "@/redux/features/notificationApiSlice";
 import { useState } from "react";
 
 function classNames(...classes: (string | undefined | null)[]) {
@@ -13,7 +18,7 @@ function classNames(...classes: (string | undefined | null)[]) {
 }
 
 function TabContent({ posts }: { posts: any[] }) {
-
+  const [readNotifications] = useMarkAsReadMutation({});
   return (
     <Tab.Panel
       className={classNames(
@@ -26,7 +31,13 @@ function TabContent({ posts }: { posts: any[] }) {
           <div
             key={post.id}
             className="flex flex-col rounded-md h-[130px] justify-between border-b hover:bg-gray-100"
+            onClick={() => {
+              readNotifications(Number(post.id));
+            }}
           >
+            {!post.read && (
+              <div className="flex self-end absolute m-2 rounded-full h-4 w-4 bg-red-500"></div>
+            )}
             <div className="flex items-center pt-[24px] pl-[20px] pr-[40px]">
               <div className="flex-shrink-0 flex flex-col bg-primary h-[54px] w-[54px] items-center justify-center rounded-full">
                 <Image
@@ -37,11 +48,11 @@ function TabContent({ posts }: { posts: any[] }) {
               </div>
               <div className="flex flex-col ml-[16px]">
                 <h3 className="text-[15px] font-semibold">{post.title}</h3>
-                <p className="mt-1 text-[13px] text-gray-500">{post.content}</p>
+                <p className="mt-1 text-[13px] text-gray-500">{post.body}</p>
               </div>
             </div>
             <div className="flex justify-end px-4 text-[13px] font-light text-[#9B9B9B]">
-              <div>{post.date}</div>
+              <div>{new Date(post.createdAt).toLocaleDateString("tr-TR")}</div>
             </div>
           </div>
         ))}
@@ -143,6 +154,12 @@ export default function Example() {
 
   const [activeTab, setActiveTab] = useState("Tümü");
 
+  const { data, error, isLoading } = useGetNotificationsQuery({});
+
+  if (isLoading) return <Loading />;
+
+  if (error) return <div>failed to load</div>;
+
   return (
     <div className="w-full ">
       <Tab.Group>
@@ -173,7 +190,7 @@ export default function Example() {
           ) : (
             <>
               {Object.values(categories).map((posts, idx) => (
-                <TabContent key={idx} posts={posts} />
+                <TabContent key={idx} posts={data} />
               ))}
             </>
           )}

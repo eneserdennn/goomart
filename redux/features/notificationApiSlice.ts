@@ -20,7 +20,7 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
     markAsRead: builder.mutation({
       // @ts-ignore
       query: (id: number) => ({
-        url: `/notification/read/:id`,
+        url: `/notification/read/${id}`,
         method: "POST",
       }),
     }),
