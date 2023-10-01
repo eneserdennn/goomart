@@ -64,7 +64,7 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
 
   useEffect(() => {
     dispatch(setSelectedSubCategory(subCategories[0]));
-    dispatch(setSelectedProductType(subCategories[0].ProductType[0]));
+    dispatch(setSelectedProductType(subCategories[0]?.ProductType[0]));
   }, [category, subCategories]);
 
   useEffect(() => {
