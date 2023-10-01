@@ -64,7 +64,8 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
 
   useEffect(() => {
     dispatch(setSelectedSubCategory(subCategories[0]));
-  }, []);
+    dispatch(setSelectedProductType(subCategories[0].ProductType[0]));
+  }, [category, subCategories]);
 
   useEffect(() => {
     if (filteredProductTypes.length > 0) {
@@ -100,7 +101,6 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
     const SubCategory = subCategories;
     if (!selectedSubCategory?.id) {
       dispatch(setSelectedSubCategory(SubCategory[0]));
-      console.log("selectedSubCategory");
     }
     if (!selectedProductType?.id) {
       dispatch(setSelectedProductType(productTypes[0]));
