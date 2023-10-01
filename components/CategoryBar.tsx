@@ -63,6 +63,10 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
     React.useState<IProductType[]>(productTypes);
 
   useEffect(() => {
+    dispatch(setSelectedSubCategory(subCategories[0]));
+  }, []);
+
+  useEffect(() => {
     if (filteredProductTypes.length > 0) {
       setProductTypeList(filteredProductTypes);
     }
@@ -96,6 +100,7 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
     const SubCategory = subCategories;
     if (!selectedSubCategory?.id) {
       dispatch(setSelectedSubCategory(SubCategory[0]));
+      console.log("selectedSubCategory");
     }
     if (!selectedProductType?.id) {
       dispatch(setSelectedProductType(productTypes[0]));
