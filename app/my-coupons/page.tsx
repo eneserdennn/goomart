@@ -12,10 +12,19 @@ import { useSelector } from "react-redux";
 const MyCoupons = () => {
   const { data, error, isLoading } = useGetCouponsQuery({});
   const token = useSelector(selectCurrentToken);
-  const router = useRouter();
 
   if (!token) {
-    router.push("/login");
+    return (
+      <div className="flex flex-col items-center pt-28">
+        <Image src={IMAGES.couponEmpty} alt="empty" width={200} height={200} />
+        <span className="font-bold text-[16px] mt-4 text-primary">
+          Lutfen giris yapin.
+        </span>
+        <span className="text-[15px] mt-4 text-[#444444]">
+          Kuponlarinizi gormek icin lutfen giris yapin. 🤗
+        </span>
+      </div>
+    );
   }
 
   if (isLoading) return <Loading />;
@@ -43,7 +52,7 @@ const MyCoupons = () => {
             Aktif kupon bulunamadi.
           </span>
           <span className="text-[15px] mt-4 text-[#444444]">
-            Takipte kalin ve firsatlari kacirmayin. 🤗{" "}
+            Takipte kalin ve firsatlari kacirmayin. 🤗
           </span>
         </div>
       )}
@@ -55,13 +64,3 @@ const MyCoupons = () => {
 };
 
 export default MyCoupons;
-
-// import React from "react";
-//
-// type Props = {};
-//
-// const MyCoupons = (props: Props) => {
-//   return <div>MyCoupons</div>;
-// };
-//
-// export default MyCoupons;
