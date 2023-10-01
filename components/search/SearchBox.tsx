@@ -141,19 +141,6 @@ const SearchBox = () => {
             />
           </button>
         )}
-
-        {!showCloseIcon && searchTerm === "" && (
-          <div className="flex flex-row">
-            <Image
-              src={ICONS.mic}
-              alt={"mic-icon"}
-              width={15}
-              height={21}
-              className="mx-5"
-            />
-            <Image src={ICONS.scan} alt={"mic-icon"} width={22} height={21} />
-          </div>
-        )}
       </div>
       {isSearchHistoryOpen && searchHistory.length > 0 && (
         <div className="flex flex-col">
