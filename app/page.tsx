@@ -12,7 +12,9 @@ export default function Home() {
       <Head>
         <title>Home</title>
       </Head>
-      <Delivery />
+      <div className="sticky top-0 z-50">
+        <Delivery />
+      </div>
       <Slider />
       <Categories />
       <BottomNavBar />
