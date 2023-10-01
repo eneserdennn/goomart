@@ -70,7 +70,7 @@ const Cart = () => {
 
   useEffect(() => {
     const localCart = JSON.parse(localStorage.getItem("cart") || "{}");
-    if (token && data?.products.length === 0) {
+    if (token && data?.products.length === 0 && localCart.length > 0) {
       localCart.map((item: any) => {
         const requestData = {
           productId: item.id,
