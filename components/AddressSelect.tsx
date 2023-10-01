@@ -4,9 +4,12 @@ import React, { Fragment, useEffect, useState } from "react";
 import { BiCheck } from "react-icons/bi";
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
+import { setAddress } from "@/redux/features/checkout/checkOutSlice";
+import { useDispatch } from "react-redux";
 
 // @ts-ignore
 const AddressSelect = ({ addresses }) => {
+  const dispatch = useDispatch();
   const [selected, setSelected] = useState(null);
 
   const addressArray = addresses?.addresses;
@@ -22,6 +25,10 @@ const AddressSelect = ({ addresses }) => {
       setSelected(defaultAddress);
     }
   }, [addresses]);
+
+  useEffect(() => {
+    dispatch(setAddress(selected));
+  }, [selected]);
 
   return (
     <div className="w-full h-[45px] mb-[20px]">
@@ -42,10 +49,8 @@ const AddressSelect = ({ addresses }) => {
                   // @ts-ignore
                   selected?.address.length > 40 ? (
                     <>
-                      {
-                        // @ts-ignore
-                        selected?.address.slice(0, 28)
-                      }
+                      {// @ts-ignore
+                      selected?.address.slice(0, 28)}
                       ...
                     </>
                   ) : (
@@ -71,44 +76,42 @@ const AddressSelect = ({ addresses }) => {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {
-                // @ts-ignore
-                addressArray?.map((address, addressIdx) => (
-                  <Listbox.Option
-                    key={addressIdx}
-                    className={({ active }) =>
-                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                        active
-                          ? "bg-primary bg-opacity-10 text-primary"
-                          : "text-gray-900"
-                      }`
-                    }
-                    value={address}
-                  >
-                    {({ selected }) => (
-                      <>
-                        <span
-                          className={`block truncate ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
-                        >
-                          <span className="text-primary mr-1">
-                            {address.nameAndSurname.split(" ")[0]},{" "}
-                            <span className="text-[#444444]">
-                              {address.address}
-                            </span>
+              {// @ts-ignore
+              addressArray?.map((address, addressIdx) => (
+                <Listbox.Option
+                  key={addressIdx}
+                  className={({ active }) =>
+                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                      active
+                        ? "bg-primary bg-opacity-10 text-primary"
+                        : "text-gray-900"
+                    }`
+                  }
+                  value={address}
+                >
+                  {({ selected }) => (
+                    <>
+                      <span
+                        className={`block truncate ${
+                          selected ? "font-medium" : "font-normal"
+                        }`}
+                      >
+                        <span className="text-primary mr-1">
+                          {address.nameAndSurname.split(" ")[0]},{" "}
+                          <span className="text-[#444444]">
+                            {address.address}
                           </span>
                         </span>
-                        {selected ? (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-primary">
-                            <BiCheck className="h-5 w-5" aria-hidden="true" />
-                          </span>
-                        ) : null}
-                      </>
-                    )}
-                  </Listbox.Option>
-                ))
-              }
+                      </span>
+                      {selected ? (
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-primary">
+                          <BiCheck className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                      ) : null}
+                    </>
+                  )}
+                </Listbox.Option>
+              ))}
             </Listbox.Options>
           </Transition>
         </div>

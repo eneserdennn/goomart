@@ -1,9 +1,17 @@
+"use client";
+
 import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
 import Link from "next/link";
+import { useGetOrdersQuery } from "@/redux/features/order/orderApiSlice";
 
 const OrderConfirmation = () => {
+  const { data, error, isLoading } = useGetOrdersQuery({});
+  if (isLoading) return <div>loading...</div>;
+  if (error) return <div>error...</div>;
+
+  const latestOrder = data.orders[0];
   return (
     <div className="flex flex-col items-center w-full py-[40px]">
       <div className="flex w-full items-center justify-center">
@@ -31,13 +39,13 @@ const OrderConfirmation = () => {
           sürecinde gelismeler ile ilgili bildirimler alacaksiniz.
         </span>
 
-        <Link href={`/orders`}>
+        <Link href={`/orders/order-detail/${latestOrder.id}`}>
           <button className="flex items-center justify-center bg-primary text-white w-[220px] h-[55px] rounded-lg mt-[30px]">
             Siparis Detaylari
           </button>
         </Link>
         <span className="text-[#333333] py-[20px]">
-          Siparis Numarasi: <span className="font-bold">#1234</span>
+          Siparis Numarasi: <span className="font-bold">#{latestOrder.id}</span>
         </span>
       </div>
       <BottomNavBar />

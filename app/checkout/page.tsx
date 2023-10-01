@@ -3,6 +3,15 @@
 import { IoMdRadioButtonOff, IoMdRadioButtonOn } from "react-icons/io";
 import { Listbox, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
+import {
+  selectAddress,
+  selectCargo,
+  selectPayment,
+  setAddress,
+  setCargo,
+  setPayment,
+  setPrice,
+} from "@/redux/features/checkout/checkOutSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import AddressSelect from "@/components/AddressSelect";
@@ -13,7 +22,9 @@ import { IMAGES } from "@/constants/imageConstants";
 import Image from "next/image";
 import Link from "next/link";
 import Loading from "@/app/loading";
+import { selectAppliedCoupon } from "@/redux/features/campaigns/campaignsSlice";
 import { selectCampaigns } from "@/redux/features/campaigns/campaignsSlice";
+import { useGetCartQuery } from "@/redux/features/cart/cartApiSlice";
 import { useGetMyAddressesQuery } from "@/redux/features/address/addressesApiSlice";
 
 const people = [
@@ -31,13 +42,39 @@ interface CustomRadioProps {
 }
 
 const CheckoutPage = () => {
+  const dispatch = useDispatch();
   const appliedCoupon = useSelector(
     (state) => selectCampaigns(state).appliedCoupon
   );
 
+  const { data: cart } = useGetCartQuery({});
   const { data: addresses, isLoading } = useGetMyAddressesQuery({});
-  const [selectedCargoMethod, setSelectedCargoMethod] = useState("");
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+
+  const selectedCargoMethod = useSelector(selectCargo);
+  const selectedPaymentMethod = useSelector(selectPayment);
+  const selectedAddress = useSelector(selectAddress);
+  const selectedCoupon = useSelector(selectAppliedCoupon);
+
+  useEffect(() => {
+    if (selectedAddress === "" && addresses && addresses.length > 0) {
+      dispatch(setAddress(addresses[0].id));
+    }
+  }, [addresses]);
+
+  useEffect(() => {
+    if (selectedCoupon) {
+      dispatch(
+        setPrice(
+          // @ts-ignore
+          cart?.totalPrice -
+            (cart?.totalPrice * selectedCoupon.amount) / 100 +
+            15.95
+        )
+      );
+    } else {
+      dispatch(setPrice(cart?.totalPrice + 15.95));
+    }
+  }, [selectedCoupon, cart]);
 
   const cargoMethods = [
     {
@@ -138,7 +175,8 @@ const CheckoutPage = () => {
             title={cargoMethod.title}
             desc={cargoMethod.desc}
             image={cargoMethod.image}
-            onClick={() => setSelectedCargoMethod(cargoMethod.title)}
+            // onClick={() => setSelectedCargoMethod(cargoMethod.title)}
+            onClick={() => dispatch(setCargo(cargoMethod.title))}
           />
         ))}
       </div>
@@ -153,7 +191,8 @@ const CheckoutPage = () => {
             title={paymentMethod.title}
             image={paymentMethod.image}
             imageArray={paymentMethod.imageArray}
-            onClick={() => setSelectedPaymentMethod(paymentMethod.title)}
+            // onClick={() => setSelectedPaymentMethod(paymentMethod.title)}
+            onClick={() => dispatch(setPayment(paymentMethod.title))}
           />
         ))}
       </div>
@@ -220,13 +259,18 @@ const CheckoutPage = () => {
           <span className="text-[14px] font-semibold">
             Sepet Tutari (Vergi Dahil)
           </span>
-          <span className="text-[14px] font-bold">425,84 €</span>
+          <span className="text-[14px] font-bold">{cart?.totalPrice} €</span>
         </span>
         <span className="flex w-full h-[50px] justify-between border-b items-center">
           <span className="text-[14px] text-primary font-semibold">
             Indirim Tutari
           </span>
-          <span className="text-[14px] text-primary font-bold">15,21 €</span>
+          <span className="text-[14px] text-primary font-bold">
+            {selectedCoupon
+              ? (cart?.totalPrice * selectedCoupon.amount) / 100
+              : 0}{" "}
+            €
+          </span>
         </span>
         <span className="flex w-full h-[50px] justify-between border-b items-center">
           <span className="text-[14px] font-semibold">Kargo Ücreti</span>
@@ -236,23 +280,38 @@ const CheckoutPage = () => {
           <span className="text-[14px] text-primary font-semibold">
             Ödenecek Tutar (Vergi Dahil)
           </span>
-          <span className="text-[14px] text-primary font-bold">425,84 €</span>
+          <span className="text-[14px] text-primary font-bold">
+            {selectedCoupon
+              ? cart?.totalPrice -
+                (cart?.totalPrice * selectedCoupon.amount) / 100 +
+                15.95
+              : cart?.totalPrice + 15.95}
+            €
+          </span>
         </span>
       </div>
 
       <div className="flex fixed justify-center flex-row bottom-[70px] bg-white left-0 w-full">
-        <div>
-          <div className="flex w-[87px] mx-[34px] mt-1 items-center justify-center line-through">
-            <span className="text-[#AAAAAA] text-[16px] font-bold items-center">
-              123123
-            </span>
-            <span className="text-[#AAAAAA] text-[16px] font-bold ml-1 items-center">
-              €
-            </span>
-          </div>
+        <div className="flex flex-col items-center justify-center">
+          {selectedCoupon && (
+            <>
+              <div className="flex w-[87px] mx-[34px] mt-1 items-center justify-center line-through">
+                <span className="text-[#AAAAAA] text-[16px] font-bold items-center">
+                  {cart.totalPrice + 15.95}
+                </span>
+                <span className="text-[#AAAAAA] text-[16px] font-bold ml-1 items-center">
+                  €
+                </span>
+              </div>
+            </>
+          )}
           <div className="flex w-[87px] mx-[34px] items-center justify-center ">
             <span className="text-primary text-[21px] font-bold items-center">
-              123123
+              {selectedCoupon
+                ? cart?.totalPrice -
+                  (cart?.totalPrice * selectedCoupon.amount) / 100 +
+                  15.95
+                : cart?.totalPrice + 15.95}
             </span>
             <span className="text-primary text-[21px] font-bold ml-1 items-center">
               €

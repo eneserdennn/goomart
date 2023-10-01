@@ -6,15 +6,52 @@ import { Listbox, Transition } from "@headlessui/react";
 import { BiCheck } from "react-icons/bi";
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { setFrom, setTo } from "@/redux/features/order/orderSlice";
 
-const people = [
-  { date: "Son 1 Ay" },
-  { date: "Son 3 Ay" },
-  { date: "Son 6 Ay" },
-];
+const date = [{ date: "Son 1 Ay" }, { date: "Son 3 Ay" }, { date: "Son 6 Ay" }];
 
 const SortByDate = () => {
-  const [selected, setSelected] = useState(people[0]);
+  const dispatch = useDispatch();
+  const [selected, setSelected] = useState(date[0]);
+
+  const nowDate = new Date();
+  const nowYear = nowDate.getFullYear();
+  const nowMonth = nowDate.getMonth() + 1;
+  const nowDay = nowDate.getDate();
+  const now = `${nowYear}-${nowMonth}-${nowDay}`;
+
+  const threeMonthAgo = new Date();
+  threeMonthAgo.setMonth(threeMonthAgo.getMonth() - 3);
+  const threeMonthAgoYear = threeMonthAgo.getFullYear();
+  const threeMonthAgoMonth = threeMonthAgo.getMonth() + 1;
+  const threeMonthAgoDay = threeMonthAgo.getDate();
+  const threeMonthAgoDate = `${threeMonthAgoYear}-${threeMonthAgoMonth}-${threeMonthAgoDay}`;
+
+  const sixMonthAgo = new Date();
+  sixMonthAgo.setMonth(sixMonthAgo.getMonth() - 6);
+  const sixMonthAgoYear = sixMonthAgo.getFullYear();
+  const sixMonthAgoMonth = sixMonthAgo.getMonth() + 1;
+  const sixMonthAgoDay = sixMonthAgo.getDate();
+  const sixMonthAgoDate = `${sixMonthAgoYear}-${sixMonthAgoMonth}-${sixMonthAgoDay}`;
+
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  const oneMonthAgoYear = oneMonthAgo.getFullYear();
+  const oneMonthAgoMonth = oneMonthAgo.getMonth() + 1;
+  const oneMonthAgoDay = oneMonthAgo.getDate();
+  const oneMonthAgoDate = `${oneMonthAgoYear}-${oneMonthAgoMonth}-${oneMonthAgoDay}`;
+
+  if (selected.date === "Son 1 Ay") {
+    dispatch(setFrom(oneMonthAgoDate));
+    dispatch(setTo(now));
+  } else if (selected.date === "Son 3 Ay") {
+    dispatch(setFrom(threeMonthAgoDate));
+    dispatch(setTo(now));
+  } else if (selected.date === "Son 6 Ay") {
+    dispatch(setFrom(sixMonthAgoDate));
+    dispatch(setTo(now));
+  }
 
   return (
     <div className="w-full px-[15px] h-[45px] mb-[20px]">
@@ -43,9 +80,9 @@ const SortByDate = () => {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {people.map((person, personIdx) => (
+              {date.map((dateTime, dateIdx) => (
                 <Listbox.Option
-                  key={personIdx}
+                  key={dateIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
                       active
@@ -53,7 +90,7 @@ const SortByDate = () => {
                         : "text-gray-900"
                     }`
                   }
-                  value={person}
+                  value={dateTime}
                 >
                   {({ selected }) => (
                     <>
@@ -62,7 +99,7 @@ const SortByDate = () => {
                           selected ? "font-medium" : "font-normal"
                         }`}
                       >
-                        {person.date}
+                        {dateTime.date}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-primary">

@@ -1,15 +1,44 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { selectOrder, setOrder } from "@/redux/features/order/orderSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import { ICONS } from "@/constants/iconConstants";
 import { IMAGES } from "@/constants/imageConstants";
 import Image from "next/image";
 import OrderListCard from "@/components/product-cards/OrderListCard";
+import { useGetMyAddressesQuery } from "@/redux/features/address/addressesApiSlice";
+import { useGetOrderQuery } from "@/redux/features/order/orderApiSlice";
+import { usePathname } from "next/navigation";
 
 const OrderDetail = () => {
+  const dispatch = useDispatch();
+  const order = useSelector(selectOrder);
   const [currentStep, setCurrentStep] = useState(1);
+
+  const pathname = usePathname();
+  const path = pathname.split("/");
+
+  const {
+    data: orderData,
+    error: orderError,
+    isLoading: orderIsLoading,
+  } = useGetOrderQuery(path[3]);
+
+  const { data, error, isLoading } = useGetMyAddressesQuery({});
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (!order) {
+      dispatch(setOrder(orderData));
+    }
+  }, [orderData]);
 
   const STEPS = [
     { icon: ICONS.orderTaken, label: "Siparişiniz Alındı" },
@@ -17,6 +46,14 @@ const OrderDetail = () => {
     { icon: ICONS.orderInCargo, label: "Kargoya Verildi" },
     { icon: ICONS.orderDelivered, label: "Teslim Edildi" },
   ];
+
+  const dateFromApi = order?.createdAt ? new Date(order.createdAt) : new Date();
+
+  let date = dateFromApi.toLocaleDateString("tr-TR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
   return (
     <div className="flex flex-col">
       <div className="flex px-[30px] py-[12px] bg-white w-full justify-between mb-[20px]">
@@ -58,28 +95,51 @@ const OrderDetail = () => {
 
       <div className="flex flex-col bg-white h-[125px] space-y-0.5 font-semibold w-full p-[20px] mb-[20px] text-[14px]">
         <span className="text-[#6D6D6D]">
-          Sipariş No: #<span className=" text-black">12345</span>
+          Sipariş No: #<span className=" text-black">{order?.id}</span>
         </span>
         <span className="text-[#6D6D6D]">
-          Sipariş Tarihi: <span className=" text-black">10 Ekim 2023</span>
+          Sipariş Tarihi: <span className=" text-black">{date}</span>
         </span>
         <span className="text-[#6D6D6D]">
-          Sipariş Özeti: <span className=" text-black">25 Ürün</span>
+          Sipariş Özeti:{" "}
+          <span className=" text-black">{order?.OrderProduct.length} Ürün</span>
         </span>
         <span className="text-[#6D6D6D]">
-          Toplam: <span className=" text-primary">150,86 €</span>
+          Toplam: <span className=" text-primary">{order?.totalPrice} €</span>
         </span>
       </div>
 
       <div className="flex flex-col bg-white h-[100px] space-y-0.5 font-semibold w-full p-[20px] mb-[20px] text-[14px]">
         <span className="text-[#6D6D6D]">
-          Tahmini Teslimat Tarihi: <span className=" text-black">18 Mayis</span>
+          Tahmini Teslimat Tarihi:{" "}
+          <span className=" text-black">
+            {dateFromApi
+              .toLocaleDateString("tr-TR", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })
+              .split(" ")
+              .slice(0, 2)
+              .join(" ")
+              .concat(" - ")
+              .concat(
+                new Date(
+                  dateFromApi.setDate(dateFromApi.getDate() + 3)
+                ).toLocaleDateString("tr-TR", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })
+              )}
+          </span>
         </span>
         <span className="text-[#6D6D6D]">
           Kargo Takip No: <span className=" text-black">-</span>
         </span>
         <span className="text-[#6D6D6D]">
-          Teslimat Durumu: <span className=" text-primary">Siparis Alindi</span>
+          Teslimat Durumu:{" "}
+          <span className=" text-primary">{order?.orderStatus}</span>
         </span>
       </div>
 
@@ -131,11 +191,9 @@ const OrderDetail = () => {
       </div>
 
       <div className="flex flex-col bg-white w-full px-[20px] pt-[13px]">
-        <OrderListCard />
-        <OrderListCard />
-        <OrderListCard />
-        <OrderListCard />
-        <OrderListCard />
+        {order?.OrderProduct.map((product) => (
+          <OrderListCard product={product} />
+        ))}
       </div>
 
       <span className="text-[14px] text-[#8E8E93] font-bold px-[20px] pt-[20px] pb-[10px]">
@@ -187,13 +245,15 @@ const OrderDetail = () => {
           <span className="text-[14px] font-semibold">
             Sepet Tutari (Vergi Dahil)
           </span>
-          <span className="text-[14px] font-bold">425,84 €</span>
+          <span className="text-[14px] font-bold">{order?.totalPrice} €</span>
         </span>
         <span className="flex w-full h-[50px] justify-between border-b items-center">
           <span className="text-[14px] text-primary font-semibold">
             Indirim
           </span>
-          <span className="text-[14px] text-primary font-bold">15,21 €</span>
+          <span className="text-[14px] text-primary font-bold">
+            {order?.totalDiscount} €
+          </span>
         </span>
         <span className="flex w-full h-[50px] justify-between border-b items-center">
           <span className="text-[14px] font-semibold">Kargo Ücreti</span>
@@ -211,7 +271,9 @@ const OrderDetail = () => {
           <span className="text-[14px] text-primary font-semibold">
             Toplam (Vergi Dahil)
           </span>
-          <span className="text-[14px] text-primary font-bold">425,84 €</span>
+          <span className="text-[14px] text-primary font-bold">
+            {Number(order?.totalPrice) + 35.95 + 0.25} €
+          </span>
         </span>
       </div>
 

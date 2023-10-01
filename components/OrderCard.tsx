@@ -7,15 +7,18 @@
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { setOrder } from "@/redux/features/order/orderSlice";
+import { useDispatch } from "react-redux";
 
 // @ts-ignore
-const OrderCard = ({ orderStatus }) => {
-  // const [orderStatus, setOrderStatus] = useState<string>("Teslim Edildi")
-  const [orderId, setOrderId] = useState<string>("1234");
-  const [orderDate, setOrderDate] = useState<string>("10 Ekim 2023");
-  const [orderPrice, setOrderPrice] = useState<string>("145,67");
-  const [orderProductCount, setOrderProductCount] = useState<string>("255");
+const OrderCard = ({ orderStatus, order }) => {
+  const dispatch = useDispatch();
+  let dateFromApi = new Date(order.createdAt);
+  let date = dateFromApi.toLocaleDateString("tr-TR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
     <div
@@ -34,15 +37,15 @@ const OrderCard = ({ orderStatus }) => {
       <div className="flex flex-row">
         <div className="flex flex-col justify-between">
           <div className="flex flex-col text-[14px] space-y-[5px]">
-            <span>#{orderId}</span>
-            <span>{orderDate}</span>
+            <span>#{order.id}</span>
+            <span>{date}</span>
             <span className="text-[#6D6D6D]">
-              {orderProductCount} ürün - {orderPrice} €
+              {order.OrderProduct.length} ürün - {order.totalPrice} €
             </span>
           </div>
           <div
             className="flex flex-row items-center"
-            onClick={() => alert("Siparisi Tekrarla: " + orderId)}
+            onClick={() => alert("Siparisi Tekrarla: " + order.id)}
           >
             <Image
               src={ICONS.reorder}
@@ -73,12 +76,15 @@ const OrderCard = ({ orderStatus }) => {
           {orderStatus}
         </span>
         <div className="flex justify-end cursor-pointer">
-          <Link href={`/orders/order-detail/${orderId}`}>
+          <Link href={`/orders/order-detail/${order.id}`}>
             <Image
               src={ICONS.rightArrowLongDark}
               alt={"right-arrow"}
               width={20}
               height={20}
+              onClick={() => {
+                dispatch(setOrder(order));
+              }}
             />
           </Link>
         </div>

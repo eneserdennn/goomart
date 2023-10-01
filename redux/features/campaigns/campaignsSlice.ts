@@ -44,5 +44,7 @@ export const {
 
 // @ts-ignore
 export const selectCampaigns = (state) => state.campaigns;
+// @ts-ignore
+export const selectAppliedCoupon = (state) => state.campaigns.appliedCoupon;
 
 export default campaignsSlice.reducer;

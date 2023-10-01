@@ -4,7 +4,12 @@ export const orderApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query({
       // @ts-ignore
-      query: () => "/order",
+      query: ({ pageNo = 0, pageSize = 5, from, to }) => {
+        let url = `/order/?pageNo=${pageNo}&pageSize=${pageSize}`;
+        if (from) url += `&from=${from}`;
+        if (to) url += `&to=${to}`;
+        return url;
+      },
     }),
     checkCart: builder.mutation({
       // @ts-ignore
@@ -30,6 +35,18 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    placeAnOrder: builder.mutation({
+      // @ts-ignore
+      query: (data) => ({
+        url: "order/checkout",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getOrder: builder.query({
+      // @ts-ignore
+      query: (id) => `/order/${id}?lang=tr`,
+    }),
   }),
 });
 
@@ -38,4 +55,6 @@ export const {
   useCheckCartMutation,
   useCheckOutMutation,
   useCouponAttemptMutation,
+  usePlaceAnOrderMutation,
+  useGetOrderQuery,
 } = orderApiSlice;

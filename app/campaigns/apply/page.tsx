@@ -22,6 +22,7 @@ import InputModal from "@/components/modal/InputModal";
 import Loading from "@/app/loading";
 import Modal from "@/components/modal/Modal";
 import { customSuccess } from "@/components/CustomToast";
+import { useCouponAttemptMutation } from "@/redux/features/order/orderApiSlice";
 import { useGetCouponsQuery } from "@/redux/features/campaigns/couponApiSlice";
 
 const CampaignsApply: FC = () => {
@@ -36,6 +37,8 @@ const CampaignsApply: FC = () => {
     (state) => selectCampaigns(state).wrongCoupon
   );
   const [deleteCouponModal, setDeleteCouponModal] = useState(false);
+
+  const [couponAttempt] = useCouponAttemptMutation();
 
   const {
     data: usableCampaigns,
@@ -65,7 +68,6 @@ const CampaignsApply: FC = () => {
   };
 
   const handleConfirm = () => {
-
     const matchedCoupons = coupons?.filter(
       // @ts-ignore
       (coupon) => coupon.code === inputValue
@@ -74,6 +76,7 @@ const CampaignsApply: FC = () => {
     if (matchedCoupons.length > 0) {
       customSuccess("Kupon kodu başarıyla eklendi.");
       dispatch(setAppliedCoupon(matchedCoupons[0]));
+      couponAttempt({ couponCode: inputValue });
     } else {
       dispatch(setWrongCoupon(true));
     }

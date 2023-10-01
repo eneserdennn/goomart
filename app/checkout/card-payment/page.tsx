@@ -4,11 +4,19 @@ import * as Yup from "yup";
 
 import { Form, Formik, useField } from "formik";
 import Image, { StaticImageData } from "next/image";
+import {
+  selectAddress,
+  selectCargo,
+  selectPayment,
+  selectPrice,
+} from "@/redux/features/checkout/checkOutSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 import { ICONS } from "@/constants/iconConstants";
 // @ts-ignore
 import InputMask from "react-input-mask";
 import React from "react";
+import { usePlaceAnOrderMutation } from "@/redux/features/order/orderApiSlice";
 import { useRouter } from "next/navigation";
 
 interface IconInputProps {
@@ -123,6 +131,14 @@ const CardValidationSchema = Yup.object().shape({
 
 const CardPayment: React.FC = (props) => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const price = useSelector(selectPrice);
+  const address = useSelector(selectAddress);
+  const cargo = useSelector(selectCargo);
+  const payment = useSelector(selectPayment);
+
+  const [placeAnOrder, { isLoading }] = usePlaceAnOrderMutation();
+
   return (
     <div className="flex flex-col w-full py-[20px]">
       <Formik
@@ -135,6 +151,13 @@ const CardPayment: React.FC = (props) => {
         validationSchema={CardValidationSchema}
         onSubmit={(values) => {
           router.push("/checkout/order-confirmation");
+          console.log(values);
+          placeAnOrder({
+            // @ts-ignore
+            deliveryAddressId: address.id,
+            // @ts-ignore
+            invoiceAddressId: address.id,
+          });
         }}
       >
         {(formik) => (
@@ -180,7 +203,7 @@ const CardPayment: React.FC = (props) => {
               type="submit"
               className="bg-primary text-white h-[53px] rounded-tl-3xl rounded-br-3xl"
             >
-              58,94 € Öde
+              {price} € Öde
             </button>
           </Form>
         )}

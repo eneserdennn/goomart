@@ -1,12 +1,14 @@
 import { apiSlice } from "./api/apiSlice";
 import authReducer from "./features/auth/authSlice";
 import campaignsReducer from "@/redux/features/campaigns/campaignsSlice";
+import cartProductsReducer from "@/redux/features/cart/cartProductsSlice";
 import cartReducer from "./features/cart/cartSlice";
 import categoryReducer from "@/redux/features/categories/categorySlice";
+import checkOutReducer from "./features/checkout/checkOutSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import filterReducer from "@/redux/features/filter/filterSlice";
 import forgotPasswordReducer from "@/redux/features/auth/forgotPasswordSlice";
-import cartProductsReducer from "@/redux/features/cart/cartProductsSlice";
+import orderReducer from "@/redux/features/order/orderSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +20,8 @@ export const store = configureStore({
     campaigns: campaignsReducer,
     filter: filterReducer,
     cartProducts: cartProductsReducer,
+    order: orderReducer,
+    checkOut: checkOutReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({}).concat(apiSlice.middleware),
