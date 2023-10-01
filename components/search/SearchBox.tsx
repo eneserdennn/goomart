@@ -56,6 +56,7 @@ const SearchBox = () => {
       term.trim() !== "" ? term : []
     );
     setIsSearchHistoryOpen(false);
+    setSearched(true);
   };
 
   useEffect(() => {
