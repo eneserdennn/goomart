@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import CategoryCard from "../ui/CategoryCard";
 import Link from "next/link";
+import Loading from "@/app/loading";
 import React from "react";
 import { setCategories } from "@/redux/features/filter/filterSlice";
 import { useGetCategoriesQuery } from "@/redux/features/categories/categoriesApiSlice";
@@ -44,19 +45,8 @@ const Categories: React.FC = () => {
   const categories = useSelector((state: any) => state.filter.categories);
   let content;
 
-  if (isLoading) {
-    content = (
-      <div className="flex flex-wrap justify-around">
-        {[...Array(9)].map((_, index) => (
-          <div className="w-1/3 p-1" key={index}>
-            <div className="flex flex-col items-center justify-center shadow-sm p-1 rounded-lg overflow-hidden bg-white h-32 max-w-xs animate-pulse">
-              <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gray-200 mb-4"></div>
-              <span className="h-4 w-3/4 bg-gray-200 rounded"></span>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+  if (!categoriesData && isLoading) {
+    return <Loading />;
   } else if (categories) {
     content = (
       <div className="flex flex-wrap mb-16">
