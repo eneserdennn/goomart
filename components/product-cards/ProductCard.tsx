@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import {
   addProductToCart,
@@ -164,35 +165,67 @@ const ProductCard = ({ product }: { product: IProduct }) => {
           </div>
         </div>
       </Link>
-      <div className="flex flex-col border items-center justify-around p-1 border-primary bg-white h-[106px] w-[40px] ml-2 rounded-full absolute top-0 right-0 mt-[-5px] mr-[-5px] ">
-        <Image
-          src={ICONS.plus}
-          alt={ICONS.warning}
-          width={14}
-          height={14}
-          onClick={() => {
-            handleAddToCart();
-            setQuantity(quantity + 1);
-            customSuccess("Ürün sepete eklendi.");
-            // @ts-ignore
-            dispatch(addProductToCart(product));
-          }}
-        />
-        <div className="flex items-center text-primary font-bold text-[14px] bg-primary bg-opacity-20 rounded-full w-[32px] h-[32px] justify-center">
-          {quantity}
-        </div>
-        <Image
-          src={ICONS.minus}
-          alt={ICONS.warning}
-          width={14}
-          height={14}
-          onClick={() => {
-            handleRemoveFromCart();
-            setQuantity(quantity - 1);
-            customSuccess("Ürün sepetten çıkarıldı.");
-          }}
-        />
-      </div>
+      <AnimatePresence mode="wait">
+        {quantity > 0 ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 1 }}
+            className="flex flex-col border items-center justify-around p-1 border-primary bg-white h-[106px] w-[40px] ml-2 rounded-full absolute top-0 right-0 mt-[-5px] mr-[-5px] "
+          >
+            <Image
+              src={ICONS.plus}
+              alt={ICONS.warning}
+              width={14}
+              height={14}
+              onClick={() => {
+                handleAddToCart();
+                setQuantity(quantity + 1);
+                customSuccess("Ürün sepete eklendi.");
+                // @ts-ignore
+                dispatch(addProductToCart(product));
+              }}
+            />
+            <div className="flex items-center text-primary font-bold text-[14px] bg-primary bg-opacity-20 rounded-full w-[32px] h-[32px] justify-center">
+              {quantity}
+            </div>
+            <Image
+              src={ICONS.minus}
+              alt={ICONS.warning}
+              width={14}
+              height={14}
+              onClick={() => {
+                handleRemoveFromCart();
+                setQuantity(quantity - 1);
+                customSuccess("Ürün sepetten çıkarıldı.");
+              }}
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 1 }}
+            className="flex flex-col border items-center justify-around p-1 border-primary bg-white h-[40px] w-[40px] ml-2 rounded-full absolute top-0 right-0 mt-[-5px] mr-[-5px]"
+          >
+            <Image
+              src={ICONS.plus}
+              alt={ICONS.warning}
+              width={14}
+              height={14}
+              onClick={() => {
+                handleAddToCart();
+                setQuantity(quantity + 1);
+                customSuccess("Ürün sepete eklendi.");
+                // @ts-ignore
+                dispatch(addProductToCart(product));
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
