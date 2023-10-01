@@ -3,8 +3,14 @@
 import { BiSearchAlt, BiSolidChevronDown } from "react-icons/bi";
 import Image, { StaticImageData } from "next/image";
 import { IoMenu, IoPersonSharp } from "react-icons/io5";
+import {
+  useAddProductToFavoriteMutation,
+  useGetMyFavoriteProductsQuery,
+  useRemoveProductFromFavoriteMutation,
+} from "@/redux/features/products/productApiSlice";
 import { useEffect, useState } from "react";
 
+import { AiFillHeart } from "react-icons/ai";
 import Button from "@/components/button";
 import { FaShoppingCart } from "react-icons/fa";
 import { ICONS } from "@/constants/iconConstants";
@@ -13,9 +19,9 @@ import Link from "next/link";
 import Loading from "@/app/loading";
 import React from "react";
 import SideBar from "../sidebar/SideBar";
+import { customSuccess } from "../CustomToast";
 import { modalToggle } from "@/redux/features/cart/cartSlice";
 import { setCredentials } from "@/redux/features/auth/authSlice";
-import { useAddProductToFavoriteMutation } from "@/redux/features/products/productApiSlice";
 import { useDispatch } from "react-redux";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -43,6 +49,9 @@ const NavBar: React.FC = () => {
   const router = useRouter();
 
   const [addProductToFavorite] = useAddProductToFavoriteMutation();
+  const [removeProductFromFavorite] = useRemoveProductFromFavoriteMutation();
+  const { data: favoriteProducts, isLoading: favoriteProductsLoading } =
+    useGetMyFavoriteProductsQuery({});
 
   const productId = path.split("/").splice(2)[0];
 
@@ -353,15 +362,40 @@ const NavBar: React.FC = () => {
               </div>
             ) : currentPage?.name === "Ürün Detay" ? (
               <div className="flex justify-between place-self-end mr-2">
-                <Image
+                {favoriteProducts?.find(
+                  // @ts-ignore
+                  (product) => product.id === Number(productId)
+                ) ? (
+                  <div
+                    onClick={async () => {
+                      await removeProductFromFavorite(productId);
+                      customSuccess("Ürün favorilerden çıkarıldı.");
+                    }}
+                  >
+                    <AiFillHeart size={22} color={"white"} />
+                  </div>
+                ) : (
+                  <Image
+                    src={ICONS.heart}
+                    alt="filter"
+                    width={20}
+                    height={19}
+                    onClick={async () => {
+                      await addProductToFavorite(productId);
+                      customSuccess("Ürün favorilere eklendi.");
+                    }}
+                  />
+                )}
+                {/* <Image
                   src={ICONS.heart}
                   alt="filter"
                   width={20}
                   height={19}
                   onClick={async () => {
                     await addProductToFavorite(productId);
+                    customSuccess("Ürün favorilere eklendi.");
                   }}
-                />
+                /> */}
               </div>
             ) : currentPage?.name === "Sepet" ? (
               <div className="place-self-end">
