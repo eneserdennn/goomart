@@ -1,8 +1,9 @@
 "use client";
+
 import { BiSearchAlt, BiSolidChevronDown } from "react-icons/bi";
-import { useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { IoMenu, IoPersonSharp } from "react-icons/io5";
+import { useEffect, useState } from "react";
 
 import Button from "@/components/button";
 import { FaShoppingCart } from "react-icons/fa";
@@ -14,9 +15,8 @@ import React from "react";
 import SideBar from "../sidebar/SideBar";
 import { modalToggle } from "@/redux/features/cart/cartSlice";
 import { setCredentials } from "@/redux/features/auth/authSlice";
-import { useDispatch } from "react-redux";
 import { useAddProductToFavoriteMutation } from "@/redux/features/products/productApiSlice";
-
+import { useDispatch } from "react-redux";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 
@@ -256,7 +256,7 @@ const NavBar: React.FC = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="flex w-full items-center justify-between mx-[15px]">
+          <div className="grid grid-cols-3 mx-[15px]">
             <div className="flex flex-col items-center text-white">
               <IoMenu size={30} color={"#FFF"} />
               <span className="text-[14px] font-bold">Menu</span>
@@ -297,14 +297,14 @@ const NavBar: React.FC = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="flex w-full items-center justify-between mx-[15px]">
-            <div className="">
+          <div className="grid grid-cols-3 w-full  place-items-center mx-[15px]">
+            <div className="w-full">
               {currentPage?.name === "Home" ||
               currentPage?.name === "Kampanyalar" ||
               currentPage?.name === "Sipariş Onay" ? (
                 <div></div>
               ) : currentPage?.name === "Kampanya Detay" ? (
-                <div className="flex items-center">
+                <div className="place-self-start">
                   <Image
                     src={ICONS.closeOutlined}
                     alt="goomart"
@@ -313,7 +313,7 @@ const NavBar: React.FC = () => {
                   />
                 </div>
               ) : (
-                <div className="flex items-center">
+                <div className="place-self-start">
                   <Image
                     src={ICONS.leftArrow}
                     alt="goomart"
@@ -323,7 +323,7 @@ const NavBar: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="text-white font-bold">
+            <div className="text-white text-center font-bold">
               {currentPage?.name === "Home" ||
               currentPage?.name === "Kampanyalar" ||
               currentPage?.name === "Kampanya Uygula" ||
@@ -338,7 +338,7 @@ const NavBar: React.FC = () => {
               )}
             </div>
             {currentPage?.name === "Home" ? (
-              <div className="flex items-center">
+              <div className="place-self-end">
                 <Link href={`/notification`}>
                   <IoMdNotifications
                     className="text-white"
@@ -348,7 +348,7 @@ const NavBar: React.FC = () => {
                 </Link>
               </div>
             ) : currentPage?.name === "Ürünler" ? (
-              <div className="flex justify-between items-center">
+              <div className="place-self-end">
                 <SideBar data={data} />
               </div>
             ) : currentPage?.name === "Ürün Detay" ? (
@@ -364,18 +364,18 @@ const NavBar: React.FC = () => {
                 />
               </div>
             ) : currentPage?.name === "Sepet" ? (
-              <Image
-                src={ICONS.trashWhite}
-                alt="filter"
-                width={20}
-                height={19}
-                onClick={() => {
-                  dispatch(modalToggle());
-                }}
-              />
-            ) : (
-              <div className="flex justify-between items-center"></div>
-            )}
+              <div className="place-self-end">
+                <Image
+                  src={ICONS.trashWhite}
+                  alt="filter"
+                  width={20}
+                  height={19}
+                  onClick={() => {
+                    dispatch(modalToggle());
+                  }}
+                />
+              </div>
+            ) : null}
           </div>
         )}
       </nav>
