@@ -13,7 +13,7 @@ interface RefreshResult {
   };
 }
 
-const devServerIp = process.env.devServerIp || "https://ecomm.spookyorange.com";
+const devServerIp = process.env.devServerIp || "https://goomart.org/";
 
 const baseQuery: BaseQueryFn = fetchBaseQuery({
   baseUrl: devServerIp,
