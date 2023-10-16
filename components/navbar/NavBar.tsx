@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 
 import { AiFillHeart } from "react-icons/ai";
 import Button from "@/components/button";
+import Delivery from "../delivery/Delivery";
 import { FaShoppingCart } from "react-icons/fa";
 import { ICONS } from "@/constants/iconConstants";
 import { IoMdNotifications } from "react-icons/io";
@@ -261,11 +262,11 @@ const NavBar: React.FC = () => {
 
   return (
     <>
-      <nav className="hidden md:flex w-full h-[70px] px-[238px] items-center justify-between  bg-primary text-[16px]">
+      <nav className="hidden md:flex w-full h-[70px] px-[238px]  bg-primary text-[16px]">
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="grid grid-cols-3 mx-[15px]">
+          <div className="flex justify-between space-x-4 w-full items-center">
             <div className="flex flex-col items-center text-white">
               <IoMenu size={30} color={"#FFF"} />
               <span className="text-[14px] font-bold">Menu</span>
@@ -277,9 +278,67 @@ const NavBar: React.FC = () => {
               icon={ICONS.search}
               name="search"
               type="text"
-              placeholder="Ürün Ara..."
+              placeholder="Ürün ara..."
             />
-            <div className="flex flex-row space-x-[40px] pr-[90px]">
+            <div>
+              <Delivery />
+            </div>
+            <div className="md:flex hidden border h-[45px] rounded-[15px] px-[15px]">
+              <>
+                <div className="flex items-center">
+                  <Image
+                    src={ICONS.adressIconBigBgWhite}
+                    alt="goomart"
+                    width={24}
+                    height={30}
+                  />
+                  <p className="text-[14px] text-white px-[10px]">
+                    Teslimat Adresi Belirleyin
+                  </p>
+                </div>
+                <Image
+                  src={ICONS.downArrowWhite}
+                  alt="goomart"
+                  width={11}
+                  height={11}
+                />
+              </>
+            </div>
+            <div className="md:flex hidden border h-[45px] rounded-[15px] px-[15px]">
+              <>
+                <div className="flex items-center">
+                  <Image
+                    src={ICONS.personWhite}
+                    alt="goomart"
+                    width={19}
+                    height={19}
+                  />
+                  <p className="text-[14px] px-[10px] text-white">
+                    Giris Yap / Kayıt Ol
+                  </p>
+                </div>
+                <Image
+                  src={ICONS.downArrowWhite}
+                  alt="goomart"
+                  width={11}
+                  height={11}
+                />
+              </>
+            </div>
+            <div className="md:flex bg-white hidden border items-center h-[45px] rounded-[15px] px-[11px]">
+              <div className="relative">
+                <Image
+                  src={ICONS.basket}
+                  alt="goomart"
+                  width={32}
+                  height={28}
+                />
+                <div className="absolute text-white text-[13px] top-[-2px] right-[-5px] bg-rose-500 rounded-full w-[14px] h-[14px] flex justify-center items-center">
+                  1
+                </div>
+              </div>
+            </div>
+            {/* <div className="flex flex-row space-x-[40px] pr-[90px]">
               <Button
                 className="bg-[#0e6200] justify-between w-[180px] font-bold rounded-[16px] px-[15px] py-[12px] text-[14px] hover:bg-primary hover:text-white"
                 onClick={() => router.push("/cart")}
@@ -298,7 +357,7 @@ const NavBar: React.FC = () => {
                 </span>
                 <BiSolidChevronDown size={24} color={"#FFF"} />
               </Button>
-            </div>
+            </div> */}
           </div>
         )}
       </nav>

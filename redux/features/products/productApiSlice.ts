@@ -11,11 +11,11 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     }),
     getProductsByProductId: builder.query({
       // @ts-ignore
-      query: (id) => `/product/${id}`,
+      query: (id) => `/product/${id}/?lang=${language}`,
     }),
     getProductsBySubCategoryId: builder.query({
       // @ts-ignore
-      query: (id) => `/sub-category/all-products/${id}`,
+      query: (id) => `/sub-category/all-products/${id}/?lang=${language}`,
     }),
     getProductsListWithCampaign: builder.query({
       // @ts-ignore
