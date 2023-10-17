@@ -9,7 +9,7 @@ interface CustomToastProps {
 
 const baseToastOptions: ToastOptions = {
   className: "flex flex-row items-center justify-between m-4 border p-4",
-  position: "top-center",
+  position: window.innerWidth <= 768 ? "top-center" : "top-right",
   autoClose: 2000,
   icon: false,
   hideProgressBar: true,
@@ -26,7 +26,7 @@ export function customSuccess(message: string): void {
       <Image src={ICONS.success} alt="right arrow" width={40} height={40} />
       <div className="text-sm text-black pl-4">{message}</div>
     </div>,
-    baseToastOptions
+    baseToastOptions,
   );
 }
 
@@ -36,6 +36,6 @@ export function customError(message: string): void {
       <Image src={ICONS.warning} alt="right arrow" width={40} height={40} />
       <div className="text-sm text-black pl-4">{message}</div>
     </div>,
-    baseToastOptions
+    baseToastOptions,
   );
 }
