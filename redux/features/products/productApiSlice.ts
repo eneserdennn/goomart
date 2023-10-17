@@ -11,7 +11,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     }),
     getProductsByProductId: builder.query({
       // @ts-ignore
-      query: (id) => `/product/${id}/?lang=${language}`,
+      query: (id) => `/product/${id}`,
     }),
     getProductsBySubCategoryId: builder.query({
       // @ts-ignore
@@ -51,6 +51,10 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getACustomProductList: builder.query({
+      // @ts-ignore
+      query: () => `/custom-product-list?lang=tr`,
+    }),
   }),
 });
 
@@ -63,4 +67,5 @@ export const {
   useGetMyFavoriteProductsQuery,
   useAddProductToFavoriteMutation,
   useRemoveProductFromFavoriteMutation,
+  useGetACustomProductListQuery,
 } = productsApiSlice;
