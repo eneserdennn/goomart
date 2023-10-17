@@ -262,11 +262,11 @@ const NavBar: React.FC = () => {
 
   return (
     <>
-      <nav className="hidden md:flex w-full h-[70px] px-[238px]  bg-primary text-[16px]">
+      <nav className="hidden md:flex w-full h-[70px]  bg-primary text-[16px]">
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="flex justify-between space-x-4 w-full items-center">
+          <div className="flex justify-between space-x-12 max-w-[1440px] mx-auto items-center">
             <div className="flex flex-col items-center text-white">
               <IoMenu size={30} color={"#FFF"} />
               <span className="text-[14px] font-bold">Menu</span>
@@ -285,7 +285,7 @@ const NavBar: React.FC = () => {
             </div>
             <div className="md:flex hidden border h-[45px] rounded-[15px] px-[15px]">
               <>
-                <div className="flex items-center">
+                <div className="flex flex-shrink-0 items-center">
                   <Image
                     src={ICONS.adressIconBigBgWhite}
                     alt="goomart"
@@ -306,7 +306,7 @@ const NavBar: React.FC = () => {
             </div>
             <div className="md:flex hidden border h-[45px] rounded-[15px] px-[15px]">
               <>
-                <div className="flex items-center">
+                <div className="flex flex-shrink-0 items-center">
                   <Image
                     src={ICONS.personWhite}
                     alt="goomart"
@@ -325,8 +325,8 @@ const NavBar: React.FC = () => {
                 />
               </>
             </div>
-            <div className="md:flex bg-white hidden border items-center h-[45px] rounded-[15px] px-[11px]">
-              <div className="relative">
+            <div className="md:flex bg-white hidden border items-center justify-center h-[45px] rounded-[15px] px-[11px]">
+              <div className="relative flex-shrink-0">
                 <Image
                   src={ICONS.basket}
                   alt="goomart"
