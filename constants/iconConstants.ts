@@ -103,8 +103,15 @@ import visa from "@/assets/icons/visa.svg";
 import warning from "@/assets/icons/warning.svg";
 import whatsappIcon from "@/assets/icons/whatsappIcon.svg";
 import youtube from "@/assets/icons/youtube.svg";
-
+import amex from "@/assets/icons/amex.svg";
+import mastercardWhite from "@/assets/icons/mastercardWhite.svg";
+import maestro from "@/assets/icons/maestro.svg";
+import sepaWhite from "@/assets/icons/sepaWhite.svg";
 export const ICONS = {
+  amex,
+  mastercardWhite,
+  maestro,
+  sepaWhite,
   basket,
   personWhite,
   downArrowWhite,
