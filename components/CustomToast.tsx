@@ -1,3 +1,4 @@
+"use client";
 import { ToastOptions, toast } from "react-toastify";
 
 import { ICONS } from "@/constants/iconConstants";
@@ -7,9 +8,11 @@ interface CustomToastProps {
   message: string;
 }
 
+const isBrowser = typeof window !== "undefined";
+
 const baseToastOptions: ToastOptions = {
   className: "flex flex-row items-center justify-between m-4 border p-4",
-  position: window.innerWidth <= 768 ? "top-center" : "top-right",
+  position: isBrowser && window.innerWidth <= 768 ? "top-center" : "top-right",
   autoClose: 2000,
   icon: false,
   hideProgressBar: true,

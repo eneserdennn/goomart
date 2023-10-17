@@ -56,8 +56,6 @@ const Categories: React.FC = () => {
     if (window.innerWidth > 768) {
       setIsDesktop(true);
     }
-
-    // Pencere boyutu değiştiğinde tekrar kontrol etmek için bir event listener ekleyin
     const handleResize = () => {
       if (window.innerWidth > 768) {
         setIsDesktop(true);
