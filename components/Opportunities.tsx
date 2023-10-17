@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import { Navigation } from "swiper/modules";
 import { ICONS } from "@/constants/iconConstants";
 import Image from "next/image";
-import { BiSolidChevronLeft } from "react-icons/bi";
+import { BiSolidChevronLeft, BiSolidChevronRight } from "react-icons/bi";
 
 const Opportunities = () => {
   const { data, error, isLoading } = useGetACustomProductListQuery({});
@@ -39,11 +39,10 @@ const Opportunities = () => {
           <div className="col-start-1 col-span-6 bg-[#FFD306] h-[3px] w-[153px] rounded-full"></div>
         </div>
       </div>
-
       <div className="w-full relative">
-        <div className="flex absolute items-center top-[-47px] left-0 right-0 mx-auto w-full">
-          <div className="swiper-button-prev flex items-center justify-center h-12 w-12 bg-white rounded-xl shadow mr-[60px]">
-            <BiSolidChevronLeft className=" text-[24px]" />
+        <div className="flex absolute items-center top-[-47px] left-0 right-0 mx-auto w-[1240px]">
+          <div className="swiper-button-prev h-[48px] w-[60px] items-center justify-center bg-white rounded-xl mr-[60px] mb-[47px] shadow flex cursor-pointer">
+            <BiSolidChevronLeft className="text-[24px]" />
           </div>
           <Swiper
             slidesPerView={5}
@@ -64,7 +63,9 @@ const Opportunities = () => {
                 </div>
               ))}
           </Swiper>
-          <button className="swiper-button-next">Sonraki</button>
+          <button className="swiper-button-next items-center justify-center h-[48px] w-[60px] bg-white rounded-xl ml-[60px] mb-[47px] shadow flex">
+            <BiSolidChevronRight className="text-[24px]" />
+          </button>
         </div>
         <div className="grid grid-cols-7 gap-4 w-full">
           <div className="col-start-1 col-span-6 bg-[#EDF7F3] h-[320px] rounded-r-full"></div>
