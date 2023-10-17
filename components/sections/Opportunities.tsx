@@ -5,8 +5,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Navigation } from "swiper/modules";
-import { ICONS } from "@/constants/iconConstants";
-import Image from "next/image";
 import { BiSolidChevronLeft, BiSolidChevronRight } from "react-icons/bi";
 
 const Opportunities = () => {
@@ -31,7 +29,7 @@ const Opportunities = () => {
   if (error) return <div>error</div>;
 
   return (
-    <div className="flex flex-col w-full my-10">
+    <div className="flex flex-col w-full mt-10 mb-[116px]">
       <div className="flex flex-col justify-center items-center w-full font-bold text-[20px] mb-[97px]">
         <div>Firsatlar</div>
         <div className="flex items-center space-x-1">
@@ -40,7 +38,7 @@ const Opportunities = () => {
         </div>
       </div>
       <div className="w-full relative">
-        <div className="flex absolute items-center top-[-47px] left-0 right-0 mx-auto w-[1240px]">
+        <div className="flex absolute items-center top-[-47px] left-0 right-0 mx-auto w-[1244px]">
           <div className="swiper-button-prev h-[48px] w-[60px] items-center justify-center bg-white rounded-xl mr-[60px] mb-[47px] shadow flex cursor-pointer">
             <BiSolidChevronLeft className="text-[24px]" />
           </div>
