@@ -4,11 +4,12 @@ import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import Categories from "@/components/categories/Categories";
 import Delivery from "@/components/delivery/Delivery";
 import Head from "next/head";
+import Opportunities from "@/components/Opportunities";
 import Slider from "@/components/ui/slider";
 
 export default function Home() {
   return (
-    <div className="flex flex-col md:px-[238px]">
+    <div className="flex flex-col md:mx-auto">
       <Head>
         <title>Home</title>
       </Head>
@@ -17,6 +18,10 @@ export default function Home() {
       </div>
       <Slider />
       <Categories />
+      <div className="md:flex hidden">
+        <Opportunities />
+      </div>
+
       <BottomNavBar />
     </div>
   );

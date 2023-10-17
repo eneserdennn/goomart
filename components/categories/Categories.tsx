@@ -1,9 +1,9 @@
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import CategoryCard from "../ui/CategoryCard";
 import Link from "next/link";
 import Loading from "@/app/loading";
-import React from "react";
 import { setCategories } from "@/redux/features/filter/filterSlice";
 import { useGetCategoriesQuery } from "@/redux/features/categories/categoriesApiSlice";
 
@@ -31,6 +31,8 @@ const ConvertCategoryName = (name: string) => {
   return name;
 };
 
+const DESKTOP_CATEGORY_LIMIT = 14;
+
 const Categories: React.FC = () => {
   // @ts-ignore
   const {
@@ -43,32 +45,86 @@ const Categories: React.FC = () => {
   const dispatch = useDispatch();
   dispatch(setCategories(categoriesData));
   const categories = useSelector((state: any) => state.filter.categories);
+  const [isDesktop, setIsDesktop] = useState(false);
+
   let content;
+
+  let displayedCategories = categories;
+
+  useEffect(() => {
+    // Eğer cihaz masaüstü ise
+    if (window.innerWidth > 768) {
+      setIsDesktop(true);
+    }
+
+    // Pencere boyutu değiştiğinde tekrar kontrol etmek için bir event listener ekleyin
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsDesktop(true);
+      } else {
+        setIsDesktop(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  if (isDesktop && categories?.length > DESKTOP_CATEGORY_LIMIT) {
+    displayedCategories = categories.slice(0, DESKTOP_CATEGORY_LIMIT);
+  }
 
   if (!categoriesData && isLoading) {
     return <Loading />;
   } else if (categories) {
     content = (
-      <div className="flex flex-wrap mb-16">
-        {categories.map((category: Category) => (
-          <div
-            className="w-1/3 md:w-1/3 lg:w-1/7 flex justify-around"
-            key={category.id}
-            onClick={() => {}}
-          >
-            <Link
-              href={{
-                pathname: `/categories/${category.id}/${ConvertCategoryName(
-                  category.name
-                )}`,
-              }}
+      <>
+        <div className="flex flex-wrap mb-16 md:hidden">
+          {displayedCategories.map((category: Category) => (
+            <div
+              className="w-1/3 md:w-1/3 lg:w-1/7 flex justify-around"
               key={category.id}
+              onClick={() => {}}
             >
-              <CategoryCard title={category?.name} imageUrl={category?.image} />
-            </Link>
-          </div>
-        ))}
-      </div>
+              <Link
+                href={{
+                  pathname: `/categories/${category.id}/${ConvertCategoryName(
+                    category.name,
+                  )}`,
+                }}
+                key={category.id}
+              >
+                <CategoryCard
+                  title={category?.name}
+                  imageUrl={category?.image}
+                />
+              </Link>
+            </div>
+          ))}
+        </div>
+        <div className="hidden md:flex flex-wrap justify-center max-w-[1440px] mx-auto">
+          {displayedCategories.map((category: Category, index: number) => (
+            <div className="w-1/7" key={category.id} onClick={() => {}}>
+              <Link
+                href={{
+                  pathname: `/categories/${category.id}/${ConvertCategoryName(
+                    category.name,
+                  )}`,
+                }}
+              >
+                <CategoryCard
+                  title={category?.name}
+                  imageUrl={category?.image}
+                />
+              </Link>
+            </div>
+          ))}
+        </div>
+      </>
     );
   } else if (isError) {
     content = (
