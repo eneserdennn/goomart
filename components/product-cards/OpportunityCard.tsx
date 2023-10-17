@@ -112,6 +112,8 @@ const OpportunityProductCard = ({ productId }: { productId: string }) => {
     console.log("product", product);
   }, [product]);
 
+  if (isLoading) return <div>Loading...</div>;
+
   const handleAddToCart = () => {
     const requestData = {
       productId: product.id,
@@ -133,14 +135,14 @@ const OpportunityProductCard = ({ productId }: { productId: string }) => {
   };
 
   return (
-    <div className="flex relative my-2 w-[110px]">
+    <div className="flex relative my-2 w-[170px]">
       <Link
-        href={`/product-detail/${product.id}/${ConvertProductName(
-          product.name,
+        href={`/product-detail/${product?.id}/${ConvertProductName(
+          product?.name,
         )}`}
       >
         <div className="flex flex-col" onClick={() => {}}>
-          <div className="flex flex-wrap flex-col justify-center h-[110px] w-[110px] border rounded-lg border-primary">
+          <div className="flex flex-wrap flex-col justify-center items-center h-[210px] w-[170px] bg-white border rounded-[10px] border-gray-200">
             {!product.image && (
               <Image
                 src={
@@ -160,10 +162,10 @@ const OpportunityProductCard = ({ productId }: { productId: string }) => {
               />
             )}
           </div>
-          <div className="text-primary font-bold text-[14px] mt-2 mb-1">
+          <div className="text-primary font-bold text-[17px] mt-2 mb-1">
             {product.mainProductUnitPrice} €
           </div>
-          <div className="flex flex-row text-[13px] whitespace-nowrap w-[110px] overflow-hidden">
+          <div className="flex flex-row text-[16px] whitespace-nowrap w-[170px] overflow-hidden">
             <div className="whitespace-normal overflow-wrap break-word">
               <span className="font-bold mr-1">{product.brand}</span>
               <span>{product.name}</span>
@@ -171,20 +173,14 @@ const OpportunityProductCard = ({ productId }: { productId: string }) => {
           </div>
         </div>
       </Link>
-      <AnimatePresence mode="wait">
+      <div>
         {quantity > 0 ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 1 }}
-            className="flex flex-col border items-center justify-around p-1 border-primary bg-white h-[106px] w-[40px] ml-2 rounded-full absolute top-0 right-0 mt-[-5px] mr-[-5px] "
-          >
+          <div className="flex flex-col border items-center justify-around p-1 border-primary bg-white h-[130px] w-[42px] ml-2 rounded-full absolute top-0 right-0 mt-[-8px] mr-[-10px] ">
             <Image
               src={ICONS.plus}
               alt={ICONS.warning}
-              width={14}
-              height={14}
+              width={20}
+              height={20}
               onClick={() => {
                 handleAddToCart();
                 setQuantity(quantity + 1);
@@ -193,34 +189,28 @@ const OpportunityProductCard = ({ productId }: { productId: string }) => {
                 dispatch(addProductToCart(product));
               }}
             />
-            <div className="flex items-center text-primary font-bold text-[14px] bg-primary bg-opacity-20 rounded-full w-[32px] h-[32px] justify-center">
+            <div className="flex items-center text-primary font-bold text-[14px] bg-primary bg-opacity-20 rounded-full w-[40px] h-[42px] justify-center">
               {quantity}
             </div>
             <Image
               src={ICONS.minus}
               alt={ICONS.warning}
-              width={14}
-              height={14}
+              width={20}
+              height={20}
               onClick={() => {
                 handleRemoveFromCart();
                 setQuantity(quantity - 1);
                 customSuccess("Ürün sepetten çıkarıldı.");
               }}
             />
-          </motion.div>
+          </div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 1 }}
-            className="flex flex-col border items-center justify-around p-1 border-primary bg-white h-[40px] w-[40px] ml-2 rounded-full absolute top-0 right-0 mt-[-5px] mr-[-5px]"
-          >
+          <div className="flex flex-col border items-center justify-around p-1 border-primary bg-white h-[42px] w-[42px] ml-2 rounded-full absolute top-0 right-0 mt-[-8px] mr-[-10px]">
             <Image
               src={ICONS.plus}
               alt={ICONS.warning}
-              width={14}
-              height={14}
+              width={20}
+              height={20}
               onClick={() => {
                 handleAddToCart();
                 setQuantity(quantity + 1);
@@ -229,9 +219,9 @@ const OpportunityProductCard = ({ productId }: { productId: string }) => {
                 dispatch(addProductToCart(product));
               }}
             />
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+      </div>
     </div>
   );
 };
