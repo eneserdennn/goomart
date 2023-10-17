@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         style={{
-          background: "#F5F5F5",
+          background: "#FAFDFB",
           display: "flex",
           flexDirection: "column",
           minHeight: "100vh",
