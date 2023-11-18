@@ -15,7 +15,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     }),
     getProductsBySubCategoryId: builder.query({
       // @ts-ignore
-      query: (id) => `/sub-category/all-products/${id}/?lang=${language}`,
+      query: (id) => `/sub-category/all-products/${id}`,
     }),
     getProductsListWithCampaign: builder.query({
       // @ts-ignore

@@ -91,7 +91,7 @@ const Categories: React.FC = () => {
               <Link
                 href={{
                   pathname: `/categories/${category.id}/${ConvertCategoryName(
-                    category.name,
+                    category.name
                   )}`,
                 }}
                 key={category.id}
@@ -110,7 +110,7 @@ const Categories: React.FC = () => {
               <Link
                 href={{
                   pathname: `/categories/${category.id}/${ConvertCategoryName(
-                    category.name,
+                    category.name
                   )}`,
                 }}
               >

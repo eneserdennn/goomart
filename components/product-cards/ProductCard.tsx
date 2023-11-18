@@ -19,75 +19,6 @@ import { useCheckCartMutation } from "@/redux/features/order/orderApiSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-interface IProduct {
-  id: string;
-  brand: string;
-  name: string;
-  description: string;
-  image: string;
-  mainProductUnitName: string;
-  mainProductUnitPrice: number;
-  mainProductUnitStock: number;
-  productTypeId: string;
-  createdAt: string;
-  updatedAt: string;
-  archived: boolean;
-  archivedAt: string;
-  ProductUnits: IProductUnit[];
-  ProductType: IProductType;
-}
-
-interface IProductUnit {
-  id: string;
-  name: string;
-  convertionToMainUnit: number;
-  createdAt: string;
-  updatedAt: string;
-  productId: string;
-  archived: boolean;
-  archivedAt: string;
-  isMainUnit: boolean;
-}
-
-interface IProductType {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  subCategoryId: string;
-  createdAt: string;
-  updatedAt: string;
-  archived: boolean;
-  archivedAt: string;
-  SubCategory: ISubCategory;
-}
-
-interface ISubCategory {
-  id: string;
-  name: string;
-  description: string;
-  order: number;
-  image: string;
-  categoryId: string;
-  createdAt: string;
-  updatedAt: string;
-  archived: boolean;
-  archivedAt: string;
-  Category: ICategory;
-}
-
-interface ICategory {
-  id: string;
-  name: string;
-  description: string;
-  order: number;
-  image: string;
-  createdAt: string;
-  updatedAt: string;
-  archived: boolean;
-  archivedAt: string;
-}
-
 const ConvertProductName = (name: string) => {
   name = name.toLocaleLowerCase().replace(/ /g, "-");
   name = name.replace(/ı/g, "i");
@@ -99,7 +30,37 @@ const ConvertProductName = (name: string) => {
   return name;
 };
 
-const ProductCard = ({ product }: { product: IProduct }) => {
+interface ProductUnit {
+  id: number;
+  name: string;
+  convertionToMainUnit: number;
+  createdAt: string;
+  updatedAt: string;
+  productId: number;
+  archived: boolean;
+  archivedAt: string | null;
+  isMainUnit: boolean;
+}
+
+interface Product {
+  id: number;
+  brand: string;
+  name: string;
+  image: string;
+  description: string;
+  mainProductUnitName: string;
+  mainProductUnitPrice: number;
+  mainProductUnitStock: number;
+  subCategoryId: number;
+  productTypeId: number;
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+  archivedAt: string | null;
+  ProductUnits: ProductUnit[];
+}
+
+const ProductCard = ({ product }: { product: Product }) => {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(0);
   const [addToCart, { isLoading: addToCartLoading }] = useAddToCartMutation();
@@ -130,7 +91,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
     <div className="flex relative my-2 w-[110px]">
       <Link
         href={`/product-detail/${product.id}/${ConvertProductName(
-          product.name
+          product.name,
         )}`}
       >
         <div className="flex flex-col" onClick={() => {}}>

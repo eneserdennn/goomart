@@ -2,30 +2,38 @@
 
 import React, { useEffect } from "react";
 import {
-  selectFilteredProductTypes,
+  selectCategories,
   selectIsSearched,
-  selectProductTypes,
   selectSelectedCategory,
-  selectSelectedProductType,
   selectSelectedSubCategory,
   selectSubCategories,
-  setProductTypes,
+  setCategories,
   setSelectedCategory,
-  setSelectedProductType,
   setSelectedSubCategory,
   setSubCategories,
 } from "@/redux/features/filter/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  useGetCategoriesByIdQuery,
+  useGetCategoriesQuery,
+} from "@/redux/features/categories/categoriesApiSlice";
 
+import Link from "next/link";
 import Loading from "@/app/loading";
-import { useGetCategoriesByIdQuery } from "@/redux/features/categories/categoriesApiSlice";
+import { usePathname } from "next/navigation";
 
+interface ICategory {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  SubCategory: ISubCategory[];
+}
 interface ISubCategory {
   id: string;
   name: string;
   description: string;
   image: string;
-  ProductType: IProductType[];
 }
 
 interface IProductType {
@@ -43,6 +51,17 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
   const { data, isLoading, isSuccess, isError, error } =
     useGetCategoriesByIdQuery(categoryId);
 
+  const pathname = usePathname();
+  const path = pathname.split("/");
+
+  const {
+    data: categoriesData,
+    isLoading: isLoadingCategories,
+    isSuccess: isSuccessCategories,
+    isError: isErrorCategories,
+    error: errorCategories,
+  } = useGetCategoriesQuery({});
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,27 +70,16 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
     }
   }, [data, dispatch]);
 
+  const categories = useSelector(selectCategories);
   const category = useSelector(selectSelectedCategory);
   const subCategories = useSelector(selectSubCategories);
   const selectedSubCategory = useSelector(selectSelectedSubCategory);
-  const productTypes = useSelector(selectProductTypes);
-  const selectedProductType = useSelector(selectSelectedProductType);
-  const isSearched = useSelector(selectIsSearched);
 
-  const filteredProductTypes = useSelector(selectFilteredProductTypes);
-  const [productTypeList, setProductTypeList] =
-    React.useState<IProductType[]>(productTypes);
+  const isSearched = useSelector(selectIsSearched);
 
   useEffect(() => {
     dispatch(setSelectedSubCategory(subCategories[0]));
-    dispatch(setSelectedProductType(subCategories[0]?.ProductType[0]));
   }, [category, subCategories]);
-
-  useEffect(() => {
-    if (filteredProductTypes.length > 0) {
-      setProductTypeList(filteredProductTypes);
-    }
-  }, [filteredProductTypes]);
 
   useEffect(() => {
     if (category?.SubCategory) {
@@ -80,12 +88,13 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
   }, [category, dispatch]);
 
   useEffect(() => {
-    if (selectedSubCategory?.ProductType) {
-      dispatch(setProductTypes(selectedSubCategory.ProductType));
+    if (isSuccessCategories && categoriesData.length > 0) {
+      dispatch(setCategories(categoriesData));
     }
-  }, [selectedSubCategory, dispatch]);
+    console.log(categories);
+  }, [categoriesData, isSuccessCategories, dispatch]);
 
-  if (isLoading) {
+  if (isLoading || isLoadingCategories) {
     return <Loading />;
   }
 
@@ -102,37 +111,49 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
     if (!selectedSubCategory?.id) {
       dispatch(setSelectedSubCategory(SubCategory[0]));
     }
-    if (!selectedProductType?.id) {
-      dispatch(setSelectedProductType(productTypes[0]));
-    }
+    const ConvertCategoryName = (name: string) => {
+      name = name.toLocaleLowerCase().replace(/ /g, "-");
+      name = name.replace(/ı/g, "i");
+      name = name.replace(/ö/g, "o");
+      name = name.replace(/ü/g, "u");
+      name = name.replace(/ş/g, "s");
+      name = name.replace(/ç/g, "c");
+      name = name.replace(/ğ/g, "g");
+      return name;
+    };
+
     return (
       <div className="sticky top-0 z-10 bg-white">
         <div className="flex overflow-x-auto h-[37px] items-center bg-[#25AC10] font-bold text-[14px] text-white whitespace-nowrap hide-scrollbar shadow relative">
           <div className="flex items-center">
-            {SubCategory &&
-              SubCategory.map((subCategory: ISubCategory) => (
-                <div
-                  className="flex flex-col justify-center mx-4 items-center relative"
-                  onClick={() => {
-                    dispatch(setSelectedSubCategory(subCategory));
-                    dispatch(
-                      setSelectedProductType(subCategory.ProductType[0])
-                    );
+            {categories &&
+              categories.map((category: ICategory) => (
+                <Link
+                  href={{
+                    pathname: `/categories/${category.id}/${ConvertCategoryName(
+                      category.name
+                    )}`,
                   }}
-                  key={subCategory.id}
+                  key={category.id}
                 >
-                  <div className="rounded-md">{subCategory.name}</div>
-                  {selectedSubCategory?.id === subCategory.id && (
-                    <div className="h-1 w-full bg-yellow-400 rounded-full absolute bottom-[-6px] left-0" />
-                  )}
-                </div>
+                  <div
+                    className="flex flex-col justify-center mx-4 items-center relative"
+                    onClick={() => {}}
+                    key={category.id}
+                  >
+                    <div className="rounded-md">{category.name}</div>
+                    {Number(path[2]) === category.id && (
+                      <div className="h-1 w-full bg-yellow-400 rounded-full absolute bottom-[-6px] left-0" />
+                    )}
+                  </div>
+                </Link>
               ))}
-            {SubCategory && SubCategory.length === 0 && (
+            {categories && categories.length === 0 && (
               <div
                 className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full bg-[#25AC10] text-white`}
                 key={0}
               >
-                Alt Kategori Yok
+                Kategori Yok
               </div>
             )}
           </div>
@@ -140,36 +161,36 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
         <div>
           <div className="flex overflow-x-auto h-[45px] items-center bg-white font-semibold text-[14px] text-[#444444]  whitespace-nowrap hide-scrollbar shadow-lg">
             <div className="flex items-center">
-              {isSearched && productTypeList && productTypeList.length > 0 ? (
-                productTypeList.map((productType: IProductType) => (
+              {isSearched && SubCategory && SubCategory.length > 0 ? (
+                SubCategory.map((subCategory: ISubCategory) => (
                   <div
                     className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full ${
-                      selectedProductType?.id === productType.id
+                      selectedSubCategory?.id === subCategory.id
                         ? "bg-[#25AC10] text-white"
                         : "bg-white text-[#444444]"
                     }`}
                     onClick={() => {
-                      dispatch(setSelectedProductType(productType));
+                      dispatch(setSelectedSubCategory(subCategory));
                     }}
-                    key={productType.id}
+                    key={subCategory.id}
                   >
-                    {productType.id ? productType.name : "Ürün Tipi"}
+                    {subCategory.id ? subCategory.name : "Alt Kategori"}
                   </div>
                 ))
-              ) : productTypes && productTypes.length > 0 ? (
-                productTypes.map((productType: IProductType) => (
+              ) : SubCategory && SubCategory.length > 0 ? (
+                SubCategory.map((subCategory: ISubCategory) => (
                   <div
                     className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full ${
-                      selectedProductType?.id === productType.id
+                      selectedSubCategory?.id === subCategory.id
                         ? "bg-[#25AC10] text-white"
                         : "bg-white text-[#444444]"
                     }`}
                     onClick={() => {
-                      dispatch(setSelectedProductType(productType));
+                      dispatch(setSelectedSubCategory(subCategory));
                     }}
-                    key={productType.id}
+                    key={subCategory.id}
                   >
-                    {productType.id ? productType.name : "Ürün Tipi"}
+                    {subCategory.id ? subCategory.name : "Alt Kategori"}
                   </div>
                 ))
               ) : (
@@ -177,7 +198,7 @@ const CategoryBarComp = ({ categoryId }: CategoryBarCompProps) => {
                   className={`flex justify-around m-1 items-center border border-[#E2E2E2] px-4 py-1 rounded-full bg-[#25AC10] text-white`}
                   key={0}
                 >
-                  Urun Tipi Yok
+                  Alt Kategori Yok
                 </div>
               )}
             </div>

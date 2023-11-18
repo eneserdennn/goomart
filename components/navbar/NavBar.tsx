@@ -26,6 +26,7 @@ import { setCredentials } from "@/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import PopoverCart from "@/components/PopoverCart";
 
 interface IMenuItem {
   name: string;
@@ -325,18 +326,9 @@ const NavBar: React.FC = () => {
                 />
               </>
             </div>
-            <div className="md:flex bg-white hidden border items-center justify-center h-[45px] rounded-[15px] px-[11px]">
-              <div className="relative flex-shrink-0">
-                <Image
-                  src={ICONS.basket}
-                  alt="goomart"
-                  width={32}
-                  height={28}
-                />
-                <div className="absolute text-white text-[13px] top-[-2px] right-[-5px] bg-rose-500 rounded-full w-[14px] h-[14px] flex justify-center items-center">
-                  1
-                </div>
-              </div>
+
+            <div className="relative">
+              <PopoverCart />
             </div>
             {/* <div className="flex flex-row space-x-[40px] pr-[90px]">
               <Button
@@ -423,7 +415,7 @@ const NavBar: React.FC = () => {
               <div className="flex justify-between place-self-end mr-2">
                 {favoriteProducts?.find(
                   // @ts-ignore
-                  (product) => product.id === Number(productId)
+                  (product) => product.id === Number(productId),
                 ) ? (
                   <div
                     onClick={async () => {

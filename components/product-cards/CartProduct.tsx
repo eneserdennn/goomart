@@ -167,6 +167,7 @@ const CartProduct = (props: Props) => {
                   onClick={() => {
                     handleRemoveFromCart();
                   }}
+                  className="cursor-pointer"
                 />
                 <div className=" bg-primary text-white h-full w-[42px] flex justify-center items-center">
                   {count}
@@ -179,6 +180,7 @@ const CartProduct = (props: Props) => {
                   onClick={() => {
                     handleAddToCart();
                   }}
+                  className="cursor-pointer"
                 />
               </div>
             </div>

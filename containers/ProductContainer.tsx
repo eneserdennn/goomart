@@ -1,142 +1,74 @@
 "use client";
-
-import React, { useEffect, useRef, useState } from "react";
-import {
-  selectFilteredProductTypes,
-  selectIsFiltered,
-  selectIsSearched,
-  selectProducts,
-  selectSelectedBrands,
-  selectSelectedProductType,
-  selectSelectedSubCategory,
-  selectSortBy,
-  setBrands,
-  setFilteredProductCount,
-  setProducts,
-} from "@/redux/features/filter/filterSlice";
-import { useDispatch, useSelector } from "react-redux";
-
+import { selectSelectedSubCategory } from "@/redux/features/filter/filterSlice";
+import { useSelector } from "react-redux";
+import { useGetProductsBySubCategoryIdQuery } from "@/redux/features/products/productApiSlice";
+import { useEffect, useState } from "react";
 import ProductCard from "@/components/product-cards/ProductCard";
-import ProductCardDiscount from "@/components/product-cards/ProductCardDiscount";
 import ProductCardOutOfStock from "@/components/product-cards/ProductOutOfStock";
-import { useAllProductsByCategoryIdQuery } from "@/redux/features/categories/categoriesApiSlice";
-import { usePathname } from "next/navigation";
+
+interface ProductUnit {
+  id: number;
+  name: string;
+  convertionToMainUnit: number;
+  createdAt: string;
+  updatedAt: string;
+  productId: number;
+  archived: boolean;
+  archivedAt: string | null;
+  isMainUnit: boolean;
+}
+
+interface Product {
+  id: number;
+  brand: string;
+  name: string;
+  image: string;
+  description: string;
+  mainProductUnitName: string;
+  mainProductUnitPrice: number;
+  mainProductUnitStock: number;
+  subCategoryId: number;
+  productTypeId: number;
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+  archivedAt: string | null;
+  ProductUnits: ProductUnit[];
+}
 
 const ProductContainer = () => {
-  const dispatch = useDispatch();
-  // const categoryId = window.location.pathname.split("/")[2];
-  const categoryId = usePathname().split("/")[2];
-
-  const products = useSelector(selectProducts);
+  const [productList, setProductList] = useState([]);
   const selectedSubCategory = useSelector(selectSelectedSubCategory);
-  const selectedProductType = useSelector(selectSelectedProductType);
-  const sortBy = useSelector(selectSortBy);
-  const selectedBrands = useSelector(selectSelectedBrands);
-  const filteredProductTypes = useSelector(selectFilteredProductTypes);
-  const isSearched = useSelector(selectIsSearched);
-
-  const [params, setParams] = useState({});
-  const { data } = useAllProductsByCategoryIdQuery({ id: categoryId, params });
-
-  useEffect(() => {
-    if (isSearched) {
-      const newParams = {
-        "sort-by": sortBy,
-        "filter-brand": selectedBrands,
-        "filter-product-type": filteredProductTypes.map(
-          // @ts-ignore
-          (productType) => productType.id,
-        ),
-      };
-      setParams(newParams);
-    } else {
-      const newParams = {};
-      setParams(newParams);
-    }
-  }, [sortBy, selectedBrands, filteredProductTypes, isSearched]);
-
-  useEffect(() => {
-    if (data) {
-      dispatch(setFilteredProductCount(data.productCount));
-      dispatch(setProducts(data));
-      dispatch(setBrands(data.brand));
-    }
-  }, [data, selectedSubCategory, params]);
-
-  const filteredProducts = products.SubCategory?.filter(
-    // @ts-ignore
-    (product) => product.id === selectedSubCategory.id,
+  const { data: products, isLoading } = useGetProductsBySubCategoryIdQuery(
+    selectedSubCategory?.id,
   );
 
-  const isFirstRender = useRef(true);
-  const productTypeRef = useRef(null);
-
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
+    if (products) {
+      setProductList(products.Product);
     }
-    if (productTypeRef.current) {
-      const stickyHeaderHeight = 74;
-      // @ts-ignore
-      const elementPosition = productTypeRef.current.offsetTop;
-      const offsetPosition = elementPosition - stickyHeaderHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-  }, [selectedProductType]);
+    console.log("products", productList);
+  }, [products, productList]);
 
   return (
     <div className="flex flex-col w-full justify-center">
-      {// @ts-ignore
-      filteredProducts?.map((productTypes) => (
-        <div key={productTypes.id}>
-          {
-            // @ts-ignore
-            productTypes.ProductType.map((productType) => (
-              <div
-                key={productType.id}
-                ref={
-                  productType.name === selectedProductType?.name
-                    ? productTypeRef
-                    : null
-                }
-              >
-                {productType.Product.length > 0 && (
-                  <div className="p-2 mt-12 my-1 font-bold text-[15px]">
-                    {productType.name}
-                  </div>
-                )}
-                <div className="flex flex-wrap justify-around bg-white shadow-md">
-                  {
-                    // @ts-ignore
-                    productType.Product.map((product) => {
-                      const key = product.id;
-                      if (
-                        product.mainProductUnitStock > 0 &&
-                        product.saleAmount > 0
-                      ) {
-                        return (
-                          <ProductCardDiscount key={key} product={product} />
-                        );
-                      }
-                      if (product.mainProductUnitStock > 0) {
-                        return <ProductCard key={key} product={product} />;
-                      }
-                      return (
-                        <ProductCardOutOfStock key={key} product={product} />
-                      );
-                    })
-                  }
+      {productList.length > 0 && (
+        <div className="flex flex-wrap space-x-2">
+          {productList.map((product: Product, index: number) => (
+            <>
+              {product.mainProductUnitStock > 0 ? (
+                <div className="mx-1" key={product.id}>
+                  <ProductCard product={product} />
                 </div>
-              </div>
-            ))
-          }
+              ) : (
+                <div className="mx-1" key={product.id}>
+                  <ProductCardOutOfStock product={product} />
+                </div>
+              )}
+            </>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 };

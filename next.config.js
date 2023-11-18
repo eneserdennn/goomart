@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: "http",
         hostname: "localhost",
       },
+      {
+        protocol: "https",
+        hostname: "aseserp2.s3.eu-central-1.amazonaws.com",
+      },
     ],
   },
   eslint: {

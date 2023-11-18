@@ -2,14 +2,15 @@
 
 import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import Categories from "@/components/categories/Categories";
+import CategoryBarComp from "@/components/CategoryBar";
 import Delivery from "@/components/delivery/Delivery";
+import Footer from "@/components/footer/Footer";
 import Head from "next/head";
+import InfoSection from "@/components/sections/InfoSection";
+import MainCampaigns from "@/components/sections/MainCampaigns";
+import MobileAppSection from "@/components/sections/MobileAppSection";
 import Opportunities from "@/components/sections/Opportunities";
 import Slider from "@/components/ui/slider";
-import MainCampaigns from "@/components/sections/MainCampaigns";
-import InfoSection from "@/components/sections/InfoSection";
-import MobileAppSection from "@/components/sections/MobileAppSection";
-import Footer from "@/components/footer/Footer";
 
 export default function Home() {
   return (
@@ -22,9 +23,7 @@ export default function Home() {
       </div>
       <Slider />
       <Categories />
-      <div className="md:flex hidden">
-        <Opportunities />
-      </div>
+      <div className="md:flex hidden">{/* <Opportunities /> */}</div>
       <div className="md:flex hidden">
         <MainCampaigns />
       </div>

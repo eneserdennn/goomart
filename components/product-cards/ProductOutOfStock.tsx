@@ -7,76 +7,37 @@ import Image from "next/image";
 import { addBrands } from "@/redux/features/filter/filterSlice";
 import { useDispatch } from "react-redux";
 
-interface IProduct {
-  id: string;
-  brand: string;
-  name: string;
-  description: string;
-  image: string;
-  mainProductUnitName: string;
-  mainProductUnitPrice: number;
-  mainProductUnitStock: number;
-  productTypeId: string;
-  createdAt: string;
-  updatedAt: string;
-  archived: boolean;
-  archivedAt: string;
-  ProductUnits: IProductUnit[];
-  ProductType: IProductType;
-}
-
-interface IProductUnit {
-  id: string;
+interface ProductUnit {
+  id: number;
   name: string;
   convertionToMainUnit: number;
   createdAt: string;
   updatedAt: string;
-  productId: string;
+  productId: number;
   archived: boolean;
-  archivedAt: string;
+  archivedAt: string | null;
   isMainUnit: boolean;
 }
 
-interface IProductType {
-  id: string;
+interface Product {
+  id: number;
+  brand: string;
   name: string;
-  description: string;
   image: string;
-  subCategoryId: string;
+  description: string;
+  mainProductUnitName: string;
+  mainProductUnitPrice: number;
+  mainProductUnitStock: number;
+  subCategoryId: number;
+  productTypeId: number;
   createdAt: string;
   updatedAt: string;
   archived: boolean;
-  archivedAt: string;
-  SubCategory: ISubCategory;
+  archivedAt: string | null;
+  ProductUnits: ProductUnit[];
 }
 
-interface ISubCategory {
-  id: string;
-  name: string;
-  description: string;
-  order: number;
-  image: string;
-  categoryId: string;
-  createdAt: string;
-  updatedAt: string;
-  archived: boolean;
-  archivedAt: string;
-  Category: ICategory;
-}
-
-interface ICategory {
-  id: string;
-  name: string;
-  description: string;
-  order: number;
-  image: string;
-  createdAt: string;
-  updatedAt: string;
-  archived: boolean;
-  archivedAt: string;
-}
-
-const ProductCardOutOfStock = ({ product }: { product: IProduct }) => {
+const ProductCardOutOfStock = ({ product }: { product: Product }) => {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   dispatch(addBrands(product.brand));
