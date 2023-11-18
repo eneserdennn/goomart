@@ -12,6 +12,90 @@ import Loading from "@/app/loading";
 import Image from "next/image";
 import { IMAGES } from "@/constants/imageConstants";
 
+interface TopLevelObject {
+  totalPrice: number;
+  products: Product[];
+}
+
+interface Product {
+  productId: number;
+  unitId: number;
+  quantityInProductUnit: number;
+  mainProductUnitDiscountAmount: number;
+  productItself: ProductDetails;
+  productUnitItself: ProductUnit;
+  calculatedPrice: number;
+}
+
+interface ProductDetails {
+  id: number;
+  brand: string;
+  name: string;
+  description: string;
+  image: string;
+  mainProductUnitName: string;
+  mainProductUnitPrice: number;
+  mainProductUnitStock: number;
+  subCategoryId: number;
+  productTypeId: number;
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+  archivedAt: string | null;
+  ProductUnits: ProductUnit[];
+  ProductType: ProductType;
+  SubCategory: SubCategory;
+}
+
+interface ProductUnit {
+  id: number;
+  name: string;
+  convertionToMainUnit: number;
+  createdAt: string;
+  updatedAt: string;
+  productId: number;
+  archived: boolean;
+  archivedAt: string | null;
+  isMainUnit: boolean;
+}
+
+interface ProductType {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+  archivedAt: string | null;
+}
+
+interface SubCategory {
+  id: number;
+  name: string;
+  description: string;
+  order: number;
+  image: string;
+  categoryId: number;
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+  archivedAt: string | null;
+  Category: Category;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  description: string;
+  order: number;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+  archivedAt: string | null;
+}
+
 const PopoverCartPanel = () => {
   const token = useSelector(selectCurrentToken);
   const cart = useSelector(selectCart);
@@ -60,9 +144,11 @@ const PopoverCartPanel = () => {
     content = (
       <div className=" h-[500px] w-[500px] rounded-b-2xl">
         {data?.products.length > 0 ? (
-          data?.products?.map((item) => (
+          data?.products?.map((item: Product) => (
             <CartProduct
+              // @ts-ignore
               product={item.productItself}
+              // @ts-ignore
               key={item.id}
               qty={item.quantityInProductUnit}
             />
