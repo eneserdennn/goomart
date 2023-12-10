@@ -22,6 +22,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "aseserp2.s3.eu-central-1.amazonaws.com",
       },
+      {
+        protocol: "https",
+        hostname: "goomart.s3.eu-central-1.amazonaws.com",
+      },
     ],
   },
   eslint: {
