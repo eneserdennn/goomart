@@ -38,7 +38,7 @@ const Opportunities = () => {
         </div>
       </div>
       <div className="w-full relative">
-        <div className="flex absolute items-center top-[-47px] left-0 right-0 mx-auto w-[1244px]">
+        <div className="flex absolute items-center top-[47px] left-0 right-0 mx-auto w-[1244px]">
           <div className="swiper-button-prev h-[48px] w-[60px] items-center justify-center bg-white rounded-xl mr-[60px] mb-[47px] shadow flex cursor-pointer">
             <BiSolidChevronLeft className="text-[24px]" />
           </div>

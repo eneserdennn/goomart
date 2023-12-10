@@ -284,7 +284,10 @@ const NavBar: React.FC = () => {
             <div>
               <Delivery />
             </div>
-            <div className="md:flex hidden border h-[45px] rounded-[15px] px-[15px]">
+            <div
+              className="md:flex hidden border h-[45px] rounded-[15px] px-[15px]"
+              onClick={() => router.push("/addresses")}
+            >
               <>
                 <div className="flex flex-shrink-0 items-center">
                   <Image
@@ -306,7 +309,7 @@ const NavBar: React.FC = () => {
               </>
             </div>
             <div className="md:flex hidden border h-[45px] rounded-[15px] px-[15px]">
-              <>
+              <Link href={"/login"} className="flex flex-row">
                 <div className="flex flex-shrink-0 items-center">
                   <Image
                     src={ICONS.personWhite}
@@ -324,7 +327,7 @@ const NavBar: React.FC = () => {
                   width={11}
                   height={11}
                 />
-              </>
+              </Link>
             </div>
 
             <div className="relative">

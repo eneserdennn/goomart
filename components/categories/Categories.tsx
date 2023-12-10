@@ -91,7 +91,7 @@ const Categories: React.FC = () => {
               <Link
                 href={{
                   pathname: `/categories/${category.id}/${ConvertCategoryName(
-                    category.name
+                    category.name,
                   )}`,
                 }}
                 key={category.id}
@@ -104,13 +104,13 @@ const Categories: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="hidden md:flex flex-wrap justify-center max-w-[1440px] mx-auto">
+        <div className="hidden md:grid grid-cols-7 gap-[42px] mx-auto mb-[90px]">
           {displayedCategories.map((category: Category, index: number) => (
             <div className="w-1/7" key={category.id} onClick={() => {}}>
               <Link
                 href={{
                   pathname: `/categories/${category.id}/${ConvertCategoryName(
-                    category.name
+                    category.name,
                   )}`,
                 }}
               >

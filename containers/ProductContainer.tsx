@@ -55,7 +55,7 @@ const ProductContainer = () => {
       {productList.length > 0 && (
         <div className="flex flex-wrap space-x-2">
           {productList.map((product: Product, index: number) => (
-            <>
+            <div key={product.id}>
               {product.mainProductUnitStock > 0 ? (
                 <div className="mx-1" key={product.id}>
                   <ProductCard product={product} />
@@ -65,7 +65,7 @@ const ProductContainer = () => {
                   <ProductCardOutOfStock product={product} />
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
       )}

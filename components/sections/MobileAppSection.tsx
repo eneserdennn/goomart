@@ -3,12 +3,12 @@ import { IMAGES } from "@/constants/imageConstants";
 
 const MobileAppSection = () => {
   return (
-    <div className="flex bg-[#FFD306] h-[390px] w-full space-x-[245px] items-center justify-center">
-      <div className="flex flex-col">
+    <div className="grid grid-cols-2 bg-[#FFD306] h-[390px] gap-[250px] w-full items-center justify-center">
+      <div className="grid mx-auto place-items-center">
         <span className="font-extrabold text-[#0F1F2C] text-[32px] mb-[85px]">
           GooMart Uygulamasini Hemen Indir !
         </span>
-        <div className="flex mt-[30px] space-x-[70px]">
+        <div className="grid grid-cols-2 mt-[30px] space-x-[60px]">
           <Image
             src={IMAGES.appleBigBorder}
             alt={"apple"}
@@ -23,8 +23,8 @@ const MobileAppSection = () => {
           />
         </div>
       </div>
-      <div className="flex">
-        <div className="flex space-x-[67px]">
+      <div className="grid grid-cols-2">
+        <div className="flex">
           <Image
             src={IMAGES.mobileDevice}
             alt={"apple"}

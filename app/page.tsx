@@ -23,7 +23,9 @@ export default function Home() {
       </div>
       <Slider />
       <Categories />
-      <div className="md:flex hidden">{/* <Opportunities /> */}</div>
+      <div className="md:flex hidden">
+        <Opportunities />
+      </div>
       <div className="md:flex hidden">
         <MainCampaigns />
       </div>

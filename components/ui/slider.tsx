@@ -62,42 +62,44 @@ export default function Slider() {
           </p>
         </div>
       </div>
-      <div className="hidden md:flex flex-shrink pt-[40px] pb-[70px] items-center justify-center space-x-[40px]">
-        <div className="relative hidden md:block w-[920px]">
-          <Swiper
-            modules={[Autoplay, Pagination, Navigation]}
-            className="rounded-2xl"
-            onSlideChange={handleSlideChange}
-            autoplay={{
-              delay: 5000,
-              disableOnInteraction: false,
-            }}
-          >
-            {// @ts-ignore
-            data?.map((item, index) => (
-              <SwiperSlide key={index}>
-                <div className="relative h-[470px]">
-                  {item.image && (
-                    <Image src={item.image} alt={`urun adi`} fill />
-                  )}
-                  {!item.image && (
-                    <Image
-                      src="https://fastly.picsum.photos/id/930/1920/1080.jpg?hmac=7QcaO53mmZzPhWVz0AfqowZ5C_GDMbtSWQP6aOi7uuA"
-                      alt={`urun adi`}
-                      fill
-                    />
-                  )}
-                  <div className="absolute bottom-0 left-0 z-10">
-                    <span>{item.header}</span>
+      <div className="hidden md:flex w-full my-10 items-center justify-center">
+        <div className="flex max-w-[1480px] gap-[42px] ">
+          <div className="max-w-[920px] w-full h-[470px]">
+            <Swiper
+              modules={[Autoplay, Pagination, Navigation]}
+              className="rounded-2xl"
+              onSlideChange={handleSlideChange}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+            >
+              {// @ts-ignore
+              data?.map((item, index) => (
+                <SwiperSlide key={index}>
+                  <div className="relative h-[470px]">
+                    {item.image && (
+                      <Image src={item.image} alt={`urun adi`} fill />
+                    )}
+                    {!item.image && (
+                      <Image
+                        src="https://fastly.picsum.photos/id/930/1920/1080.jpg?hmac=7QcaO53mmZzPhWVz0AfqowZ5C_GDMbtSWQP6aOi7uuA"
+                        alt={`urun adi`}
+                        fill
+                      />
+                    )}
+                    <div className="absolute bottom-0 left-0 z-10">
+                      <span>{item.header}</span>
+                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-        <div className="flex flex-shrink flex-col space-y-[20px]">
-          <div className="flex rounded-3xl w-[480px] h-[220px] bg-white shadow-lg shadow-opacity-10"></div>
-          <div className="flex rounded-3xl w-[480px] h-[220px] bg-white shadow-lg shadow-opacity-10"></div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+          <div className="lg:grid grid-cols-1 gap-2 md:hidden">
+            <div className="flex rounded-3xl w-[480px] h-[220px] bg-white shadow-lg shadow-opacity-10"></div>
+            <div className="flex rounded-3xl w-[480px] h-[220px] bg-white shadow-lg shadow-opacity-10"></div>
+          </div>
         </div>
       </div>
     </>
