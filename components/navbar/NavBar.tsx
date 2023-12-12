@@ -263,7 +263,7 @@ const NavBar: React.FC = () => {
 
   return (
     <>
-      <nav className="hidden md:flex w-full h-[70px]  bg-primary text-[16px]">
+      <nav className="hidden lg:flex w-full h-[70px]  bg-primary text-[16px]">
         {isLoading ? (
           <Loading />
         ) : (
@@ -356,7 +356,7 @@ const NavBar: React.FC = () => {
           </div>
         )}
       </nav>
-      <nav className="flex md:hidden w-full h-[60px] items-center justify-between  bg-primary text-[16px]">
+      <nav className="flex lg:hidden w-full h-[60px] items-center justify-between  bg-primary text-[16px]">
         {isLoading ? (
           <Loading />
         ) : (
@@ -418,7 +418,7 @@ const NavBar: React.FC = () => {
               <div className="flex justify-between place-self-end mr-2">
                 {favoriteProducts?.find(
                   // @ts-ignore
-                  (product) => product.id === Number(productId),
+                  (product) => product.id === Number(productId)
                 ) ? (
                   <div
                     onClick={async () => {
