@@ -186,7 +186,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center w-full bg-[#333333] h-[140px] items-center space-x-[510px]">
+      <div className="flex justify-between w-full bg-[#333333] h-[140px] items-center ">
         <div className="flex flex-col">
           <Image src={ICONS.goomart} alt={"logo"} width={110} height={27} />
           <span className="text-[#FFFFFF] text-[14px] mt-[10px]">
