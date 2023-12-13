@@ -19,9 +19,10 @@ const Search = () => {
         </div>
         <div className="grid grid-cols-5 w-full mt-[30px] gap-[54px]">
           <div className="h-[600px] w-[300px] rounded-md shadow-md col-span-1">
-            <div className="bg-white h-[55px] w-fullflex items-center px-[20px] border-b-2">
+            <div className="bg-white h-[55px] w-full flex items-center px-[20px] border-b-2">
               <p className="font-semibold">Tüm Kategoriler</p>
             </div>
+
             <div className="flex flex-col items-center justify-center w-full h-[545px] space-y-[20px]"></div>
           </div>
           <div className=" col-span-4">

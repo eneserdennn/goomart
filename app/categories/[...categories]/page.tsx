@@ -15,7 +15,7 @@ const CategoriesPage = ({ params }: { params: CategoryParams }) => {
   return (
     <>
       <CategoryBar categoryId={categoryId} />
-      <div className="flex mb-20">
+      <div className="lg:hidden flex mb-20">
         <ProductContainer />
       </div>
       <BottomNavBar />

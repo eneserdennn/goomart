@@ -4,17 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .hide-scrollbar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .hide-scrollbar {
-    -ms-overflow-style: none;  /* Internet Explorer and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-
 .custom-bg-green {
-    background-color: rgba(18, 135, 0, 0.50);
+  background-color: rgba(18, 135, 0, 0.5);
 }
