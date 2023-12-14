@@ -29,7 +29,7 @@ export default function RootLayout({
           <ToastProvider>
             <CartProvider>
               <NavBar />
-              <div style={{ flex: "1" }}>{children}</div>
+              {children}
             </CartProvider>
           </ToastProvider>
         </Providers>

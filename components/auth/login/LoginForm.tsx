@@ -72,15 +72,12 @@ const LoginForm: React.FC = () => {
         // @ts-ignore
         if (err.response?.status === 400) {
           setErrMsg("Invalid credentials");
-
         } else {
           // @ts-ignore
           if (err.response?.status === 401) {
             setErrMsg("Unauthorized");
-
           } else {
             setErrMsg("Something went wrong");
-
           }
         }
       }
@@ -96,7 +93,7 @@ const LoginForm: React.FC = () => {
   }, [isAuthenticated]);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center ">
       {isAuthenticated ? (
         <p className="text-green-500 font-semibold my-4">
           Başarı ile giriş yapıldı. Yönlendiriliyorsunuz...
