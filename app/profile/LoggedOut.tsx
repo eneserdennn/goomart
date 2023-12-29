@@ -13,13 +13,13 @@ const LoggedOut: React.FC = () => {
       <section className="mb-4">
         <IconButton
           icon={<Image src={ICONS.person} alt="person-icon" />}
-          onClick={() => router.push("/auth")}
+          onClick={() => router.push("/auth/login")}
         >
           Giriş Yap
         </IconButton>
         <IconButton
           icon={<Image src={ICONS.personAdd} alt="person-add-icon" />}
-          onClick={() => router.push("/auth")}
+          onClick={() => router.push("/auth/signup")}
         >
           Kayıt Ol
         </IconButton>

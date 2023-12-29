@@ -41,7 +41,7 @@ const LoggedIn: React.FC = () => {
       {isLoading && <Loading />}
       <section className="mb-10">
         <div className="bg-white rounded-2xl shadow">
-          <div className="flex md:hidden flex-row justify-between ">
+          <div className="flex lg:hidden flex-row justify-between ">
             <div className="flex items-center justify-between p-6">
               <div className="flex items-center">
                 <div className="rounded-full border h-14 w-14 flex items-center justify-center text-2xl font-bold text-primary">
@@ -83,7 +83,7 @@ const LoggedIn: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="flex md:hidden flex-wrap justify-center p-4 mb-4">
+          <div className="flex lg:hidden flex-wrap justify-center p-4 mb-4">
             <div className="flex items-center justify-around w-full md:w-3/4 lg:w-2/3 xl:w-1/2">
               <div className="flex flex-col px-4 w-1/5 md:w-auto hover:bg-gray-100 cursor-pointer rounded-lg">
                 <Link href={"/orders"} className="flex flex-col items-center">
@@ -123,7 +123,7 @@ const LoggedIn: React.FC = () => {
           </div>
         </div>
         <div className="md:grid md:grid-cols-12 md:gap-x-[50px] mt-[60px] md:max-w-[1440px] md:mx-auto block">
-          <div className="md:col-span-3 shadow-2xl">
+          <div className="md:col-span-3 shadow-2xl hidden lg:block">
             <div className="mb-4">
               <Link href={"/favorites"}>
                 <IconButton
@@ -221,7 +221,7 @@ const LoggedIn: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-9">
+          <div className="col-span-9 hidden lg:block">
             <div className="shadow-2xl flex items-center justify-between ">
               <p className="text-[18px] font-bold text-green-500 p-[30px]">
                 {path.split("/")[1].slice(0, 1).toUpperCase() +

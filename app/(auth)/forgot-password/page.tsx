@@ -217,7 +217,7 @@ const ForgotPasswordForm = () => {
             </div>
             <div className="flex items-start justify-center flex-row w-full mt-3">
               <Button className="w-full">
-                <Link href={"/login"}>Giriş Yap</Link>
+                <Link href={"/auth/login"}>Giriş Yap</Link>
               </Button>
             </div>
           </div>

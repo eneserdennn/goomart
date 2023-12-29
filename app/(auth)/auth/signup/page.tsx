@@ -57,7 +57,7 @@ const Signup: React.FC = () => {
         </div>
         <div className="text-center font-semibold mt-6 flex flex-row justify-center">
           <p>Hesabınız var mı?</p>
-          <Link href="/login" className="text-primary font-bold mx-1">
+          <Link href="/auth/login" className="text-primary font-bold mx-1">
             Giriş Yap
           </Link>
         </div>
