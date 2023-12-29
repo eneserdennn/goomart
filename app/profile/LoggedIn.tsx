@@ -123,7 +123,7 @@ const LoggedIn: React.FC = () => {
           </div>
         </div>
         <div className="md:grid md:grid-cols-12 md:gap-x-[50px] mt-[60px] md:max-w-[1440px] md:mx-auto block">
-          <div className="md:col-span-3 shadow-2xl hidden lg:block">
+          <div className="lg:col-span-3 col-span-12 shadow-2xl ">
             <div className="mb-4">
               <Link href={"/favorites"}>
                 <IconButton
