@@ -10,21 +10,21 @@ const LoggedOut: React.FC = () => {
 
   return (
     <>
-      <div className="mb-4">
+      <section className="mb-4">
         <IconButton
           icon={<Image src={ICONS.person} alt="person-icon" />}
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/auth")}
         >
           Giriş Yap
         </IconButton>
         <IconButton
           icon={<Image src={ICONS.personAdd} alt="person-add-icon" />}
-          onClick={() => router.push("/signup")}
+          onClick={() => router.push("/auth")}
         >
           Kayıt Ol
         </IconButton>
-      </div>
-      <div className="mb-4">
+      </section>
+      <section className="mb-4">
         <Link href={"/addresses"}>
           <IconButton
             icon={<Image src={ICONS.address} alt="address-icon" />}
@@ -78,10 +78,10 @@ const LoggedOut: React.FC = () => {
             Sözleşmeler ve Politikalar
           </IconButton>
         </Link>
-      </div>
-      <div className="my-4">
+      </section>
+      <section className="my-4">
         <span className="m-1">Dil - Language</span>
-        <div className="mt-4">
+        <section className="mt-4">
           <IconButton onClick={() => {}}>Türkçe</IconButton>
           <IconButton
             rightIcon={false}
@@ -90,8 +90,8 @@ const LoggedOut: React.FC = () => {
           >
             Versiyon
           </IconButton>
-        </div>
-      </div>
+        </section>
+      </section>
     </>
   );
 };

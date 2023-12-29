@@ -25,6 +25,9 @@ import { RootState } from "@/redux/store";
 import Verification from "@/assets/images/verification.svg";
 import { useRouter } from "next/navigation";
 import { customError } from "@/components/CustomToast";
+import Container from "@/components/ui/container";
+import { IMAGES } from "@/constants/imageConstants";
+import { ICONS } from "@/constants/iconConstants";
 
 interface IEmailFormValues {
   email: string;
@@ -54,7 +57,7 @@ const ForgotPasswordForm = () => {
 
   // @ts-ignore
   const forgotPasswordState = useSelector(
-    (state: RootState) => state.forgotPassword,
+    (state: RootState) => state.forgotPassword
   );
 
   const initialValues = {
@@ -73,7 +76,7 @@ const ForgotPasswordForm = () => {
     } catch (err: any) {
       if (err?.response?.data?.message === "User not found") {
         setErrorMessage(
-          "E-posta adresi ile ilişkili kayıtlı hesap bulunamadı.",
+          "E-posta adresi ile ilişkili kayıtlı hesap bulunamadı."
         );
       } else {
       }
@@ -297,43 +300,43 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div>
-      <div className="w-full flex flex-col">
-        {emailSent ? (
-          <div>
-            {otpConfirmed ? (
-              <div>{newPasswordForm()}</div>
-            ) : (
-              <div>{emailSentForm()}</div>
-            )}
-          </div>
-        ) : (
-          <div>
-            <Formik
-              onSubmit={handleSubmit}
-              initialValues={initialValues}
-              validationSchema={Yup.object().shape({
-                email: Yup.string()
-                  .email("Lütfen geçerli bir e-posta girin")
-                  .required("E-posta adresi zorunlu"),
-              })}
-            >
-              {({ values, handleChange, handleSubmit }) => (
-                <form
-                  className="w-full items-center justify-center flex flex-col p-8"
-                  onSubmit={handleSubmit}
-                >
-                  <div className="flex items-center justify-center">
-                    <Image
-                      src={ForgotPassword}
-                      alt="Forgot Password"
-                      className="my-5"
-                    />
-                  </div>
-                  <div className="flex items-start justify-center flex-col w-full">
+    <div className="w-full flex flex-col">
+      {emailSent ? (
+        <div>
+          {otpConfirmed ? (
+            <div>{newPasswordForm()}</div>
+          ) : (
+            <div>{emailSentForm()}</div>
+          )}
+        </div>
+      ) : (
+        <div>
+          <Formik
+            onSubmit={handleSubmit}
+            initialValues={initialValues}
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email("Lütfen geçerli bir e-posta girin")
+                .required("E-posta adresi zorunlu"),
+            })}
+          >
+            {({ values, handleChange, handleSubmit }) => (
+              <form
+                className="w-full items-center justify-center flex flex-col p-8"
+                onSubmit={handleSubmit}
+              >
+                <div className="flex items-center justify-center">
+                  <Image
+                    src={ForgotPassword}
+                    alt="Forgot Password"
+                    className="my-5"
+                  />
+                </div>
+                <div className="flex items-start justify-center flex-col w-full gap-y-5 ">
+                  <div className="relative w-full">
                     <input
                       name="email"
-                      className={`shadow w-full appearance-none border rounded p-4 my-2 font-semibold text-deepgray placeholder:font-semibold ${
+                      className={`shadow w-full appearance-none border rounded pl-4 pr-10 py-4 my-2 font-semibold text-deepgray placeholder:font-semibold ${
                         errorMessage ? "border-red-500" : "border-gray-200"
                       }`}
                       onChange={handleChange}
@@ -342,33 +345,41 @@ const ForgotPasswordForm = () => {
                       placeholder="E-posta adresi"
                       type="email"
                     />
-
-                    {errorMessage ? (
-                      <p className="text-red-500 text-sm font-semibold font-200">
-                        {errorMessage}
-                      </p>
-                    ) : (
-                      <span className="text-sm font-semibold text-gray-500">
-                        E-postanıza tek kullanımlık bir kod göndereceğiz.
-                      </span>
-                    )}
+                    <div className="hidden md:block absolute md:top-1/2 md:right-4 md:transform md:-translate-y-1/2">
+                      <Image
+                        src={ICONS.mail}
+                        width={22}
+                        height={16}
+                        alt="GOOMART"
+                      />
+                    </div>
                   </div>
-                  <Button
-                    type="submit"
-                    className="mt-6"
-                    style={{ fontSize: "1.1rem" }}
-                  >
-                    Kodu Gönder
-                  </Button>
-                </form>
-              )}
-            </Formik>
-            <div className="flex items-start ml-8 text-primary font-semibold">
-              <Link href="/">Yardıma ihtiyacım var</Link>
-            </div>
+
+                  {errorMessage ? (
+                    <p className="text-red-500 text-sm font-semibold font-200">
+                      {errorMessage}
+                    </p>
+                  ) : (
+                    <span className="text-sm font-semibold text-gray-500 md:text-[14px] md:font-bold md:w-full">
+                      E-postanıza tek kullanımlık bir kod göndereceğiz.
+                    </span>
+                  )}
+                </div>
+                <Button
+                  type="submit"
+                  className="mt-6"
+                  style={{ fontSize: "1.1rem" }}
+                >
+                  Kodu Gönder
+                </Button>
+              </form>
+            )}
+          </Formik>
+          <div className="flex items-start ml-8 text-primary font-semibold">
+            <Link href="/">Yardıma ihtiyacım var</Link>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

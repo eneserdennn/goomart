@@ -116,11 +116,11 @@ const NavBar: React.FC = () => {
     },
     {
       name: "Giriş Yap",
-      href: "/login",
+      href: "/auth/login",
     },
     {
       name: "Kayıt Ol",
-      href: "/signup",
+      href: "/auth/signup",
     },
     {
       name: "Adreslerim",
@@ -309,7 +309,7 @@ const NavBar: React.FC = () => {
               </>
             </div>
             <div className="md:flex hidden border h-[45px] rounded-[15px] px-[15px]">
-              <Link href={"/login"} className="flex flex-row">
+              <Link href={"/auth/login"} className="flex flex-row">
                 <div className="flex flex-shrink-0 items-center">
                   <Image
                     src={ICONS.personWhite}

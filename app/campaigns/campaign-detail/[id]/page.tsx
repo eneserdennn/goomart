@@ -9,13 +9,13 @@ import Loading from "@/app/loading";
 import ProductCardPlusButton from "@/components/product-cards/ProductCardPlusButton";
 import { useGetCampaignQuery } from "@/redux/features/campaigns/campaignApiSlice";
 import { useGetProductsListWithCampaignQuery } from "@/redux/features/products/productApiSlice";
+import { BiChevronRight } from "react-icons/bi";
 
 interface CampaignParams {
   id: string;
 }
 
 const CampaignDetail = ({ params }: { params: CampaignParams }) => {
-
   const {
     data: campaign,
     isLoading: campaignLoading,
@@ -35,14 +35,20 @@ const CampaignDetail = ({ params }: { params: CampaignParams }) => {
     content = <div>Something went wrong</div>;
   } else
     content = (
-      <div className="flex flex-col w-full">
-        <div className="flex flex-col w-full mb-2 p-[15px] bg-white h-[245px] shadow justify-between">
-          <div className="flex h-[183px] bg-red-400  rounded-xl w-full "></div>
+      <div className="lg:block flex flex-col w-full">
+        <div className="hidden lg:grid grid-cols-12   w-[calc(100%-210px)] mx-auto mt-[50px] mb-10">
+          <div className="col-span-12 bg-white shadow-md w-full h-[55px] rounded-md flex items-center px-5 ">
+            Ana Sayfa <BiChevronRight size={28} />{" "}
+            <p className="font-semibold">Arama</p>
+          </div>
+        </div>
+        <div className="lg:block lg:w-[calc(100%-210px)] lg:mx-auto flex flex-col w-full mb-2 p-[15px] bg-white h-[245px] shadow justify-between">
+          <div className="flex h-[183px] bg-red-400 rounded-xl w-full lg:mt-10 lg:ml-[114px] lg:w-[558px] lg:h-[228px] "></div>
           <div className="flex text-[14px] font-bold text-[#333333]">
             {campaign?.name}
           </div>
         </div>
-        <div className="flex flex-col pt-[10px] justify-center items-center">
+        <div className="lg:hidden flex flex-col pt-[10px] justify-center items-center">
           <div className="w-[360px] ">
             <div className=" w-full rounded border bg-white">
               <Disclosure>
@@ -66,7 +72,7 @@ const CampaignDetail = ({ params }: { params: CampaignParams }) => {
             </div>
           </div>
         </div>
-        <span className="text-[14px] text-[#6D6D6D] m-[15px]">
+        <span className="lg:hidden text-[14px] text-[#6D6D6D] m-[15px]">
           Gecerli Urunler
         </span>
         <div

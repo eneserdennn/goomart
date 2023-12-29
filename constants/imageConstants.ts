@@ -20,7 +20,7 @@ import googleBigBorder from "@/assets/images/googleBigBorder.svg";
 import mobileDevice from "@/assets/images/mobileDevice.svg";
 import qrCode from "@/assets/images/qrCode.svg";
 import partner from "@/assets/images/partner.svg";
-
+import loginbg from "@/assets/images/loginbg.svg";
 export const IMAGES = {
   partner,
   qrCode,
@@ -44,4 +44,5 @@ export const IMAGES = {
   forgotPasswordImage,
   verificationImage,
   settingsFrame,
+  loginbg,
 };

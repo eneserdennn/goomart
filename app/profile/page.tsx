@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 
 import BottomNavBar from "@/components/bottom-navbar/BottomNavBar";
 import Loading from "@/app/loading";
-import LoggedIn from "@/app/(auth)/profile/LoggedIn";
-import LoggedOut from "@/app/(auth)/profile/LoggedOut";
+import LoggedIn from "./LoggedIn";
+import LoggedOut from "./LoggedOut";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { useGetProfileQuery } from "@/redux/features/auth/userProfileApiSlice";
 import { useSelector } from "react-redux";

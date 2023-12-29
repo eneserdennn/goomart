@@ -107,7 +107,11 @@ import amex from "@/assets/icons/amex.svg";
 import mastercardWhite from "@/assets/icons/mastercardWhite.svg";
 import maestro from "@/assets/icons/maestro.svg";
 import sepaWhite from "@/assets/icons/sepaWhite.svg";
+import leftarrowblack from "@/assets/icons/leftarrowblack.svg";
+import mail from "@/assets/icons/mail.svg";
 export const ICONS = {
+  mail,
+  leftarrowblack,
   amex,
   mastercardWhite,
   maestro,

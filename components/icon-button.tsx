@@ -70,7 +70,7 @@ const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
           {rightIcon && !svg && (
             <Image
               src={ICONS.rightArrow}
-              className="h-4 w-4"
+              className="md:hidden h-4 w-4"
               alt="sozlesmeler-icon"
             />
           )}
@@ -81,7 +81,11 @@ const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
               alt="sozlesmeler-icon"
             />
           )}
-          {rightString && <span className="ml-2">{rightString}</span>}
+          {rightString && (
+            <span className="ml-2 md:text-[14px] md:font-bold">
+              {rightString}
+            </span>
+          )}
         </div>
       </div>
     </button>
