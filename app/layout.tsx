@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import NavBar from "@/components/navbar/NavBar";
 import { Providers } from "@/providers/provider";
 import ToastProvider from "@/providers/toast.provider";
+import AuthWrapper from "./(auth)/AuthWrapper";
 
 export const metadata = {
   title: "Next App",
@@ -26,12 +27,14 @@ export default function RootLayout({
         }}
       >
         <Providers>
+          {/* <AuthWrapper> */}
           <ToastProvider>
             <CartProvider>
               <NavBar />
               {children}
             </CartProvider>
           </ToastProvider>
+          {/* </AuthWrapper> */}
         </Providers>
       </body>
     </html>

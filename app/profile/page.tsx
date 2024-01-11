@@ -9,28 +9,13 @@ import LoggedOut from "./LoggedOut";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { useGetProfileQuery } from "@/redux/features/auth/userProfileApiSlice";
 import { useSelector } from "react-redux";
+import AuthWrapper from "../(auth)/AuthWrapper";
+import { usePathname } from "next/navigation";
 
 const Profile: React.FC = () => {
-  const token = useSelector(selectCurrentToken);
-  let content;
-  if (token) {
-    content = (
-      <div className="flex flex-col p-4">
-        <LoggedIn />
-        <BottomNavBar />
-      </div>
-    );
-  } else if (!token) {
-    content = (
-      <div className="flex flex-col p-4 mb-10">
-        <LoggedOut />
-        <BottomNavBar />
-      </div>
-    );
-  } else {
-    content = <div>Something went wrong</div>;
-  }
-
-  return content;
+  const path = usePathname();
+  console.log(path);
+  // const token = useSelector(selectCurrentToken);
+  return <>PROFILE</>;
 };
 export default Profile;
